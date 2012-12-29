@@ -45,6 +45,12 @@ class Compiler {
             'name',
             'args',
         ),
+        'Expr_Include' => array(
+            'PHPPHP\Engine\OpCodes\IncludeOp',
+            'BinaryOp',
+            'type',
+            'expr'
+        ),
         'Expr_Isset' => array(
             'PHPPHP\Engine\OpCodes\IssetOp',
             'UnaryOp',
@@ -130,7 +136,7 @@ class Compiler {
         if (!is_array($childNode)) {
             $childNode = array($childNode);
         }
-        if ($returnContext && count($childNode) === 1 && is_string($childNode[0])) {
+        if ($returnContext && count($childNode) === 1 && is_scalar($childNode[0])) {
             $returnContext->value = $childNode[0];
             $returnContext->type = Zval::IS_STRING;
             return array();
