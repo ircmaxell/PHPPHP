@@ -1,0 +1,8 @@
+{
+    "require": {
+        "nikic/php-parser": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {"PHPPHP": "lib/"}
+    }
+}

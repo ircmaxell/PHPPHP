@@ -1,0 +1,42 @@
+[
+    {
+        "name": "nikic/php-parser",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nikic/PHP-Parser",
+            "reference": "222c9612ab9c65551b7febd38cbb0fa685b0e0db"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://github.com/nikic/PHP-Parser/archive/222c9612ab9c65551b7febd38cbb0fa685b0e0db.zip",
+            "reference": "222c9612ab9c65551b7febd38cbb0fa685b0e0db",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2"
+        },
+        "time": "2012-12-21 12:28:35",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "PHPParser": "lib/"
+            }
+        },
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Nikita Popov"
+            }
+        ],
+        "description": "A PHP parser written in PHP",
+        "keywords": [
+            "php",
+            "parser"
+        ]
+    }
+]
