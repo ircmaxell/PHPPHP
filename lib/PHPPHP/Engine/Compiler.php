@@ -34,6 +34,26 @@ class Compiler {
             'PHPPHP\Engine\OpCodes\Concat',
             'BinaryOp',
         ),
+        'Expr_Smaller' => array(
+            'PHPPHP\Engine\OpCodes\Smaller',
+            'BinaryOp',
+        ),
+        'Expr_SmallerOrEqual' => array(
+            'PHPPHP\Engine\OpCodes\SmallerOrEqual',
+            'BinaryOp',
+        ),
+        'Expr_Greater' => array(
+            'PHPPHP\Engine\OpCodes\Smaller',
+            'BinaryOp',
+            'right',
+            'left',
+        ),
+        'Expr_GreaterOrEqual' => array(
+            'PHPPHP\Engine\OpCodes\SmallerOrEqual',
+            'BinaryOp',
+            'right',
+            'left',
+        ),
         'Expr_ConstFetch' => array(
             'PHPPHP\Engine\OpCodes\FetchConstant',
             'UnaryOp',
