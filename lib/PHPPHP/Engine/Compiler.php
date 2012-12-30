@@ -248,68 +248,51 @@ class Compiler {
         $ops = $this->compileChild($node, 'name', $namePtr);
         $paramsPtr = Zval::ptrFactory();
         $ops = array_merge($ops, $this->compileChild($node, 'params', $paramsPtr));
-        $opLine = new OpLine;
-        $opLine->handler = new OpCodes\FunctionDef;
-        $opLine->op1 = array(
+
+        $ops[] = new OpLine(new OpCodes\FunctionDef, array(
             'name' => $namePtr,
             'stmts' => $stmts,
             'params' => $paramsPtr,
-        );
+        ));
 
-        $ops[] = $opLine;
         return $ops;
     }
 
     protected function compile_Stmt_If($node) {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);
-        $opLine = new OpLine;
-        $opLine->handler = new OpCodes\IfOp;
-        $opLine->op1 = $op1;
-        $ops[] = $opLine;
 
-        $endOp = new OpLine;
-        $endOp->handler = new OpCodes\NoOp;
+        // Jump targets: midOp is after the first if branch, endOp is after all branches
+        $midOp = new OpLine(new OpCodes\NoOp);
+        $endOp = new OpLine(new OpCodes\NoOp);
 
-        $ifOps = $this->compileChild($node, 'stmts');
-        $ops = array_merge($ops, $ifOps);
+        $ops[] = new OpLine(new OpCodes\IfOp, $op1, $midOp);
 
-        $jmpOp = new OpLine;
-        $jmpOp->handler = new OpCodes\JumpTo;
-        $jmpOp->op1 = $endOp;
-        $ops[] = $jmpOp;
+        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
 
-        $midOp = new OpLine;
-        $midOp->handler = new OpCodes\NoOp;
-        $opLine->op2 = $midOp;
+        $ops[] = new OpLine(new OpCodes\JumpTo, $endOp);
+
         $ops[] = $midOp;
 
-        $elseif = $node->elseifs;
-        if ($elseif) {
-            foreach ($elseif as $child) {
-                $op1 = Zval::ptrFactory();
-                $ops = array_merge($ops, $this->compileChild($child, 'cond', $op1));
-                $opLine = new OpLine;
-                $opLine->handler = new OpCodes\IfOp;
-                $opLine->op1 = $op1;
-                $ops[] = $opLine;
-                $ifOps = $this->compileChild($child, 'stmts');
-                $ops = array_merge($ops, $ifOps);
-                $jmpOp = new OpLine;
-                $jmpOp->handler = new OpCodes\JumpTo;
-                $jmpOp->op1 = $endOp;
-                $ops[] = $jmpOp;
-                $midOp = new OpLine;
-                $midOp->handler = new OpCodes\NoOp;
-                $opLine->op2 = $midOp;
-                $ops[] = $midOp;
-            }
+        $elseifs = $node->elseifs;
+        foreach ($elseifs as $child) {
+            $op1 = Zval::ptrFactory();
+            $ops = array_merge($ops, $this->compileChild($child, 'cond', $op1));
+
+            $midOp = new OpLine(new OpCodes\NoOp);
+
+            $ops[] = new OpLine(new OpCodes\IfOp, $op1, $midOp);
+
+            $ops = array_merge($ops, $this->compileChild($child, 'stmts'));
+
+            $ops[] = new OpLine(new OpCodes\JumpTo, $endOp);
+
+            $ops[] = $midOp;
         }
 
         $else = $node->else;
         if ($else) {
-            $elseOps = $this->compileChild($node->else, 'stmts');
-            $ops = array_merge($ops, $elseOps);
+            $ops = array_merge($ops, $this->compileChild($node->else, 'stmts'));
         }
 
         $ops[] = $endOp;
@@ -321,24 +304,15 @@ class Compiler {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);
 
-        $endOp = new OpLine;
-        $endOp->handler = new OpCodes\NoOp;
-
-        $condOp = new OpLine;
-        $condOp->handler = new OpCodes\IfOp;
-        $condOp->op1 = $op1;
-        $condOp->op2 = $endOp;
-
-        $ops[] = $condOp;
+        $endOp = new OpLine(new OpCodes\NoOp);
+        $ops[] = new OpLine(new OpCodes\IfOp, $op1, $endOp);
 
         $whileOps = $this->compileChild($node, 'stmts');
         $ops = array_merge($ops, $whileOps);
 
-        $jmpOp = new OpLine();
-        $jmpOp->handler = new OpCodes\JumpTo;
-        $jmpOp->op1 = $ops[0]; // jump back to cond
+        // jump back to cond
+        $ops[] = new OpLine(new OpCodes\JumpTo, $ops[0]);
 
-        $ops[] = $jmpOp;
         $ops[] = $endOp;
 
         return $ops;
