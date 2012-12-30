@@ -60,6 +60,10 @@ class Compiler {
             'PHPPHP\Engine\OpCodes\FetchVariable', 'UnaryOp',
             'name',
         ),
+        'Expr_FetchConstant' => array(
+            'PHPPHP\Engine\OpCodes\FetchConstant', 'UnaryOp',
+            'name'
+        ),
         'Name' => array(
             '', 'ScalarOp',
             'parts', '\\',
