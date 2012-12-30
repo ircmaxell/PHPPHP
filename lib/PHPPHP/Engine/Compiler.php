@@ -219,7 +219,7 @@ class Compiler {
         $midOp = new OpLine(new OpCodes\NoOp);
         $endOp = new OpLine(new OpCodes\NoOp);
 
-        $ops[] = new OpLine(new OpCodes\IfOp, $op1, $midOp);
+        $ops[] = new OpLine(new OpCodes\JumpIfNot, $op1, $midOp);
 
         $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
 
@@ -234,7 +234,7 @@ class Compiler {
 
             $midOp = new OpLine(new OpCodes\NoOp);
 
-            $ops[] = new OpLine(new OpCodes\IfOp, $op1, $midOp);
+            $ops[] = new OpLine(new OpCodes\JumpIfNot, $op1, $midOp);
 
             $ops = array_merge($ops, $this->compileChild($child, 'stmts'));
 
@@ -258,7 +258,7 @@ class Compiler {
         $ops = $this->compileChild($node, 'cond', $op1);
 
         $endOp = new OpLine(new OpCodes\NoOp);
-        $ops[] = new OpLine(new OpCodes\IfOp, $op1, $endOp);
+        $ops[] = new OpLine(new OpCodes\JumpIfNot, $op1, $endOp);
 
         $whileOps = $this->compileChild($node, 'stmts');
         $ops = array_merge($ops, $whileOps);
@@ -267,6 +267,16 @@ class Compiler {
         $ops[] = new OpLine(new OpCodes\JumpTo, $ops[0]);
 
         $ops[] = $endOp;
+
+        return $ops;
+    }
+
+    protected function compile_Stmt_Do($node) {
+        $op1 = Zval::ptrFactory();
+
+        $ops = $this->compileChild($node, 'stmts');
+        $ops = array_merge($ops, $this->compileChild($node, 'cond', $op1));
+        $ops[] = new OpLine(new OpCodes\JumpIf, $op1, $ops[0]);
 
         return $ops;
     }

@@ -2,7 +2,7 @@
 
 namespace PHPPHP\Engine\OpCodes;
 
-class IfOp implements \PHPPHP\Engine\OpCode {
+class JumpIfNot implements \PHPPHP\Engine\OpCode {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         if (!$data->opLine->op1->value) {
