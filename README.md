@@ -43,4 +43,4 @@ About The Authors
 
 Anthony Ferrara - [@ircmaxell](https://twitter.com/ircmaxell) [blog.ircmaxell.com](http://blog.ircmaxell.com)
 
-Nikita Popov - [@nikic](https://twitter.com/nikic) [nikic.github.com](http://nikic.github.com/)
+Nikita Popov - [@nikita_ppv](https://twitter.com/nikita_ppv) [nikic.github.com](http://nikic.github.com/)
