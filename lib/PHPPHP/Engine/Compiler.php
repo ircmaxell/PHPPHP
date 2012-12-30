@@ -6,136 +6,73 @@ class Compiler {
 
     protected $operators = array(
         'Arg' => array(
-            '',
-            'ArrayOp',
+            '', 'ArrayOp',
             'value',
         ),
         'Expr_Assign' => array(
-            'PHPPHP\Engine\OpCodes\Assign',
-            'BinaryOp',
-            'var',
-            'expr',
+            'PHPPHP\Engine\OpCodes\Assign', 'BinaryOp',
+            'var', 'expr',
         ),
         'Expr_AssignConcat' => array(
-            'PHPPHP\Engine\OpCodes\AssignConcat',
-            'BinaryOp',
-            'var',
-            'expr',
+            'PHPPHP\Engine\OpCodes\AssignConcat', 'BinaryOp',
+            'var', 'expr',
         ),
-        'Expr_BooleanAnd' => array(
-            'PHPPHP\Engine\OpCodes\BooleanAnd',
-            'BinaryOp',
-        ),
-        'Expr_BooleanOr' => array(
-            'PHPPHP\Engine\OpCodes\BooleanOr',
-            'BinaryOp',
-        ),
-        'Expr_Concat' => array(
-            'PHPPHP\Engine\OpCodes\Concat',
-            'BinaryOp',
-        ),
-        'Expr_Smaller' => array(
-            'PHPPHP\Engine\OpCodes\Smaller',
-            'BinaryOp',
-        ),
-        'Expr_SmallerOrEqual' => array(
-            'PHPPHP\Engine\OpCodes\SmallerOrEqual',
-            'BinaryOp',
-        ),
+        'Expr_BooleanAnd'     => array('PHPPHP\Engine\OpCodes\BooleanAnd', 'BinaryOp'),
+        'Expr_BooleanOr'      => array('PHPPHP\Engine\OpCodes\BooleanOr', 'BinaryOp'),
+        'Expr_Concat'         => array('PHPPHP\Engine\OpCodes\Concat', 'BinaryOp'),
+        'Expr_Smaller'        => array('PHPPHP\Engine\OpCodes\Smaller', 'BinaryOp'),
+        'Expr_SmallerOrEqual' => array('PHPPHP\Engine\OpCodes\SmallerOrEqual', 'BinaryOp'),
         'Expr_Greater' => array(
-            'PHPPHP\Engine\OpCodes\Smaller',
-            'BinaryOp',
-            'right',
-            'left',
+            'PHPPHP\Engine\OpCodes\Smaller', 'BinaryOp',
+            'right', 'left'
         ),
         'Expr_GreaterOrEqual' => array(
-            'PHPPHP\Engine\OpCodes\SmallerOrEqual',
-            'BinaryOp',
-            'right',
-            'left',
+            'PHPPHP\Engine\OpCodes\SmallerOrEqual', 'BinaryOp',
+            'right', 'left',
         ),
-        'Expr_Equal' => array(
-            'PHPPHP\Engine\OpCodes\Equal',
-            'BinaryOp',
-        ),
-        'Expr_NotEqual' => array(
-            'PHPPHP\Engine\OpCodes\NotEqual',
-            'BinaryOp',
-        ),
-        'Expr_Identical' => array(
-            'PHPPHP\Engine\OpCodes\Identical',
-            'BinaryOp',
-        ),
-        'Expr_NotIdentical' => array(
-            'PHPPHP\Engine\OpCodes\NotIdentical',
-            'BinaryOp',
-        ),
+        'Expr_Equal'        => array('PHPPHP\Engine\OpCodes\Equal', 'BinaryOp'),
+        'Expr_NotEqual'     => array('PHPPHP\Engine\OpCodes\NotEqual', 'BinaryOp'),
+        'Expr_Identical'    => array('PHPPHP\Engine\OpCodes\Identical', 'BinaryOp'),
+        'Expr_NotIdentical' => array('PHPPHP\Engine\OpCodes\NotIdentical', 'BinaryOp'),
         'Expr_ConstFetch' => array(
-            'PHPPHP\Engine\OpCodes\FetchConstant',
-            'UnaryOp',
+            'PHPPHP\Engine\OpCodes\FetchConstant', 'UnaryOp',
             'name',
         ),
         'Expr_FuncCall' => array(
-            'PHPPHP\Engine\OpCodes\FunctionCall',
-            'BinaryOp',
-            'name',
-            'args',
+            'PHPPHP\Engine\OpCodes\FunctionCall', 'BinaryOp',
+            'name', 'args'
         ),
         'Expr_Include' => array(
-            'PHPPHP\Engine\OpCodes\IncludeOp',
-            'BinaryOp',
-            'type',
-            'expr'
+            'PHPPHP\Engine\OpCodes\IncludeOp', 'BinaryOp',
+            'type', 'expr'
         ),
         'Expr_Isset' => array(
-            'PHPPHP\Engine\OpCodes\IssetOp',
-            'UnaryOp',
+            'PHPPHP\Engine\OpCodes\IssetOp', 'UnaryOp',
             'vars',
         ),
-        'Expr_Mul' => array(
-            'PHPPHP\Engine\OpCodes\Multiply',
-            'BinaryOp',
-        ),
-        'Expr_Plus' => array(
-            'PHPPHP\Engine\OpCodes\Add',
-            'BinaryOp',
-        ),
+        'Expr_Mul' => array('PHPPHP\Engine\OpCodes\Multiply', 'BinaryOp'),
+        'Expr_Plus' => array('PHPPHP\Engine\OpCodes\Add', 'BinaryOp'),
         'Expr_PostInc' => array(
-            'PHPPHP\Engine\OpCodes\PostInc',
-            'UnaryOp',
+            'PHPPHP\Engine\OpCodes\PostInc', 'UnaryOp',
             'var',
         ),
         'Expr_Variable' => array(
-            'PHPPHP\Engine\OpCodes\FetchVariable',
-            'UnaryOp',
+            'PHPPHP\Engine\OpCodes\FetchVariable', 'UnaryOp',
             'name',
         ),
         'Name' => array(
-            '',
-            'ScalarOp',
-            'parts',
-            '\\',
+            '', 'ScalarOp',
+            'parts', '\\',
         ),
-        'Scalar_DNumber' => array(
-            '',
-            'ScalarOp',
-        ),
-        'Scalar_LNumber' => array(
-            '',
-            'ScalarOp',
-        ),
-        'Scalar_String' => array(
-            '',
-            'ScalarOp',
-        ),
+        'Scalar_DNumber' => array('', 'ScalarOp'),
+        'Scalar_LNumber' => array('', 'ScalarOp'),
+        'Scalar_String' => array('', 'ScalarOp'),
         'Stmt_Echo' => array(
-            'PHPPHP\Engine\OpCodes\EchoOp',
-            'UnaryOp',
+            'PHPPHP\Engine\OpCodes\EchoOp', 'UnaryOp',
             'exprs',
         ),
         'Stmt_Return' => array(
-            'PHPPHP\Engine\OpCodes\ReturnOp',
-            'UnaryOp',
+            'PHPPHP\Engine\OpCodes\ReturnOp', 'UnaryOp',
             'expr',
         ),
     );
