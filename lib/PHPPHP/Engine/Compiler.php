@@ -54,6 +54,22 @@ class Compiler {
             'right',
             'left',
         ),
+        'Expr_Equal' => array(
+            'PHPPHP\Engine\OpCodes\Equal',
+            'BinaryOp',
+        ),
+        'Expr_NotEqual' => array(
+            'PHPPHP\Engine\OpCodes\NotEqual',
+            'BinaryOp',
+        ),
+        'Expr_Identical' => array(
+            'PHPPHP\Engine\OpCodes\Identical',
+            'BinaryOp',
+        ),
+        'Expr_NotIdentical' => array(
+            'PHPPHP\Engine\OpCodes\NotIdentical',
+            'BinaryOp',
+        ),
         'Expr_ConstFetch' => array(
             'PHPPHP\Engine\OpCodes\FetchConstant',
             'UnaryOp',
