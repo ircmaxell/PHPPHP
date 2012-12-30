@@ -103,7 +103,7 @@ class Compiler {
             'expr',
         ),
     );
-    
+
     public function compile(array $ast, Zval $returnContext = null) {
         $opArray = array();
         foreach ($ast as $node) {
@@ -125,6 +125,12 @@ class Compiler {
             }
             return $ops;
         }
+
+        $methodName = 'compile_' . $nodeType;
+        if (!method_exists($this, $methodName)) {
+            throw new \Exception($nodeType . ' not supported yet');
+        }
+
         return call_user_func(array($this, 'compile_' . $nodeType), $node, $returnContext);
     }
 
@@ -143,7 +149,7 @@ class Compiler {
         }
         return $this->compile($childNode, $returnContext);
     }
-    
+
     protected function compileArrayOp($node, $returnContext = null, $left = 'left') {
         if (is_null($left)) $left = 'left';
         $op1 = Zval::ptrFactory();
@@ -153,7 +159,7 @@ class Compiler {
         }
         return array(false, $ops);
     }
-    
+
     protected function compileBinaryOp($node, $returnContext = null, $left = 'left', $right = 'right') {
         if (is_null($left)) $left = 'left';
         if (is_null($right)) $right = 'right';
@@ -187,7 +193,7 @@ class Compiler {
         $ops[] = $opLine;
         return array($opLine, $ops);
     }
-    
+
     protected function compileScalarOp($node, $returnContext = null, $name = 'value', $sep = '') {
         if (is_null($name)) $name = 'value';
         if ($returnContext) {
@@ -215,7 +221,7 @@ class Compiler {
         }
         return array();
     }
-    
+
     protected function compile_Stmt_Function($node) {
         $stmts = $this->compileChild($node, 'stmts');
         $namePtr = Zval::ptrFactory();
@@ -229,11 +235,11 @@ class Compiler {
             'stmts' => $stmts,
             'params' => $paramsPtr,
         );
-        
+
         $ops[] = $opLine;
         return $ops;
     }
-    
+
     protected function compile_Stmt_If($node) {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);
@@ -252,12 +258,12 @@ class Compiler {
         $jmpOp->handler = new OpCodes\JumpTo;
         $jmpOp->op1 = $endOp;
         $ops[] = $jmpOp;
-                
+
         $midOp = new OpLine;
         $midOp->handler = new OpCodes\NoOp;
         $opLine->op2 = $midOp;
         $ops[] = $midOp;
-        
+
         $elseif = $node->elseifs;
         if ($elseif) {
             foreach ($elseif as $child) {
@@ -279,13 +285,13 @@ class Compiler {
                 $ops[] = $midOp;
             }
         }
-        
+
         $else = $node->else;
         if ($else) {
             $elseOps = $this->compileChild($node->else, 'stmts');
             $ops = array_merge($ops, $elseOps);
         }
-        
+
         $ops[] = $endOp;
 
         return $ops;
