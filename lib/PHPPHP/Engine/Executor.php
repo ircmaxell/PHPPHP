@@ -79,7 +79,7 @@ class Executor {
         if (isset($this->functions[$name])) {
             return $this->functions[$name];
         }
-        throw new \RuntimeException('Call to undefined function');
+        throw new \RuntimeException(sprintf('Call to undefined function: %s', $name));
     }
 
     public function getConstantsStore() {
