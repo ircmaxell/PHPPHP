@@ -317,6 +317,33 @@ class Compiler {
         return $ops;
     }
 
+    protected function compile_Stmt_While($node) {
+        $op1 = Zval::ptrFactory();
+        $ops = $this->compileChild($node, 'cond', $op1);
+
+        $endOp = new OpLine;
+        $endOp->handler = new OpCodes\NoOp;
+
+        $condOp = new OpLine;
+        $condOp->handler = new OpCodes\IfOp;
+        $condOp->op1 = $op1;
+        $condOp->op2 = $endOp;
+
+        $ops[] = $condOp;
+
+        $whileOps = $this->compileChild($node, 'stmts');
+        $ops = array_merge($ops, $whileOps);
+
+        $jmpOp = new OpLine();
+        $jmpOp->handler = new OpCodes\JumpTo;
+        $jmpOp->op1 = $ops[0]; // jump back to cond
+
+        $ops[] = $jmpOp;
+        $ops[] = $endOp;
+
+        return $ops;
+    }
+
     protected function compile_Stmt_InlineHtml($node) {
         $opLine = new OpLine;
         $opLine->handler = new OpCodes\EchoOp;
