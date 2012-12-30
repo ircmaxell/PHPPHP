@@ -28,3 +28,10 @@ For The Love Of God, Why?
 =========================
 
 I ask, *Why Not?*
+
+About The Authors
+=================
+
+Anthony Ferrara - [@ircmaxell](https://twitter.com/ircmaxell) [blog.ircmaxell.com](http://blog.ircmaxell.com)
+
+Nikita Popov - [@nikic](https://twitter.com/nikic) [nikic.github.com](http://nikic.github.com/)
