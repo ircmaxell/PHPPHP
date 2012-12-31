@@ -63,7 +63,7 @@ class Executor {
                         $scope->parent->opLine->result->zval = $scope->returnValue->zval;
                     }
                     $this->current = end($this->stack);
-                    return;
+                    return $scope->returnValue;
             }
         }
     }

@@ -12,14 +12,16 @@ class FunctionDef extends \PHPPHP\Engine\OpLine {
         $funcData = new FunctionData($data->executor, FunctionData::IS_USER);
         $funcData->opLines = $data->opLine->op1['stmts'];
         $params = array();
-        foreach ($data->opLine->op1['params']->value as $param) {
-            $paramData = new ParamData;
-            $paramData->name = $param['name'];
-            $paramData->default = $param['default'];
-            $paramData->defaultOps = $param['ops'];
-            $paramData->isRef = $param['isRef'];
-            $paramData->type = $param['type'];
-            $params[] = $paramData;
+        if ($data->opLine->op1['params']->value) {
+            foreach ($data->opLine->op1['params']->value as $param) {
+                $paramData = new ParamData;
+                $paramData->name = $param['name'];
+                $paramData->default = $param['default'];
+                $paramData->defaultOps = $param['ops'];
+                $paramData->isRef = $param['isRef'];
+                $paramData->type = $param['type'];
+                $params[] = $paramData;
+            }
         }
         $funcData->params = $params;
         $data->executor->getFunctionStore()->register($funcName, $funcData);

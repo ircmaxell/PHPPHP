@@ -21,7 +21,11 @@ class PHP {
 
     public function execute($code) {
         $opCodes = $this->executor->compile($code);
-        $this->executor->execute($opCodes);
+        $retval = $this->executor->execute($opCodes);
+        if ($retval) {
+            return $retval->value;
+        }
+        return null;
     }
 
     public function executeFile($file) {
@@ -76,6 +80,7 @@ class PHP {
 
     protected function registerCustomFunctions(Engine\FunctionStore $functions) {
         $executor = $this->executor;
+        $self = $this;
         $customFunctions = array(
             'get_cfg_var' => function($var = null) {
                 if ($var) {
