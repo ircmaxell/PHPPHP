@@ -305,6 +305,16 @@ class Compiler {
         return $ops;
     }
 
+    protected function compile_Stmt_Global($node) {
+        $ops = array();
+
+        foreach ($node->vars as $var) {
+            $varName = (string) $var->name;
+            $ops[] = new OpLines\FetchGlobalVariable(Zval::ptrFactory($varName));
+        }
+        return $ops;
+    }
+
     protected function compile_Stmt_If($node) {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);
