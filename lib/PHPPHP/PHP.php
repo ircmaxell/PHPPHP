@@ -45,9 +45,11 @@ class PHP {
                 'false' => false,
             ),
             'caseSensitive' => array(
-                'PHP_SAPI' => 'cli',
-                'PHP_OS' => PHP_OS,
-                'E_ERROR' => E_ERROR,
+                'PHP_INT_SIZE' => PHP_INT_SIZE,
+                'PHP_SAPI'     => 'cli',
+                'PHP_OS'       => PHP_OS,
+                'E_ERROR'      => E_ERROR,
+
             ),
         );
 
@@ -62,6 +64,7 @@ class PHP {
 
     protected function registerCoreFunctions(Engine\FunctionStore $functions) {
         $coreFunctions = array(
+            'bin2hex',
             'implode',
             'join',
             'php_uname',
