@@ -1,5 +1,5 @@
 {
-    "hash": "3a4882a584fc93170881dba88c0452d5",
+    "hash": "b3378145ec110f4c1f37c2e46f37767c",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -18,7 +18,7 @@
             "require": {
                 "php": ">=5.2"
             },
-            "time": "1356092915",
+            "time": "2012-12-21 12:28:35",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -26,6 +26,7 @@
                     "PHPParser": "lib/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -41,12 +42,26 @@
             ]
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+        {
+            "name": "php/php-src",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php/php-src",
+                "reference": "master"
+            },
+            "type": "library",
+            "installation-source": "source",
+            "time": "2012-12-30 04:16:53"
+        }
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "nikic/php-parser": 20
+        "nikic/php-parser": 20,
+        "php/php-src": 20
     }
 }

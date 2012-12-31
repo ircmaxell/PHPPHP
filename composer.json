@@ -1,8 +1,28 @@
 {
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "php/php-src",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/php/php-src",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
     "require": {
         "nikic/php-parser": "dev-master"
     },
+    "require-dev": {
+        "php/php-src": "dev-master"
+    },
     "autoload": {
         "psr-0": {"PHPPHP": "lib/"}
+    },
+    "config": {
+        "process-timeout": 600
     }
 }
