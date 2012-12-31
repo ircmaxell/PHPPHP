@@ -11,7 +11,7 @@ class FunctionCall extends \PHPPHP\Engine\OpLine {
         if (!is_array($args)) {
             $args = array();
         }
-        $functionData->execute($args, $this->result);
+        $functionData->execute($data->executor, $args, $this->result);
         $data->nextOp();
     }
 

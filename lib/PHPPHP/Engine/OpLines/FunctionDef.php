@@ -8,23 +8,24 @@ use PHPPHP\Engine\ParamData;
 class FunctionDef extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $funcName = $data->opLine->op1['name']->toString();
-        $funcData = new FunctionData($data->executor, FunctionData::IS_USER);
-        $funcData->opLines = $data->opLine->op1['stmts'];
+        $origParams = $data->opLine->op1['params']->value ?: array();
+
         $params = array();
-        if ($data->opLine->op1['params']->value) {
-            foreach ($data->opLine->op1['params']->value as $param) {
-                $paramData = new ParamData;
-                $paramData->name = $param['name'];
-                $paramData->default = $param['default'];
-                $paramData->defaultOps = $param['ops'];
-                $paramData->isRef = $param['isRef'];
-                $paramData->type = $param['type'];
-                $params[] = $paramData;
-            }
+        foreach ($origParams as $param) {
+            $paramData = new ParamData;
+            $paramData->name = $param['name'];
+            $paramData->default = $param['default'];
+            $paramData->defaultOps = $param['ops'];
+            $paramData->isRef = $param['isRef'];
+            $paramData->type = $param['type'];
+            $params[] = $paramData;
         }
-        $funcData->params = $params;
-        $data->executor->getFunctionStore()->register($funcName, $funcData);
+
+        $data->executor->getFunctionStore()->register(
+            $data->opLine->op1['name']->toString(),
+            new FunctionData\User($data->opLine->op1['stmts'], $params)
+        );
+
         $data->nextOp();
     }
 
