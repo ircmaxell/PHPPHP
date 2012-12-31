@@ -173,6 +173,22 @@ class Compiler {
         return $ops;
     }
 
+    protected function compile_Scalar_Encapsed($node, $returnContext = null) {
+        $ops = array();
+        $returnContext ?: Zval::ptrFactory();
+        foreach ($node->parts as $part) {
+            if (is_string($part)) {
+                $ops[] = new OpLines\AssignConcat($returnContext, Zval::ptrFactory($part));
+            } else {
+                $ret = Zval::ptrFactory();
+                $ops = array_merge($ops, $this->compileNode($part, $ret));
+                $ops[] = new OpLines\AssignConcat($returnContext, $ret);
+            }
+        }
+        return $ops;
+    }
+
+
     protected function compile_Stmt_Function($node) {
         $stmts = $this->compileChild($node, 'stmts');
         $namePtr = Zval::ptrFactory();
