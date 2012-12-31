@@ -52,6 +52,13 @@ class ZvalValue extends Zval {
         }
     }
 
+    public function getIterator() {
+        if ($this->type == self::IS_ARRAY) {
+            return new \ArrayIterator($this->value);
+        }
+        return new \EmptyIterator();
+    }
+
     public function makePrintable() {
         switch ($this->type) {
             case static::IS_STRING:

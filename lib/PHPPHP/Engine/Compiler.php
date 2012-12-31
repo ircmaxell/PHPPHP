@@ -20,6 +20,7 @@ class Compiler {
         'Expr_Isset'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
         'Expr_PostInc'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
         'Expr_Variable'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchVariable', 'name'),
+        'Expr_UnaryMinus' => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryMinus', 'expr'),
         'Expr_ConstFetch' => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchConstant', 'name'),
         'Stmt_Echo'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EchoOp', 'exprs'),
         'Stmt_Return'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
@@ -212,6 +213,7 @@ class Compiler {
     protected function compile_Scalar_Encapsed($node, $returnContext = null) {
         $ops = array();
         $returnContext = $returnContext ?: Zval::ptrFactory();
+        $ops[] = new OpLines\Assign($returnContext, Zval::ptrFactory(''));
         foreach ($node->parts as $part) {
             if (is_string($part)) {
                 $ops[] = new OpLines\AssignConcat($returnContext, Zval::ptrFactory($part));
@@ -224,6 +226,30 @@ class Compiler {
         return $ops;
     }
 
+    protected function compile_Stmt_Foreach($node) {
+
+        $iteratePtr = Zval::ptrFactory();
+        $ops = $this->compileChild($node, 'expr', $iteratePtr);
+        $endOp = new OpLines\NoOp;
+        $key = null;
+        if ($node->keyVar) {
+            $key = Zval::ptrFactory();
+            $ops = array_merge($ops, $this->compileChild($node, 'keyVar', $key));
+        }
+        $value = Zval::ptrFactory();
+        $ops = array_merge($ops, $this->compileChild($node, 'valueVar', $value));
+
+        $iterate = new OpLines\Iterate($iteratePtr, $endOp);
+        $ops[] = $iterate;
+        $ops[] = new OpLines\IterateValues($iteratePtr, $key, $value);
+
+        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
+
+        $ops[] = new OpLines\JumpTo($iterate);
+        $ops[] = $endOp;
+
+        return $ops;
+    }
 
     protected function compile_Stmt_Function($node) {
         $stmts = $this->compileChild($node, 'stmts');

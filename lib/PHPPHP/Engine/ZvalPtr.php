@@ -4,6 +4,7 @@ namespace PHPPHP\Engine;
 
 class ZvalPtr extends Zval {
 
+    public $iterator;
     public $zval;
 
     public function __construct(Zval $zval) {
