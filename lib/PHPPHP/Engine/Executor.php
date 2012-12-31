@@ -49,16 +49,19 @@ class Executor {
         return $this->compiler->compile($ast);
     }
 
-    public function execute(array $opLines, array $symbolTable = array()) {
+    public function execute(array $opLines, array &$symbolTable = array(), FunctionData $function = null, array $args = array()) {
         if ($this->shutdown) return;
         $scope = new ExecuteData($this, $opLines);
+        $scope->function = $function;
+        $scope->arguments = $args;
+        
         if ($this->current) {
             $scope->parent = $this->current;
         }
         $this->stack[] = $scope;
         $this->current = $scope;
-        if ($symbolTable) {
-            $scope->symbolTable = $symbolTable;
+        if ($symbolTable || $function) {
+            $scope->symbolTable =& $symbolTable;
         } else {
             $scope->symbolTable =& $this->executorGlobals->symbolTable;
         }
@@ -78,6 +81,10 @@ class Executor {
                     return;
             }
         }
+    }
+
+    public function getCurrent() {
+        return $this->current;
     }
 
     public function getFunctionStore() {

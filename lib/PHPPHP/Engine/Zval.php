@@ -14,6 +14,9 @@ abstract class Zval {
     const IS_RESOURCE = 7;
 
     public static function factory($value = null) {
+        if ($value instanceof Zval) {
+            return $value;
+        }
         $zval = new ZvalValue;
         $zval->value = $value;
         $zval->rebuildType();

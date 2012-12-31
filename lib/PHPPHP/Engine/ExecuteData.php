@@ -4,6 +4,7 @@ namespace PHPPHP\Engine;
 
 class ExecuteData {
     public $executor;
+    public $function;
     public $opArray = array();
     public $opLine;
     public $parent;

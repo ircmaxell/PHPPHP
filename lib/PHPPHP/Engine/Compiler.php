@@ -80,6 +80,7 @@ class Compiler {
 
         $methodName = 'compile_' . $nodeType;
         if (!method_exists($this, $methodName)) {
+            var_dump($node);
             throw new \Exception($nodeType . ' not supported yet');
         }
 
@@ -345,6 +346,29 @@ class Compiler {
 
         return $ops;
     }
+
+    protected function compile_Stmt_Static($node) {
+        $ops = array();
+        $endOp = new OpLines\NoOp;
+        $ops[] = new OpLines\StaticOp($endOp);
+        $ops = array_merge($ops, $this->compileChild($node, 'vars'));
+        $ops[] = $endOp;
+        return $ops;
+    }
+
+    protected function compile_Stmt_StaticVar($node) {
+        $ops = array();
+        $var = Zval::ptrFactory();
+        $varName = Zval::ptrFactory();
+        $ops = array_merge($ops, $this->compileChild($node, 'name', $varName));
+        $varValue = Zval::ptrFactory();
+        if ($node->default) {
+            $ops = array_merge($ops, $this->compileChild($node, 'default', $varValue));
+        }
+        $ops[] = new OpLines\StaticAssign($varName, $varValue);
+        return $ops;
+    }
+
 
     protected function compile_Stmt_Switch($node) {
         $condPtr = Zval::ptrFactory();
