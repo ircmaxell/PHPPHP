@@ -159,6 +159,32 @@ class Compiler {
         return array();
     }
 
+    protected function compile_Expr_Array($node, $returnContext = null) {
+        $ops = array();
+        if ($returnContext) {
+            $returnContext->type = Zval::IS_ARRAY;
+            $returnContext->value = array();
+            foreach ($node->items as $subNode) {
+                $ops = array_merge($ops, $this->compileNode($subNode, $returnContext));
+            }
+        }
+        return $ops;
+    }
+
+    protected function compile_Expr_ArrayItem($node, $returnContext = null) {
+        if (!$returnContext) return array();
+
+        $keyPtr = Zval::ptrFactory();
+        $ops = $this->compileChild($node, 'key', $keyPtr);
+        $valuePtr = Zval::ptrFactory();
+
+        $ops = array_merge($ops, $this->compileChild($node, 'value', $valuePtr));
+
+        $ops[] = new OpLines\AddArrayElement($keyPtr, $valuePtr, $returnContext);
+
+        return $ops;
+    }
+
     protected function compile_Expr_Ternary($node, $returnContext = null) {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);

@@ -12,9 +12,19 @@ class Internal implements Engine\FunctionData {
     }
 
     public function execute(Engine\Executor $executor, array $args, Engine\ZvalPtr $return) {
-        $rawArgs = array_map(function($value) { return $value->value; }, $args);
+        $rawArgs = $this->compileArguments($args);
         $ret = call_user_func_array($this->callback, $rawArgs);
         $return->zval->value = $ret;
         $return->zval->rebuildType();
+    }
+
+    public function compileArguments(array $args) {
+        $self = $this;
+        return array_map(function($value) use ($self) { 
+            if ($value->type == Engine\Zval::IS_ARRAY) {
+                return $self->compileArguments($value->value);
+            }
+            return $value->value; 
+        }, $args);
     }
 }
