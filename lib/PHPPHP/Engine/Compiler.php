@@ -175,7 +175,7 @@ class Compiler {
 
     protected function compile_Scalar_Encapsed($node, $returnContext = null) {
         $ops = array();
-        $returnContext ?: Zval::ptrFactory();
+        $returnContext = $returnContext ?: Zval::ptrFactory();
         foreach ($node->parts as $part) {
             if (is_string($part)) {
                 $ops[] = new OpLines\AssignConcat($returnContext, Zval::ptrFactory($part));
