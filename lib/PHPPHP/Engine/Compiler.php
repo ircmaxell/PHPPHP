@@ -20,12 +20,14 @@ class Compiler {
         'Expr_Isset'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
         'Expr_PostInc'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
         'Expr_Variable'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchVariable', 'name'),
+        'Expr_UnaryPlus'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryPlus', 'expr'),
         'Expr_UnaryMinus' => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryMinus', 'expr'),
         'Expr_ConstFetch' => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchConstant', 'name'),
         'Stmt_Echo'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EchoOp', 'exprs'),
         'Stmt_Return'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
         // binary operators
+        'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
         'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
         'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
 
@@ -226,8 +228,23 @@ class Compiler {
         return $ops;
     }
 
-    protected function compile_Stmt_Foreach($node) {
+    protected function compile_Stmt_For($node) {
+        $ops = $this->compileChild($node, 'init');
+        $startOp = new OpLines\NoOp;
+        $endOp = new OpLines\NoOp;
+        $ops[] = $startOp;
+        $condPtr = Zval::ptrFactory();
+        $ops = array_merge($ops, $this->compileChild($node, 'cond', $condPtr));
+        $ops[] = new OpLines\JumpIfNot($condPtr, $endOp);
+        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
+        $ops = array_merge($ops, $this->compileChild($node, 'loop'));
+        $ops[] = new OpLines\JumpTo($startOp);
+        $ops[] = $endOp;
 
+        return $ops;
+    }
+    
+    protected function compile_Stmt_Foreach($node) {
         $iteratePtr = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'expr', $iteratePtr);
         $endOp = new OpLines\NoOp;
