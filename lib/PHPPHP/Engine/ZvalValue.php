@@ -123,6 +123,11 @@ class ZvalValue extends Zval {
         return $this;
     }
 
+    public function setValue($value) {
+        $this->value = $value;
+        $this->rebuildType();
+    }
+
     public function toString() {
         return (string) $this->value;
     }

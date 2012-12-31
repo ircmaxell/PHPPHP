@@ -13,6 +13,8 @@ class Executor {
     protected $compiler;
     protected $files = array();
 
+    protected $extensions;
+
     protected $functionStore;
     protected $constantStore;
 
@@ -22,6 +24,8 @@ class Executor {
         $this->compiler = new Compiler;
         $this->functionStore = $functionStore;
         $this->constantStore = $constantStore;
+
+        $this->extensions = new \SplObjectStorage;
     }
 
     public function hasFile($fileName) {
@@ -74,5 +78,12 @@ class Executor {
 
     public function getConstantStore() {
         return $this->constantStore;
+    }
+
+    public function registerExtension(Extension $extension) {
+        if (!$this->extensions->contains($extension)) {
+            $extension->register($this);
+            $this->extensions->attach($extension);
+        }
     }
 }
