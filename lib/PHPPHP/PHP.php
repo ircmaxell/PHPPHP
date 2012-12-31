@@ -80,6 +80,9 @@ class PHP {
         $executor = $this->executor;
         $self = $this;
         $customFunctions = array(
+            'error_reporting' => function($level = 0) {
+                return 0;
+            },
             'get_cfg_var' => function($var = null) {
                 if ($var) {
                     return null;
