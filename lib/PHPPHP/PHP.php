@@ -9,14 +9,13 @@ class PHP {
     protected $executor;
 
     public function __construct() {
-        $constants = new Engine\ConstantsStore;
-        $constants->register('null',  Zval::factory(null),  false);
-        $constants->register('true',  Zval::factory(true),  false);
-        $constants->register('false', Zval::factory(false), false);
+        $functions = new Engine\FunctionStore;
+        $constants = new Engine\ConstantStore;
 
-        $this->executor = new Engine\Executor($constants);
-        $funcs = new Engine\Functions;
-        $funcs->register($this->executor);
+        $this->executor = new Engine\Executor($functions, $constants);
+
+        $this->registerCoreFunctions($functions);
+        $this->registerCoreConstants($constants);
     }
 
     public function execute($code) {
@@ -30,4 +29,28 @@ class PHP {
         $this->execute($code);
     }
 
+    protected function registerCoreConstants(Engine\ConstantStore $constants) {
+        $coreConstants = array(
+            'null'  => null,
+            'true'  => true,
+            'false' => false,
+        );
+
+        foreach ($coreConstants as $name => $value) {
+            $constants->register($name, Zval::factory($value), false);
+        }
+    }
+
+    protected function registerCoreFunctions(Engine\FunctionStore $functions) {
+        $coreFunctions = array(
+            'strlen',
+            'var_dump',
+        );
+
+        foreach ($coreFunctions as $funcName) {
+            $func = new Engine\FunctionData($this->executor, Engine\FunctionData::IS_INTERNAL);
+            $func->callback = $funcName;
+            $functions->register($funcName, $func);
+        }
+    }
 }
