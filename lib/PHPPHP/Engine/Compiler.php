@@ -232,10 +232,22 @@ class Compiler {
         return $ops;
     }
 
+    protected function compile_Stmt_Break($node) {
+        $ops = array();
+        $op1 = null;
+        if ($node->num) {
+            $op1 = Zval::ptrFactory();
+            $ops = $this->compileChild($node, 'num', $op1);
+        }
+        $ops[] = new OpLines\BreakOp($op1);
+        return $ops;
+    }
+
     protected function compile_Stmt_For($node) {
         $ops = $this->compileChild($node, 'init');
         $startOp = new OpLines\NoOp;
-        $endOp = new OpLines\NoOp;
+        $endOp = new OpLines\StatementStackPop;
+        $ops[] = new OpLines\StatementStackPush($endOp);
         $ops[] = $startOp;
         $condPtr = Zval::ptrFactory();
         $ops = array_merge($ops, $this->compileChild($node, 'cond', $condPtr));
@@ -250,8 +262,11 @@ class Compiler {
     
     protected function compile_Stmt_Foreach($node) {
         $iteratePtr = Zval::ptrFactory();
+
         $ops = $this->compileChild($node, 'expr', $iteratePtr);
-        $endOp = new OpLines\NoOp;
+        $endOp = new OpLines\StatementStackPop;
+        $ops[] = new OpLines\StatementStackPush($endOp);
+
         $key = null;
         if ($node->keyVar) {
             $key = Zval::ptrFactory();
@@ -331,11 +346,41 @@ class Compiler {
         return $ops;
     }
 
+    protected function compile_Stmt_Switch($node) {
+        $condPtr = Zval::ptrFactory();
+        $ops = $this->compileChild($node, 'cond', $condPtr);
+
+        $endOp = new OpLines\StatementStackPop;
+        
+        $ops[] = new OpLines\StatementStackPush($endOp);
+
+        foreach ($node->cases as $case) {
+            if ($case->cond) {
+                $comparePtr = Zval::ptrFactory();
+                $ops = array_merge($ops, $this->compileChild($case, 'cond', $comparePtr));
+                $conditionPtr = Zval::ptrFactory();
+                $caseEnd = new OpLines\NoOp;
+                $ops[] = new OpLines\Equal($condPtr, $comparePtr, $conditionPtr);
+                $ops[] = new OpLines\JumpIfNot($conditionPtr, $caseEnd);
+                $ops = array_merge($ops, $this->compileChild($case, 'stmts'));
+                $ops[] = $caseEnd;
+            } else {
+                // Default case
+                $ops = array_merge($ops, $this->compileChild($case, 'stmts'));
+            }
+        }
+
+        $ops[] = $endOp;
+
+        return $ops;
+    }
+
     protected function compile_Stmt_While($node) {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);
 
-        $endOp = new OpLines\NoOp;
+        $endOp = new OpLines\StatementStackPop;
+        $ops[] = new OpLines\StatementStackPush($endOp);
         $ops[] = new OpLines\JumpIfNot($op1, $endOp);
 
         $whileOps = $this->compileChild($node, 'stmts');
@@ -351,11 +396,16 @@ class Compiler {
 
     protected function compile_Stmt_Do($node) {
         $op1 = Zval::ptrFactory();
+        $ops = array();
 
-        $ops = $this->compileChild($node, 'stmts');
+        $endOp = new OpLines\StatementStackPop;
+        $ops[] = new OpLines\StatementStackPush($endOp);
+        $startOp = new OpLines\NoOp;
+        $ops[] = $startOp;
+        $ops = array_mere($ops, $this->compileChild($node, 'stmts'));
         $ops = array_merge($ops, $this->compileChild($node, 'cond', $op1));
-        $ops[] = new OpLines\JumpIf($op1, $ops[0]);
-
+        $ops[] = new OpLines\JumpIf($op1, $startOp);
+        $ops[] = $endOp;
         return $ops;
     }
 

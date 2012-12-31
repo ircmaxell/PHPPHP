@@ -7,6 +7,8 @@ class Executor {
     const DO_SHUTDOWN = 2;
 
     public $executorGlobals;
+    public $structureStack = array();
+
     protected $stack = array();
     protected $current;
     protected $globalScope = array();
