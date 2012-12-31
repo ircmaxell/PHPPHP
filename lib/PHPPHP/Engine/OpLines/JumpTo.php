@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPPHP\Engine\OpCodes;
+namespace PHPPHP\Engine\OpLines;
 
-class JumpTo implements \PHPPHP\Engine\OpCode {
+class JumpTo extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $data->jumpTo($data->opLine->op1);

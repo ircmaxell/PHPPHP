@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPPHP\Engine\OpCodes;
+namespace PHPPHP\Engine\OpLines;
 
-class NoOp implements \PHPPHP\Engine\OpCode {
+class NoOp extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $data->nextOp();

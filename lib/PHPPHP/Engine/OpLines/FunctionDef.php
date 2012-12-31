@@ -1,12 +1,11 @@
 <?php
 
-namespace PHPPHP\Engine\OpCodes;
+namespace PHPPHP\Engine\OpLines;
 
-use PHPPHP\Engine\Zval;
 use PHPPHP\Engine\FunctionData;
 use PHPPHP\Engine\ParamData;
 
-class FunctionDef implements \PHPPHP\Engine\OpCode {
+class FunctionDef extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $funcName = $data->opLine->op1['name']->toString();

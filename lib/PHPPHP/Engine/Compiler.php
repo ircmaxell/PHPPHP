@@ -10,58 +10,58 @@ class Compiler {
             'value',
         ),
         'Expr_Assign' => array(
-            'PHPPHP\Engine\OpCodes\Assign', 'BinaryOp',
+            'PHPPHP\Engine\OpLines\Assign', 'BinaryOp',
             'var', 'expr',
         ),
         'Expr_AssignConcat' => array(
-            'PHPPHP\Engine\OpCodes\AssignConcat', 'BinaryOp',
+            'PHPPHP\Engine\OpLines\AssignConcat', 'BinaryOp',
             'var', 'expr',
         ),
-        'Expr_BooleanAnd'     => array('PHPPHP\Engine\OpCodes\BooleanAnd', 'BinaryOp'),
-        'Expr_BooleanOr'      => array('PHPPHP\Engine\OpCodes\BooleanOr', 'BinaryOp'),
-        'Expr_Concat'         => array('PHPPHP\Engine\OpCodes\Concat', 'BinaryOp'),
-        'Expr_Smaller'        => array('PHPPHP\Engine\OpCodes\Smaller', 'BinaryOp'),
-        'Expr_SmallerOrEqual' => array('PHPPHP\Engine\OpCodes\SmallerOrEqual', 'BinaryOp'),
+        'Expr_BooleanAnd'     => array('PHPPHP\Engine\OpLines\BooleanAnd', 'BinaryOp'),
+        'Expr_BooleanOr'      => array('PHPPHP\Engine\OpLines\BooleanOr', 'BinaryOp'),
+        'Expr_Concat'         => array('PHPPHP\Engine\OpLines\Concat', 'BinaryOp'),
+        'Expr_Smaller'        => array('PHPPHP\Engine\OpLines\Smaller', 'BinaryOp'),
+        'Expr_SmallerOrEqual' => array('PHPPHP\Engine\OpLines\SmallerOrEqual', 'BinaryOp'),
         'Expr_Greater' => array(
-            'PHPPHP\Engine\OpCodes\Smaller', 'BinaryOp',
+            'PHPPHP\Engine\OpLines\Smaller', 'BinaryOp',
             'right', 'left'
         ),
         'Expr_GreaterOrEqual' => array(
-            'PHPPHP\Engine\OpCodes\SmallerOrEqual', 'BinaryOp',
+            'PHPPHP\Engine\OpLines\SmallerOrEqual', 'BinaryOp',
             'right', 'left',
         ),
-        'Expr_Equal'        => array('PHPPHP\Engine\OpCodes\Equal', 'BinaryOp'),
-        'Expr_NotEqual'     => array('PHPPHP\Engine\OpCodes\NotEqual', 'BinaryOp'),
-        'Expr_Identical'    => array('PHPPHP\Engine\OpCodes\Identical', 'BinaryOp'),
-        'Expr_NotIdentical' => array('PHPPHP\Engine\OpCodes\NotIdentical', 'BinaryOp'),
+        'Expr_Equal'        => array('PHPPHP\Engine\OpLines\Equal', 'BinaryOp'),
+        'Expr_NotEqual'     => array('PHPPHP\Engine\OpLines\NotEqual', 'BinaryOp'),
+        'Expr_Identical'    => array('PHPPHP\Engine\OpLines\Identical', 'BinaryOp'),
+        'Expr_NotIdentical' => array('PHPPHP\Engine\OpLines\NotIdentical', 'BinaryOp'),
         'Expr_ConstFetch' => array(
-            'PHPPHP\Engine\OpCodes\FetchConstant', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\FetchConstant', 'UnaryOp',
             'name',
         ),
         'Expr_FuncCall' => array(
-            'PHPPHP\Engine\OpCodes\FunctionCall', 'BinaryOp',
+            'PHPPHP\Engine\OpLines\FunctionCall', 'BinaryOp',
             'name', 'args'
         ),
         'Expr_Include' => array(
-            'PHPPHP\Engine\OpCodes\IncludeOp', 'BinaryOp',
+            'PHPPHP\Engine\OpLines\IncludeOp', 'BinaryOp',
             'type', 'expr'
         ),
         'Expr_Isset' => array(
-            'PHPPHP\Engine\OpCodes\IssetOp', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\IssetOp', 'UnaryOp',
             'vars',
         ),
-        'Expr_Mul' => array('PHPPHP\Engine\OpCodes\Multiply', 'BinaryOp'),
-        'Expr_Plus' => array('PHPPHP\Engine\OpCodes\Add', 'BinaryOp'),
+        'Expr_Mul' => array('PHPPHP\Engine\OpLines\Multiply', 'BinaryOp'),
+        'Expr_Plus' => array('PHPPHP\Engine\OpLines\Add', 'BinaryOp'),
         'Expr_PostInc' => array(
-            'PHPPHP\Engine\OpCodes\PostInc', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\PostInc', 'UnaryOp',
             'var',
         ),
         'Expr_Variable' => array(
-            'PHPPHP\Engine\OpCodes\FetchVariable', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\FetchVariable', 'UnaryOp',
             'name',
         ),
         'Expr_FetchConstant' => array(
-            'PHPPHP\Engine\OpCodes\FetchConstant', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\FetchConstant', 'UnaryOp',
             'name'
         ),
         'Name' => array(
@@ -72,11 +72,11 @@ class Compiler {
         'Scalar_LNumber' => array('', 'ScalarOp'),
         'Scalar_String' => array('', 'ScalarOp'),
         'Stmt_Echo' => array(
-            'PHPPHP\Engine\OpCodes\EchoOp', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\EchoOp', 'UnaryOp',
             'exprs',
         ),
         'Stmt_Return' => array(
-            'PHPPHP\Engine\OpCodes\ReturnOp', 'UnaryOp',
+            'PHPPHP\Engine\OpLines\ReturnOp', 'UnaryOp',
             'expr',
         ),
     );
@@ -96,10 +96,7 @@ class Compiler {
             $parseType = 'compile' . $this->operators[$nodeType][1];
             $param1 = isset($this->operators[$nodeType][2]) ? $this->operators[$nodeType][2] : null;
             $param2 = isset($this->operators[$nodeType][3]) ? $this->operators[$nodeType][3] : null;
-            list($opLine, $ops) = $this->$parseType($node, $returnContext, $param1, $param2);
-            if ($opLine) {
-                $opLine->handler = new $class;
-            }
+            $ops = $this->$parseType($node, $returnContext, $class, $param1, $param2);
             return $ops;
         }
 
@@ -127,51 +124,48 @@ class Compiler {
         return $this->compile($childNode, $returnContext);
     }
 
-    protected function compileArrayOp($node, $returnContext = null, $left = 'left') {
+    protected function compileArrayOp($node, $returnContext = null, $handler, $left = 'left') {
         if (is_null($left)) $left = 'left';
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, $left, $op1);
         if ($returnContext) {
             $returnContext->zval->value[] = $op1;
         }
-        return array(false, $ops);
+        return $ops;
     }
 
-    protected function compileBinaryOp($node, $returnContext = null, $left = 'left', $right = 'right') {
+    protected function compileBinaryOp($node, $returnContext = null, $handler, $left = 'left', $right = 'right') {
         if (is_null($left)) $left = 'left';
         if (is_null($right)) $right = 'right';
         $op1 = Zval::ptrFactory();
         $op2 = Zval::ptrFactory();
         $ops = $this->compileChild($node, $left, $op1);
         $ops = array_merge($ops, $this->compileChild($node, $right, $op2));
-        $opLine = new OpLine;
-        $opLine->op1 = $op1;
-        $opLine->op2 = $op2;
+        $opLine = new $handler($op1, $op2);
         if ($returnContext) {
             $opLine->result = $returnContext;
         } else {
             $opLine->result = Zval::ptrFactory();
         }
         $ops[] = $opLine;
-        return array($opLine, $ops);
+        return $ops;
     }
 
-    protected function compileUnaryOp($node, $returnContext = null, $left = 'left') {
+    protected function compileUnaryOp($node, $returnContext = null, $handler, $left = 'left') {
         if (is_null($left)) $left = 'left';
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, $left, $op1);
-        $opLine = new OpLine;
-        $opLine->op1 = $op1;
+        $opLine = new $handler($op1);
         if ($returnContext) {
             $opLine->result = $returnContext;
         } else {
             $opLine->result = Zval::ptrFactory();
         }
         $ops[] = $opLine;
-        return array($opLine, $ops);
+        return $ops;
     }
 
-    protected function compileScalarOp($node, $returnContext = null, $name = 'value', $sep = '') {
+    protected function compileScalarOp($node, $returnContext = null, $handler, $name = 'value', $sep = '') {
         if (is_null($name)) $name = 'value';
         if ($returnContext) {
             if ($sep) {
@@ -181,7 +175,7 @@ class Compiler {
             }
             $returnContext->rebuildType();
         }
-        return array(false, array());
+        return array();
     }
 
     protected function compile_Param($node, $returnContext = null) {
@@ -206,7 +200,7 @@ class Compiler {
         $paramsPtr = Zval::ptrFactory();
         $ops = array_merge($ops, $this->compileChild($node, 'params', $paramsPtr));
 
-        $ops[] = new OpLine(new OpCodes\FunctionDef, array(
+        $ops[] = new OpLines\FunctionDef(array(
             'name' => $namePtr,
             'stmts' => $stmts,
             'params' => $paramsPtr,
@@ -220,14 +214,14 @@ class Compiler {
         $ops = $this->compileChild($node, 'cond', $op1);
 
         // Jump targets: midOp is after the first if branch, endOp is after all branches
-        $midOp = new OpLine(new OpCodes\NoOp);
-        $endOp = new OpLine(new OpCodes\NoOp);
+        $midOp = new OpLines\NoOp;
+        $endOp = new OpLines\NoOp;
 
-        $ops[] = new OpLine(new OpCodes\JumpIfNot, $op1, $midOp);
+        $ops[] = new OpLines\JumpIfNot($op1, $midOp);
 
         $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
 
-        $ops[] = new OpLine(new OpCodes\JumpTo, $endOp);
+        $ops[] = new OpLines\JumpTo($endOp);
 
         $ops[] = $midOp;
 
@@ -236,13 +230,13 @@ class Compiler {
             $op1 = Zval::ptrFactory();
             $ops = array_merge($ops, $this->compileChild($child, 'cond', $op1));
 
-            $midOp = new OpLine(new OpCodes\NoOp);
+            $midOp = new OpLines\NoOp;
 
-            $ops[] = new OpLine(new OpCodes\JumpIfNot, $op1, $midOp);
+            $ops[] = new OpLines\JumpIfNot($op1, $midOp);
 
             $ops = array_merge($ops, $this->compileChild($child, 'stmts'));
 
-            $ops[] = new OpLine(new OpCodes\JumpTo, $endOp);
+            $ops[] = new OpLines\JumpTo($endOp);
 
             $ops[] = $midOp;
         }
@@ -261,14 +255,14 @@ class Compiler {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, 'cond', $op1);
 
-        $endOp = new OpLine(new OpCodes\NoOp);
-        $ops[] = new OpLine(new OpCodes\JumpIfNot, $op1, $endOp);
+        $endOp = new OpLines\NoOp;
+        $ops[] = new OpLines\JumpIfNot($op1, $endOp);
 
         $whileOps = $this->compileChild($node, 'stmts');
         $ops = array_merge($ops, $whileOps);
 
         // jump back to cond
-        $ops[] = new OpLine(new OpCodes\JumpTo, $ops[0]);
+        $ops[] = new OpLines\JumpTo($ops[0]);
 
         $ops[] = $endOp;
 
@@ -280,17 +274,14 @@ class Compiler {
 
         $ops = $this->compileChild($node, 'stmts');
         $ops = array_merge($ops, $this->compileChild($node, 'cond', $op1));
-        $ops[] = new OpLine(new OpCodes\JumpIf, $op1, $ops[0]);
+        $ops[] = new OpLines\JumpIf($op1, $ops[0]);
 
         return $ops;
     }
 
     protected function compile_Stmt_InlineHtml($node) {
-        $opLine = new OpLine;
-        $opLine->handler = new OpCodes\EchoOp;
-        $opLine->op1 = Zval::ptrFactory($node->value);
         return array(
-            $opLine
+            new OpLines\EchoOp(Zval::ptrFactory($node->value))
         );
     }
 }

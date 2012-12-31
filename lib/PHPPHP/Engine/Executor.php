@@ -53,7 +53,7 @@ class Executor {
         }
 
         while ($scope->opLine) {
-            $ret = $scope->opLine->handler->execute($scope);
+            $ret = $scope->opLine->execute($scope);
             switch ($ret) {
                 case self::DO_RETURN:
                     array_pop($this->stack);
