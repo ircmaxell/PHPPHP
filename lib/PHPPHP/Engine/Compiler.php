@@ -436,7 +436,7 @@ class Compiler {
         $ops[] = new OpLines\StatementStackPush($endOp);
         $startOp = new OpLines\NoOp;
         $ops[] = $startOp;
-        $ops = array_mere($ops, $this->compileChild($node, 'stmts'));
+        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
         $ops = array_merge($ops, $this->compileChild($node, 'cond', $op1));
         $ops[] = new OpLines\JumpIf($op1, $startOp);
         $ops[] = $endOp;
