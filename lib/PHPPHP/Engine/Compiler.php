@@ -148,6 +148,30 @@ class Compiler {
         return array();
     }
 
+    protected function compile_Expr_Ternary($node, $returnContext = null) {
+        $op1 = Zval::ptrFactory();
+        $ops = $this->compileChild($node, 'cond', $op1);
+
+        // Jump targets: midOp is after the first if branch, endOp is after all branches
+        $midOp = new OpLines\NoOp;
+        $endOp = new OpLines\NoOp;
+
+        $ops[] = new OpLines\JumpIfNot($op1, $midOp);
+
+        $ifAssign = Zval::ptrFactory();
+        $ops = array_merge($ops, $this->compileChild($node, 'if', $ifAssign));
+        $ops[] = new OpLines\Assign($returnContext, $ifAssign);
+        $ops[] = new OpLines\JumpTo($endOp);
+
+        $ops[] = $midOp;
+        $elseAssign = Zval::ptrFactory();
+        $ops = array_merge($ops, $this->compileChild($node, 'else', $elseAssign));
+        $ops[] = new OpLines\Assign($returnContext, $elseAssign);
+        $ops[] = $endOp;
+
+        return $ops;
+    }
+
     protected function compile_Stmt_Function($node) {
         $stmts = $this->compileChild($node, 'stmts');
         $namePtr = Zval::ptrFactory();

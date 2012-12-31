@@ -74,6 +74,11 @@ class Executor {
         $this->functions[$name] = $func;
     }
 
+    public function hasFunction($name) {
+        $name = strtolower($name);
+        return isset($this->functions[$name]);
+    }
+
     public function getFunction($name) {
         $name = strtolower($name);
         if (isset($this->functions[$name])) {

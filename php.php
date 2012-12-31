@@ -6,7 +6,9 @@ $php = new PHPPHP\PHP;
 
 list($options, $args) = parseCliArgs($argv);
 
-if (isset($options['f'])) {
+if (isset($options['v'])) {
+    echo "PHPPHP - Dev Master\n";
+} elseif (isset($options['f'])) {
     $php->executeFile(realpath($options['f']));
 } elseif (isset($options['r'])) {
     $php->execute('<?php ' . $options['r']);
@@ -33,6 +35,10 @@ function parseCliArgs(array $args) {
         } else {
             $arguments[] = $arg;
         }
+    }
+
+    if ($currentOption) {
+        $options[$currentOption] = '';
     }
 
     return array($options, $arguments);
