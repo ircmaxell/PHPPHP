@@ -2,7 +2,7 @@
 
 namespace PHPPHP\Engine;
 
-class ConstantsStore {
+class ConstantStore {
     /** @var Constant[] */
     protected $constants = array();
 

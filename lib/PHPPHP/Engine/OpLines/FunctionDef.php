@@ -22,7 +22,7 @@ class FunctionDef extends \PHPPHP\Engine\OpLine {
             $params[] = $paramData;
         }
         $funcData->params = $params;
-        $data->executor->addFunction($funcName, $funcData);
+        $data->executor->getFunctionStore()->register($funcName, $funcData);
         $data->nextOp();
     }
 

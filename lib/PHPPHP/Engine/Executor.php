@@ -9,17 +9,19 @@ class Executor {
     protected $stack = array();
     protected $current;
     protected $globalScope = array();
-    protected $functions = array();
-    protected $constantsStore;
     protected $parser;
     protected $compiler;
     protected $files = array();
 
-    public function __construct(ConstantsStore $constantsStore) {
+    protected $functionStore;
+    protected $constantStore;
+
+    public function __construct(FunctionStore $functionStore, ConstantStore $constantStore) {
         $this->executorGlobals = new ExecutorGlobals;
         $this->parser = new Parser;
         $this->compiler = new Compiler;
-        $this->constantsStore = $constantsStore;
+        $this->functionStore = $functionStore;
+        $this->constantStore = $constantStore;
     }
 
     public function hasFile($fileName) {
@@ -66,28 +68,11 @@ class Executor {
         }
     }
 
-    public function addFunction($name, FunctionData $func) {
-        $name = strtolower($name);
-        if (isset($this->functions[$name])) {
-            throw new \RuntimeException('Duplication Function');
-        }
-        $this->functions[$name] = $func;
+    public function getFunctionStore() {
+        return $this->functionStore;
     }
 
-    public function hasFunction($name) {
-        $name = strtolower($name);
-        return isset($this->functions[$name]);
-    }
-
-    public function getFunction($name) {
-        $name = strtolower($name);
-        if (isset($this->functions[$name])) {
-            return $this->functions[$name];
-        }
-        throw new \RuntimeException(sprintf('Call to undefined function %s', $name));
-    }
-
-    public function getConstantsStore() {
-        return $this->constantsStore;
+    public function getConstantStore() {
+        return $this->constantStore;
     }
 }
