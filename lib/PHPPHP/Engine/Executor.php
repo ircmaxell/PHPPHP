@@ -4,12 +4,14 @@ namespace PHPPHP\Engine;
 
 class Executor {
     const DO_RETURN = 1;
+    const DO_SHUTDOWN = 2;
 
     public $executorGlobals;
     protected $stack = array();
     protected $current;
     protected $globalScope = array();
     protected $parser;
+    protected $shutdown = false;
     protected $compiler;
     protected $files = array();
 
@@ -46,6 +48,7 @@ class Executor {
     }
 
     public function execute(array $opLines, array $symbolTable = array()) {
+        if ($this->shutdown) return;
         $scope = new ExecuteData($this, $opLines);
         if ($this->current) {
             $scope->parent = $this->current;
@@ -58,7 +61,7 @@ class Executor {
             $scope->symbolTable =& $this->executorGlobals->symbolTable;
         }
 
-        while ($scope->opLine) {
+        while (!$this->shutdown && $scope->opLine) {
             $ret = $scope->opLine->execute($scope);
             switch ($ret) {
                 case self::DO_RETURN:
@@ -68,6 +71,9 @@ class Executor {
                     }
                     $this->current = end($this->stack);
                     return $scope->returnValue;
+                case self::DO_SHUTDOWN:
+                    $this->shutdown = true;
+                    return;
             }
         }
     }

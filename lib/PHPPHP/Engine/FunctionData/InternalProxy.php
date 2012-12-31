@@ -14,8 +14,19 @@ class InternalProxy implements Engine\FunctionData {
     public function execute(Engine\Executor $executor, array $args, Engine\ZvalPtr $return) {
         $rawArgs = $this->compileArguments($args);
         $ret = call_user_func_array($this->callback, $rawArgs);
-        $return->zval->value = $ret;
-        $return->zval->rebuildType();
+        $return->zval = $this->compileReturn($ret)->zval;
+    }
+
+    public function compileReturn($value) {
+        if (is_array($value)) {
+            $result = array();
+            foreach ($value as $key => $item) {
+                $result[$key] = $this->compileReturn($item);
+            }
+            return Engine\Zval::ptrFactory($result);
+        } else {
+            return Engine\Zval::ptrFactory($value);
+        }
     }
 
     public function compileArguments(array $args) {

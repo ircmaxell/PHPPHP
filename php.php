@@ -27,11 +27,14 @@ function parseCliArgs(array $args) {
 
     $currentOption = null;
     foreach ($args as $arg) {
-        if ($currentOption) {
+        if (strlen($arg) == 2 && $arg[0] == '-') {
+            if ($currentOption) {
+                $options[$currentOption] = '';
+            }
+            $currentOption = $arg[1];
+        } elseif ($currentOption) {
             $options[$currentOption] = $arg;
             $currentOption = null;
-        } elseif (strlen($arg) == 2 && $arg[0] == '-') {
-            $currentOption = $arg[1];
         } else {
             $arguments[] = $arg;
         }

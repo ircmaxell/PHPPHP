@@ -26,7 +26,9 @@ final class CoreExtension extends Extension\Base {
     
     protected function registerCoreFunctions(FunctionStore $functions) {
         $coreFunctions = array(
+            'array_merge',
             'bin2hex',
+            'count',
             'implode',
             'join',
             'php_uname',
@@ -51,6 +53,7 @@ final class CoreExtension extends Extension\Base {
             'PHP_INT_SIZE' => PHP_INT_SIZE,
             'PHP_SAPI'     => 'cli',
             'PHP_OS'       => PHP_OS,
+            'PHP_VERSION'  => PHP_VERSION,
             'E_ERROR'      => E_ERROR,
         );
     }

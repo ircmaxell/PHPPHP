@@ -15,9 +15,11 @@ class Compiler {
 
         // unary operators
         'Expr_Eval'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EvalOp', 'expr'),
+        'Expr_Exit'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\ExitOp', 'expr'),
         'Expr_BooleanNot' => array('UnaryOp', 'PHPPHP\Engine\OpLines\BooleanNot'),
         'Expr_BitwiseNot' => array('UnaryOp', 'PHPPHP\Engine\OpLines\BitwiseNot'),
         'Expr_Isset'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
+        'Expr_PostDec'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostDec', 'var'),
         'Expr_PostInc'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
         'Expr_Variable'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchVariable', 'name'),
         'Expr_UnaryPlus'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryPlus', 'expr'),
@@ -30,7 +32,7 @@ class Compiler {
         'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
         'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
         'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
-
+        'Expr_AssignPlus'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignPlus', 'var', 'expr'),
         'Expr_BooleanAnd'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
         'Expr_BooleanOr'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
         'Expr_Smaller'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller'),
