@@ -11,17 +11,29 @@ To see what's supported so far, check out the opcodes.
 
 Right now, functions (definitions and calls) are supported, if statements (with basic boolean operations), if statements, as are variables and some basic variable operations...
 
+Installation
+============
+
+To get the dependencies you need to use [composer](http://getcomposer.org):
+
+    curl -s https://getcomposer.org/installer | php
+    php composer.phar install
+
+If you want to run the tests, install with the `--dev` flag. Grab a cup of coffee while it runs, as it will fetch the entire PHP source code in the process which can take a while (~10 minutes).
+
+    php composer.phar install --dev
+
 Usage
 =====
 
 You can run the implementation from the command line using the `php.php` file.
 
     php php.php -r "var_dump('foo');"
-    
+
 Or with a file:
 
     php php.php ../test.php
-    
+
 It only supports relative includes off the base file now (no include path parsing *yet*)...
 
 For The Love Of God, Why?
