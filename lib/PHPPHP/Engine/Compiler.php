@@ -21,6 +21,8 @@ class Compiler {
         'Expr_Isset'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
         'Expr_PostDec'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostDec', 'var'),
         'Expr_PostInc'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
+        'Expr_PreDec'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PreDec', 'var'),
+        'Expr_PreInc'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PreInc', 'var'),
         'Expr_Variable'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchVariable', 'name'),
         'Expr_UnaryPlus'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryPlus', 'expr'),
         'Expr_UnaryMinus' => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryMinus', 'expr'),
