@@ -8,11 +8,10 @@ use PHPPHP\Engine\ParamData;
 class FunctionDef extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $funcName = $data->opLine->op1['name']->toString();
-        $funcData = new FunctionData($data->executor, FunctionData::IS_USER);
-        $funcData->opLines = $data->opLine->op1['stmts'];
+        $origParams = $data->opLine->op1['params']->value ?: array();
+
         $params = array();
-        foreach ($data->opLine->op1['params']->value as $param) {
+        foreach ($origParams as $param) {
             $paramData = new ParamData;
             $paramData->name = $param['name'];
             $paramData->default = $param['default'];
@@ -21,8 +20,12 @@ class FunctionDef extends \PHPPHP\Engine\OpLine {
             $paramData->type = $param['type'];
             $params[] = $paramData;
         }
-        $funcData->params = $params;
-        $data->executor->getFunctionStore()->register($funcName, $funcData);
+
+        $data->executor->getFunctionStore()->register(
+            $data->opLine->op1['name']->toString(),
+            new FunctionData\User($data->opLine->op1['stmts'], $params)
+        );
+
         $data->nextOp();
     }
 

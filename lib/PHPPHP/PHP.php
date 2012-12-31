@@ -68,9 +68,7 @@ class PHP {
         );
 
         foreach ($coreFunctions as $funcName) {
-            $func = new Engine\FunctionData($this->executor, Engine\FunctionData::IS_INTERNAL);
-            $func->callback = $funcName;
-            $functions->register($funcName, $func);
+            $functions->register($funcName, new Engine\FunctionData\Internal($funcName));
         }
     }
 
@@ -93,9 +91,7 @@ class PHP {
         );
 
         foreach ($customFunctions as $funcName => $callback) {
-            $func = new Engine\FunctionData($this->executor, Engine\FunctionData::IS_INTERNAL);
-            $func->callback = $callback;
-            $functions->register($funcName, $func);
+            $functions->register($funcName, new Engine\FunctionData\Internal($callback));
         }
     }
 }
