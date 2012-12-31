@@ -239,13 +239,14 @@ class Compiler {
         $value = Zval::ptrFactory();
         $ops = array_merge($ops, $this->compileChild($node, 'valueVar', $value));
 
-        $iterate = new OpLines\Iterate($iteratePtr, $endOp);
-        $ops[] = $iterate;
-        $ops[] = new OpLines\IterateValues($iteratePtr, $key, $value);
+        $ops[] = new OpLines\Iterate($iteratePtr, $endOp);
+
+        $iterateValues = new OpLines\IterateValues($iteratePtr, $key, $value);
+        $ops[] = $iterateValues;
 
         $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
 
-        $ops[] = new OpLines\JumpTo($iterate);
+        $ops[] = new OpLines\IterateNext($iteratePtr, $iterateValues);
         $ops[] = $endOp;
 
         return $ops;

@@ -47,6 +47,7 @@ class PHP {
             'caseSensitive' => array(
                 'PHP_SAPI' => 'cli',
                 'PHP_OS' => PHP_OS,
+                'E_ERROR' => E_ERROR,
             ),
         );
 
@@ -80,6 +81,9 @@ class PHP {
         $executor = $this->executor;
         $self = $this;
         $customFunctions = array(
+            'define' => function($name, $value) use ($executor) {
+                $executor->getConstantStore()->register($name, Zval::ptrFactory($value));
+            },
             'error_reporting' => function($level = 0) {
                 return 0;
             },
