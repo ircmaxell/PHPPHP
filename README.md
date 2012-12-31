@@ -67,6 +67,20 @@ If you choose not to install php's source code from composer, but have it elsewh
 
     php path/to/runtests.php -p path/to/php.sh path/to/tests
 
+TODO:
+=====
+Major things left to do:
+
+1. Implement references properly
+2. Implement Error Handling
+3. Implement classes and objects
+4. Implement Output Buffering.
+5. Refactor output control to use SAPI modules
+6. Implement true array hash tables (as opposed to the current reliance on the underlying hash table)
+7. Implement Error Handling
+8. Implement Exception Handling
+9. Implement parameter parsing for core functions
+
 For The Love Of God, Why?
 =========================
 

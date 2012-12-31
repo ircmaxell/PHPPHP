@@ -34,6 +34,7 @@ class Compiler {
         'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
         'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
         'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
+        'Expr_AssignMul'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMul', 'var', 'expr'),
         'Expr_AssignPlus'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignPlus', 'var', 'expr'),
         'Expr_BooleanAnd'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
         'Expr_BooleanOr'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
