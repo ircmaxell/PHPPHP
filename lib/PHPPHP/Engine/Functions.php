@@ -13,21 +13,31 @@ function PHP_error_reporting(Executor $executor, array $args, Zval $return) {
 function PHP_func_get_arg(Executor $executor, array $args, Zval $return) {
     $num = (int) $args[0]->value;
     $current = $executor->getCurrent();
-    if (isset($current->arguments[$num])) {
-        $return->zval = Zval::factory($current->arguments[$num]);
+    if (!$current->arguments || !isset($current->arguments[$num])) {
+        $return->value = false;
     } else {
-        $return->value = null;
+        $return->zval = Zval::factory($current->arguments[$num]);
     }
     $return->rebuildType();
 }
 
 function PHP_func_get_args(Executor $executor, array $args, Zval $return) {
-    $return->zval = Zval::factory($executor->getCurrent()->arguments);
+    $current = $executor->getCurrent();
+    if ($current->arguments) {
+        $return->zval = Zval::factory($current->arguments);
+    } else {
+        $return->value = false;
+    }
     $return->rebuildType();
 }
 
 function PHP_func_num_args(Executor $executor, array $args, Zval $return) {
-    $return->value = count($executor->getCurrent()->arguments);
+    $current = $executor->getCurrent();
+    if ($current->arguments) {
+        $return->value = count($current->arguments);
+    } else {
+        $return->value = false;
+    }
     $return->rebuildType();
 }
 

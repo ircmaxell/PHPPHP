@@ -52,8 +52,10 @@ class Executor {
     public function execute(array $opLines, array &$symbolTable = array(), FunctionData $function = null, array $args = array()) {
         if ($this->shutdown) return;
         $scope = new ExecuteData($this, $opLines);
-        $scope->function = $function;
-        $scope->arguments = $args;
+        if ($function) {
+            $scope->function = $function;
+            $scope->arguments = $args;
+        }
         
         if ($this->current) {
             $scope->parent = $this->current;
