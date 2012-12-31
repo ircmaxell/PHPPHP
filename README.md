@@ -26,7 +26,18 @@ If you want to run the tests, install with the `--dev` flag. Grab a cup of coffe
 Usage
 =====
 
-You can run the implementation from the command line using the `php.php` file.
+## Linux/OSX
+Use the `php.sh` shell script to invoke php.php. This requires that `php` be in your system path.
+
+    ./php.sh -r "var_dump('foo');"
+
+## Windows
+Use the `php.bat` shell script to invoke php.php. This requires that `php.exe` be in your system path.
+
+    php.bat -r "var_dump('foo');
+
+## Manual
+You can run the implementation from the command line using the `php.php` file directly.
 
     php php.php -r "var_dump('foo');"
 
@@ -35,6 +46,26 @@ Or with a file:
     php php.php ../test.php
 
 It only supports relative includes off the base file now (no include path parsing *yet*)...
+
+Testing
+=======
+
+## run-tests
+To run the test suite (which mostly fails right now), install composer using the `--dev` flag (to install the test suite along side php's source code). Then use the `run-tests.(sh|bat)` file to execute them.
+
+### Linux/OSX
+
+    ./run-tests.sh
+
+### Windows
+
+    run-tests.bat
+
+### Manual
+
+If you choose not to install php's source code from composer, but have it elsewhere in your system path, you can use it directly.
+
+    php path/to/runtests.php -p path/to/php.sh path/to/tests
 
 For The Love Of God, Why?
 =========================

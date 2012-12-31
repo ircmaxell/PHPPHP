@@ -18,7 +18,6 @@
             "require": {
                 "php": ">=5.2"
             },
-            "time": "2012-12-21 12:28:35",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -26,7 +25,6 @@
                     "PHPParser": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -39,23 +37,11 @@
             "keywords": [
                 "php",
                 "parser"
-            ]
+            ],
+            "time": "1356092915"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "php/php-src",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php/php-src",
-                "reference": "master"
-            },
-            "type": "library",
-            "installation-source": "source",
-            "time": "2012-12-30 04:16:53"
-        }
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
