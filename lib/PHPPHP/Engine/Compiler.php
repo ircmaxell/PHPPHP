@@ -15,12 +15,14 @@ class Compiler {
 
         // unary operators
         'Expr_Eval'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EvalOp', 'expr'),
+        'Expr_BooleanNot' => array('UnaryOp', 'PHPPHP\Engine\OpLines\BooleanNot'),
+        'Expr_BitwiseNot' => array('UnaryOp', 'PHPPHP\Engine\OpLines\BitwiseNot'),
         'Expr_Isset'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
         'Expr_PostInc'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
         'Expr_Variable'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchVariable', 'name'),
         'Expr_ConstFetch' => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchConstant', 'name'),
         'Stmt_Echo'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EchoOp', 'exprs'),
-        'Stmt_Return'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp', 'expr'),
+        'Stmt_Return'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
         // binary operators
         'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
@@ -37,8 +39,16 @@ class Compiler {
         'Expr_Identical'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\Identical'),
         'Expr_NotIdentical'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\NotIdentical'),
         'Expr_Plus'           => array('BinaryOp', 'PHPPHP\Engine\OpLines\Add'),
+        'Expr_Minus'          => array('BinaryOp', 'PHPPHP\Engine\OpLines\Sub'),
         'Expr_Mul'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Multiply'),
+        'Expr_Div'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Div'),
+        'Expr_Mod'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Mod'),
         'Expr_Concat'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Concat'),
+        'Expr_BitwiseAnd'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\BitwiseAnd'),
+        'Expr_BitwiseOr'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\BitwiseOr'),
+        'Expr_BitwiseXor'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\BitwiseXor'),
+        'Expr_ShiftLeft'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\ShiftLeft'),
+        'Expr_ShiftRight'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\ShiftRight'),
 
         'Expr_FuncCall'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\FunctionCall', 'name', 'args'),
         'Expr_Include'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\IncludeOp', 'type', 'expr'),
@@ -109,7 +119,7 @@ class Compiler {
         return $ops;
     }
 
-    protected function compileUnaryOp($node, $returnContext, $handler, $left = 'left') {
+    protected function compileUnaryOp($node, $returnContext, $handler, $left = 'expr') {
         $op1 = Zval::ptrFactory();
         $ops = $this->compileChild($node, $left, $op1);
         $opLine = new $handler($op1);
