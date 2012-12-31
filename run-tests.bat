@@ -1,0 +1,1 @@
+php.exe vendor/php-src/run-tests.php -p php.bat vendor/php-src/test/lang
