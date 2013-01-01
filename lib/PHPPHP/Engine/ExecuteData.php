@@ -5,6 +5,7 @@ namespace PHPPHP\Engine;
 class ExecuteData {
     public $executor;
     public $function;
+    public $arguments;
     public $opArray = array();
     public $opLine;
     public $parent;
@@ -12,7 +13,7 @@ class ExecuteData {
     public $symbolTable = array();
     protected $opPosition = 0;
 
-    public function __construct(Executor $executor, array $opArray) {
+    public function __construct(Executor $executor, OpArray $opArray) {
         $this->executor = $executor;
         $this->opArray = $opArray;
         $this->opLine = $opArray[0];
@@ -28,17 +29,18 @@ class ExecuteData {
 
     public function jump($position) {
         $this->opPosition = $position;
-        if (!isset($this->opArray[$this->opPosition])) {
+        if (!isset($this->opArray[$position])) {
             $this->opLine = false;
-            return;
+        } else {
+            $this->opLine = $this->opArray[$position];
         }
-        $this->opLine = $this->opArray[$this->opPosition];
     }
 
     public function jumpTo(OpLine $opLine) {
-        foreach ($this->opArray as $key => $value) {
+        foreach ($this->opArray as $position => $value) {
             if ($opLine === $value && spl_object_hash($opLine) === spl_object_hash($value)) {
-                $this->jump($key);
+                $this->opPosition = $position;
+                $this->opLine = $value;
                 return;
             }
         }

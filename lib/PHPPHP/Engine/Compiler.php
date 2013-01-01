@@ -62,21 +62,34 @@ class Compiler {
         'Expr_Include'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\IncludeOp', 'type', 'expr'),
     );
 
+    /** @var OpArray */
+    protected $opArray;
+
     public function compile(array $ast, Zval $returnContext = null) {
-        $opArray = array();
-        foreach ($ast as $node) {
-            $opArray = array_merge($opArray, $this->compileNode($node, $returnContext));
-        }
+        $opArray = new OpArray;
+
+        $this->opArray = $opArray;
+        $this->compileNodes($ast, $returnContext);
+        unset($this->opArray);
+
         return $opArray;
+    }
+
+    public function compileNodes(array $ast, Zval $returnContext = null) {
+        foreach ($ast as $node) {
+            $this->compileNode($node, $returnContext);
+        }
     }
 
     protected function compileNode(\PHPParser_Node $node, Zval $returnContext = null) {
         $nodeType = $node->getType();
         if (isset($this->operators[$nodeType])) {
-            return call_user_func_array(
+            call_user_func_array(
                 array($this, 'compile' . $this->operators[$nodeType][0]),
                 array_merge(array($node, $returnContext), array_slice($this->operators[$nodeType], 1))
             );
+
+            return;
         }
 
         $methodName = 'compile_' . $nodeType;
@@ -85,63 +98,50 @@ class Compiler {
             throw new \Exception($nodeType . ' not supported yet');
         }
 
-        return call_user_func(array($this, 'compile_' . $nodeType), $node, $returnContext);
+        call_user_func(array($this, $methodName), $node, $returnContext);
     }
 
     protected function compileChild(\PHPParser_Node $node, $childName, $returnContext = null) {
         $childNode = $node->$childName;
         if (is_null($childNode)) {
-            return array();
+            return;
         }
-        if (!is_array($childNode)) {
-            $childNode = array($childNode);
+
+        if (is_scalar($childNode)) {
+            $returnContext->value = $childNode;
+            $returnContext->rebuildType();
+        } elseif (is_array($childNode)) {
+            $this->compileNodes($childNode, $returnContext);
+        } else {
+            $this->compileNode($childNode, $returnContext);
         }
-        if ($returnContext && count($childNode) === 1 && is_scalar($childNode[0])) {
-            $returnContext->value = $childNode[0];
-            $returnContext->type = Zval::IS_STRING;
-            return array();
-        }
-        return $this->compile($childNode, $returnContext);
     }
 
     protected function compileArrayOp($node, $returnContext, $left = 'left') {
         $op1 = Zval::ptrFactory();
-        $ops = $this->compileChild($node, $left, $op1);
+        $this->compileChild($node, $left, $op1);
         if ($returnContext) {
             $returnContext->zval->value[] = $op1;
         }
-        return $ops;
     }
 
-    protected function compileBinaryOp($node, $returnContext, $handler, $left = 'left', $right = 'right') {
+    protected function compileBinaryOp($node, $returnContext, $class, $left = 'left', $right = 'right') {
         $op1 = Zval::ptrFactory();
         $op2 = Zval::ptrFactory();
-        $ops = $this->compileChild($node, $left, $op1);
-        $ops = array_merge($ops, $this->compileChild($node, $right, $op2));
-        $opLine = new $handler($op1, $op2);
-        if ($returnContext) {
-            $opLine->result = $returnContext;
-        } else {
-            $opLine->result = Zval::ptrFactory();
-        }
-        $ops[] = $opLine;
-        return $ops;
+
+        $this->compileChild($node, $left, $op1);
+        $this->compileChild($node, $right, $op2);
+
+        $this->opArray[] = new $class($op1, $op2, $returnContext ?: Zval::ptrFactory());
     }
 
-    protected function compileUnaryOp($node, $returnContext, $handler, $left = 'expr') {
+    protected function compileUnaryOp($node, $returnContext, $class, $expr = 'expr') {
         $op1 = Zval::ptrFactory();
-        $ops = $this->compileChild($node, $left, $op1);
-        $opLine = new $handler($op1);
-        if ($returnContext) {
-            $opLine->result = $returnContext;
-        } else {
-            $opLine->result = Zval::ptrFactory();
-        }
-        $ops[] = $opLine;
-        return $ops;
+        $this->compileChild($node, $expr, $op1);
+        $this->opArray[] = new $class($op1, null, $returnContext ?: Zval::ptrFactory());
     }
 
-    protected function compileScalarOp($node, $returnContext = null, $name = 'value', $sep = '') {
+    protected function compileScalarOp($node, $returnContext, $name = 'value', $sep = '') {
         if ($returnContext) {
             if ($sep) {
                 $returnContext->value = implode($sep, $node->$name);
@@ -150,303 +150,256 @@ class Compiler {
             }
             $returnContext->rebuildType();
         }
-        return array();
-    }
-
-    protected function compile_Param($node, $returnContext) {
-        $defaultPtr = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'default', $defaultPtr);
-        if ($returnContext) {
-            $returnContext->zval->value[] = array(
-                'name' => $node->name,
-                'default' => $defaultPtr,
-                'ops' => $ops,
-                'isRef' => $node->byRef,
-                'type' => $node->type,
-            );
-        }
-        return array();
     }
 
     protected function compile_Expr_Array($node, $returnContext = null) {
-        $ops = array();
         if ($returnContext) {
             $returnContext->type = Zval::IS_ARRAY;
             $returnContext->value = array();
             foreach ($node->items as $subNode) {
-                $ops = array_merge($ops, $this->compileNode($subNode, $returnContext));
+                $this->compileNode($subNode, $returnContext);
             }
         }
-        return $ops;
     }
 
     protected function compile_Expr_ArrayItem($node, $returnContext = null) {
-        if (!$returnContext) return array();
+        if (!$returnContext) return;
 
         $keyPtr = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'key', $keyPtr);
+        $this->compileChild($node, 'key', $keyPtr);
+
         $valuePtr = Zval::ptrFactory();
+        $this->compileChild($node, 'value', $valuePtr);
 
-        $ops = array_merge($ops, $this->compileChild($node, 'value', $valuePtr));
-
-        $ops[] = new OpLines\AddArrayElement($keyPtr, $valuePtr, $returnContext);
-
-        return $ops;
+        $this->opArray[] = new OpLines\AddArrayElement($keyPtr, $valuePtr, $returnContext);
     }
 
     protected function compile_Expr_Ternary($node, $returnContext = null) {
         $op1 = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'cond', $op1);
+        $this->compileChild($node, 'cond', $op1);
 
         // Jump targets: midOp is after the first if branch, endOp is after all branches
         $midOp = new OpLines\NoOp;
         $endOp = new OpLines\NoOp;
 
-        $ops[] = new OpLines\JumpIfNot($op1, $midOp);
+        $this->opArray[] = $ops[] = new OpLines\JumpIfNot($op1, $midOp);
 
         $ifAssign = Zval::ptrFactory();
-        $ops = array_merge($ops, $this->compileChild($node, 'if', $ifAssign));
-        $ops[] = new OpLines\Assign($returnContext, $ifAssign);
-        $ops[] = new OpLines\JumpTo($endOp);
+        $this->compileChild($node, 'if', $ifAssign);
+        $this->opArray[] = new OpLines\Assign($returnContext, $ifAssign);
+        $this->opArray[] = new OpLines\JumpTo($endOp);
 
-        $ops[] = $midOp;
+        $this->opArray[] = $midOp;
         $elseAssign = Zval::ptrFactory();
-        $ops = array_merge($ops, $this->compileChild($node, 'else', $elseAssign));
-        $ops[] = new OpLines\Assign($returnContext, $elseAssign);
-        $ops[] = $endOp;
-
-        return $ops;
+        $this->compileChild($node, 'else', $elseAssign);
+        $this->opArray[] = new OpLines\Assign($returnContext, $elseAssign);
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Scalar_Encapsed($node, $returnContext = null) {
-        $ops = array();
         $returnContext = $returnContext ?: Zval::ptrFactory();
-        $ops[] = new OpLines\Assign($returnContext, Zval::ptrFactory(''));
+        $this->opArray[] = new OpLines\Assign($returnContext, Zval::ptrFactory(''));
         foreach ($node->parts as $part) {
             if (is_string($part)) {
-                $ops[] = new OpLines\AssignConcat($returnContext, Zval::ptrFactory($part));
+                $this->opArray[] = new OpLines\AssignConcat($returnContext, Zval::ptrFactory($part));
             } else {
                 $ret = Zval::ptrFactory();
-                $ops = array_merge($ops, $this->compileNode($part, $ret));
-                $ops[] = new OpLines\AssignConcat($returnContext, $ret);
+                $this->compileNode($part, $ret);
+                $this->opArray[] = new OpLines\AssignConcat($returnContext, $ret);
             }
         }
-        return $ops;
     }
 
     protected function compile_Stmt_Break($node) {
-        $ops = array();
         $op1 = null;
         if ($node->num) {
             $op1 = Zval::ptrFactory();
-            $ops = $this->compileChild($node, 'num', $op1);
+            $this->compileChild($node, 'num', $op1);
         }
-        $ops[] = new OpLines\BreakOp($op1);
-        return $ops;
+        $this->opArray[] = new OpLines\BreakOp($op1);
     }
 
     protected function compile_Stmt_For($node) {
-        $ops = $this->compileChild($node, 'init');
+        $this->compileChild($node, 'init');
         $startOp = new OpLines\NoOp;
         $endOp = new OpLines\StatementStackPop;
-        $ops[] = new OpLines\StatementStackPush($endOp);
-        $ops[] = $startOp;
+        $this->opArray[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = $startOp;
         $condPtr = Zval::ptrFactory();
-        $ops = array_merge($ops, $this->compileChild($node, 'cond', $condPtr));
-        $ops[] = new OpLines\JumpIfNot($condPtr, $endOp);
-        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
-        $ops = array_merge($ops, $this->compileChild($node, 'loop'));
-        $ops[] = new OpLines\JumpTo($startOp);
-        $ops[] = $endOp;
-
-        return $ops;
+        $this->compileChild($node, 'cond', $condPtr);
+        $this->opArray[] = new OpLines\JumpIfNot($condPtr, $endOp);
+        $this->compileChild($node, 'stmts');
+        $this->compileChild($node, 'loop');
+        $this->opArray[] = new OpLines\JumpTo($startOp);
+        $this->opArray[] = $endOp;
     }
-    
+
     protected function compile_Stmt_Foreach($node) {
         $iteratePtr = Zval::ptrFactory();
 
-        $ops = $this->compileChild($node, 'expr', $iteratePtr);
+        $this->compileChild($node, 'expr', $iteratePtr);
         $endOp = new OpLines\StatementStackPop;
-        $ops[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\StatementStackPush($endOp);
 
         $key = null;
         if ($node->keyVar) {
             $key = Zval::ptrFactory();
-            $ops = array_merge($ops, $this->compileChild($node, 'keyVar', $key));
+            $this->compileChild($node, 'keyVar', $key);
         }
         $value = Zval::ptrFactory();
-        $ops = array_merge($ops, $this->compileChild($node, 'valueVar', $value));
+        $this->compileChild($node, 'valueVar', $value);
 
-        $ops[] = new OpLines\Iterate($iteratePtr, $endOp);
+        $this->opArray[] = new OpLines\Iterate($iteratePtr, $endOp);
 
         $iterateValues = new OpLines\IterateValues($iteratePtr, $key, $value);
-        $ops[] = $iterateValues;
+        $this->opArray[] = $iterateValues;
 
-        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
+        $this->compileChild($node, 'stmts');
 
-        $ops[] = new OpLines\IterateNext($iteratePtr, $iterateValues);
-        $ops[] = $endOp;
-
-        return $ops;
+        $this->opArray[] = new OpLines\IterateNext($iteratePtr, $iterateValues);
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_Function($node) {
-        $stmts = $this->compileChild($node, 'stmts');
-        $namePtr = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'name', $namePtr);
-        $paramsPtr = Zval::ptrFactory();
-        $ops = array_merge($ops, $this->compileChild($node, 'params', $paramsPtr));
+        $prevOpArray = $this->opArray;
+        $this->opArray = new OpArray;
 
-        $ops[] = new OpLines\FunctionDef(array(
-            'name' => $namePtr,
-            'stmts' => $stmts,
-            'params' => $paramsPtr,
-        ));
+        foreach ($node->params as $i => $param) {
+            $arg = Zval::ptrFactory();
+            $this->opArray[] = new OpLines\Recv(Zval::factory($i), null, $arg);
 
-        return $ops;
+            $var = Zval::ptrFactory();
+            $this->opArray[] = new OpLines\FetchVariable(Zval::factory($param->name), null, $var);
+
+            $this->opArray[] = new OpLines\Assign($var, $arg);
+
+            // no default values for now. For those we need an AST -> zval conversion
+        }
+
+        $this->compileChild($node, 'stmts');
+
+        $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $this->opArray);
+
+        $this->opArray = $prevOpArray;
     }
 
     protected function compile_Stmt_Global($node) {
-        $ops = array();
-
         foreach ($node->vars as $var) {
             $varName = (string) $var->name;
-            $ops[] = new OpLines\FetchGlobalVariable(Zval::ptrFactory($varName));
+            $this->opArray[] = new OpLines\FetchGlobalVariable(Zval::ptrFactory($varName));
         }
-        return $ops;
     }
 
     protected function compile_Stmt_If($node) {
         $op1 = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'cond', $op1);
+        $this->compileChild($node, 'cond', $op1);
 
         // Jump targets: midOp is after the first if branch, endOp is after all branches
         $midOp = new OpLines\NoOp;
         $endOp = new OpLines\NoOp;
 
-        $ops[] = new OpLines\JumpIfNot($op1, $midOp);
+        $this->opArray[] = new OpLines\JumpIfNot($op1, $midOp);
 
-        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
+        $this->compileChild($node, 'stmts');
 
-        $ops[] = new OpLines\JumpTo($endOp);
+        $this->opArray[] = new OpLines\JumpTo($endOp);
 
-        $ops[] = $midOp;
+        $this->opArray[] = $midOp;
 
         $elseifs = $node->elseifs;
         foreach ($elseifs as $child) {
             $op1 = Zval::ptrFactory();
-            $ops = array_merge($ops, $this->compileChild($child, 'cond', $op1));
+            $this->compileChild($child, 'cond', $op1);
 
             $midOp = new OpLines\NoOp;
-
-            $ops[] = new OpLines\JumpIfNot($op1, $midOp);
-
-            $ops = array_merge($ops, $this->compileChild($child, 'stmts'));
-
-            $ops[] = new OpLines\JumpTo($endOp);
-
-            $ops[] = $midOp;
+            $this->opArray[] = $ops[] = new OpLines\JumpIfNot($op1, $midOp);
+            $this->compileChild($child, 'stmts');
+            $this->opArray[] = new OpLines\JumpTo($endOp);
+            $this->opArray[] = $midOp;
         }
 
-        $else = $node->else;
-        if ($else) {
-            $ops = array_merge($ops, $this->compileChild($node->else, 'stmts'));
+        if ($node->else) {
+            $this->compileChild($node->else, 'stmts');
         }
 
-        $ops[] = $endOp;
-
-        return $ops;
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_Static($node) {
-        $ops = array();
         $endOp = new OpLines\NoOp;
-        $ops[] = new OpLines\StaticOp($endOp);
-        $ops = array_merge($ops, $this->compileChild($node, 'vars'));
-        $ops[] = $endOp;
-        return $ops;
+        $this->opArray[] = new OpLines\StaticOp($endOp);
+        $this->compileChild($node, 'vars');
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_StaticVar($node) {
-        $ops = array();
-        $var = Zval::ptrFactory();
         $varName = Zval::ptrFactory();
-        $ops = array_merge($ops, $this->compileChild($node, 'name', $varName));
+        $this->compileChild($node, 'name', $varName);
         $varValue = Zval::ptrFactory();
         if ($node->default) {
-            $ops = array_merge($ops, $this->compileChild($node, 'default', $varValue));
+            $this->compileChild($node, 'default', $varValue);
         }
-        $ops[] = new OpLines\StaticAssign($varName, $varValue);
-        return $ops;
+        $this->opArray[] = new OpLines\StaticAssign($varName, $varValue);
     }
-
 
     protected function compile_Stmt_Switch($node) {
         $condPtr = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'cond', $condPtr);
+        $this->compileChild($node, 'cond', $condPtr);
 
         $endOp = new OpLines\StatementStackPop;
-        
-        $ops[] = new OpLines\StatementStackPush($endOp);
+
+        $this->opArray[] = new OpLines\StatementStackPush($endOp);
 
         foreach ($node->cases as $case) {
             if ($case->cond) {
                 $comparePtr = Zval::ptrFactory();
-                $ops = array_merge($ops, $this->compileChild($case, 'cond', $comparePtr));
+                $this->compileChild($case, 'cond', $comparePtr);
                 $conditionPtr = Zval::ptrFactory();
                 $caseEnd = new OpLines\NoOp;
-                $ops[] = new OpLines\Equal($condPtr, $comparePtr, $conditionPtr);
-                $ops[] = new OpLines\JumpIfNot($conditionPtr, $caseEnd);
-                $ops = array_merge($ops, $this->compileChild($case, 'stmts'));
-                $ops[] = $caseEnd;
+                $this->opArray[] = new OpLines\Equal($condPtr, $comparePtr, $conditionPtr);
+                $this->opArray[] = new OpLines\JumpIfNot($conditionPtr, $caseEnd);
+                $this->compileChild($case, 'stmts');
+                $this->opArray[] = $caseEnd;
             } else {
                 // Default case
-                $ops = array_merge($ops, $this->compileChild($case, 'stmts'));
+                $this->compileChild($case, 'stmts');
             }
         }
 
-        $ops[] = $endOp;
-
-        return $ops;
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_While($node) {
+        $startJumpPos = $this->opArray->getNextOffset();
+
         $op1 = Zval::ptrFactory();
-        $ops = $this->compileChild($node, 'cond', $op1);
+        $this->compileChild($node, 'cond', $op1);
 
         $endOp = new OpLines\StatementStackPop;
-        $ops[] = new OpLines\StatementStackPush($endOp);
-        $ops[] = new OpLines\JumpIfNot($op1, $endOp);
+        $this->opArray[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\JumpIfNot($op1, $endOp);
 
-        $whileOps = $this->compileChild($node, 'stmts');
-        $ops = array_merge($ops, $whileOps);
+        $this->compileChild($node, 'stmts');
 
         // jump back to cond
-        $ops[] = new OpLines\JumpTo($ops[0]);
-
-        $ops[] = $endOp;
-
-        return $ops;
+        $this->opArray[] = new OpLines\Jump($startJumpPos);
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_Do($node) {
         $op1 = Zval::ptrFactory();
-        $ops = array();
 
         $endOp = new OpLines\StatementStackPop;
-        $ops[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\StatementStackPush($endOp);
         $startOp = new OpLines\NoOp;
-        $ops[] = $startOp;
-        $ops = array_merge($ops, $this->compileChild($node, 'stmts'));
-        $ops = array_merge($ops, $this->compileChild($node, 'cond', $op1));
-        $ops[] = new OpLines\JumpIf($op1, $startOp);
-        $ops[] = $endOp;
-        return $ops;
+        $this->opArray[] = $startOp;
+        $this->compileChild($node, 'stmts');
+        $this->compileChild($node, 'cond', $op1);
+        $this->opArray[] = new OpLines\JumpIf($op1, $startOp);
+        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_InlineHtml($node) {
-        return array(
-            new OpLines\EchoOp(Zval::ptrFactory($node->value))
-        );
+        $this->opArray[] = new OpLines\EchoOp(Zval::ptrFactory($node->value));
     }
 }

@@ -49,14 +49,14 @@ class Executor {
         return $this->compiler->compile($ast);
     }
 
-    public function execute(array $opLines, array &$symbolTable = array(), FunctionData $function = null, array $args = array()) {
+    public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array()) {
         if ($this->shutdown) return;
-        $scope = new ExecuteData($this, $opLines);
+        $scope = new ExecuteData($this, $opArray);
         if ($function) {
             $scope->function = $function;
             $scope->arguments = $args;
         }
-        
+
         if ($this->current) {
             $scope->parent = $this->current;
         }
