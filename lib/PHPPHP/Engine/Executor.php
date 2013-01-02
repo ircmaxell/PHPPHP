@@ -60,11 +60,12 @@ class Executor {
         return $this->compiler->compile($ast);
     }
 
-    public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array(), Zval $result = null) {
+    public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array(), Zval $result = null, Objects\ClassInstance $ci = null) {
         if ($this->shutdown) return;
         $opArray->registerExecutor($this);
         $scope = new ExecuteData($this, $opArray, $function);
         $scope->arguments = $args;
+        $scope->ci = $ci;
 
         if ($this->current) {
             $scope->parent = $this->current;
@@ -75,6 +76,10 @@ class Executor {
             $scope->symbolTable =& $symbolTable;
         } else {
             $scope->symbolTable =& $this->executorGlobals->symbolTable;
+        }
+
+        if ($ci) {
+            $scope->symbolTable['this'] = Zval::lockedPtrFactory($ci);
         }
 
         while (!$this->shutdown && $scope->opLine) {

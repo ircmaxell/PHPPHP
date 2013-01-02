@@ -13,7 +13,7 @@ class User implements Engine\FunctionData {
         $this->byRef = $byRef;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return) {
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
         $scope = array();
         if (!$args) {
             $args = array();
@@ -21,7 +21,7 @@ class User implements Engine\FunctionData {
         if ($this->byRef) {
             $return->makeRef();
         }
-        $executor->execute($this->opArray, $scope, $this, $args, $return);
+        $executor->execute($this->opArray, $scope, $this, $args, $return, $ci);
     }
 
     public function isByRef() {

@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 14:05:17</h2>
+<h2>Time Start: 2013-01-02 15:10:28</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -27,7 +27,7 @@
 <tr><td>FAIL</td><td>Mean recursion test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing string scanner confirmance</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing do-while loop</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>$this in constructor test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -95,7 +95,7 @@
 <tr><td>PASS</td><td>Bug #27354 (Modulus operator crashes PHP)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #27439 (foreach() with $this segfaults)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #27443 (defined() returns wrong type)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #27535 (Objects pointing to each other cause Apache to crash)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #27535 (Objects pointing to each other cause Apache to crash)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #28213 (crash in debug_print_backtrace in static methods)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #28800 (Incorrect string to number conversion for strings starting with 'inf')</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #29566 (foreach/string handling strangeness)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -270,24 +270,24 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Statics in nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Static variables in methods & nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>String conversion with multiple decimal points</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catching an exception thrown from an included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 14:06:20</h2>
+<h2>Time End: 2013-01-02 15:11:33</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  164 ( 60.1%) ( 62.4%)
+Tests failed    :  161 ( 59.0%) ( 61.2%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :   99 ( 36.3%) ( 37.6%)
+Tests passed    :  102 ( 37.4%) ( 38.8%)
 ---------------------------------------------------------------------
-Time taken      :   63 seconds
+Time taken      :   65 seconds
 =====================================================================
 
 =====================================================================
@@ -298,7 +298,6 @@ Switch test 3 [vendor/php/php-src/tests/lang/022.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
 Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
 Mean recursion test [vendor/php/php-src/tests/lang/025.phpt]
-Testing calling user-level functions from C [vendor/php/php-src/tests/lang/028.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
 Bug #12647 (Locale settings affecting float parsing) [vendor/php/php-src/tests/lang/034.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
@@ -355,7 +354,6 @@ Bug #26866 (segfault when exception raised in __get) [vendor/php/php-src/tests/l
 Bug #26869 (constant as the key of static array) [vendor/php/php-src/tests/lang/bug26869.phpt]
 Bug #27439 (foreach() with $this segfaults) [vendor/php/php-src/tests/lang/bug27439.phpt]
 Bug #27443 (defined() returns wrong type) [vendor/php/php-src/tests/lang/bug27443.phpt]
-Bug #27535 (Objects pointing to each other cause Apache to crash) [vendor/php/php-src/tests/lang/bug27535.phpt]
 Bug #28213 (crash in debug_print_backtrace in static methods) [vendor/php/php-src/tests/lang/bug28213.phpt]
 Bug #29566 (foreach/string handling strangeness) [vendor/php/php-src/tests/lang/bug29566.phpt]
 Bug #29893 (segfault when using array as index) [vendor/php/php-src/tests/lang/bug29893.phpt]
@@ -453,7 +451,6 @@ short_open_tag: On, asp_tags: On [vendor/php/php-src/tests/lang/short_tags.003.p
 short_open_tag: Off, asp_tags: Off [vendor/php/php-src/tests/lang/short_tags.004.phpt]
 Statics in nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_001.phpt]
 Static variables in methods & nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_002.phpt]
-Test to catch early assignment of $this [vendor/php/php-src/tests/lang/this_assignment.phpt]
 Catching an exception thrown from an included file [vendor/php/php-src/tests/lang/throw_variation_001.phpt]
 ZE2 type hinting [vendor/php/php-src/tests/lang/type_hints_001.phpt]
 ZE2 type hinting [vendor/php/php-src/tests/lang/type_hints_002.phpt]

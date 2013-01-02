@@ -11,7 +11,7 @@ class InternalProxy implements Engine\FunctionData {
         $this->callback = $callback;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null) {
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
         $rawArgs = $this->compileArguments($args);
         ob_start();
         $ret = call_user_func_array($this->callback, $rawArgs);

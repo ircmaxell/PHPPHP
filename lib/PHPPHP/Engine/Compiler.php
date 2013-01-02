@@ -40,6 +40,7 @@ class Compiler {
 
         // binary operators
         'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
+        'Expr_PropertyFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ObjectPropertyFetch', 'var', 'name'),
         'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
         'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
         'Expr_AssignDiv'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignDiv', 'var', 'expr'),
@@ -498,7 +499,7 @@ class Compiler {
         $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef);
 
         if ($this->currentClass) {
-            $this->currentClass->addMethod($node->name, $funcData);
+            $this->currentClass->getMethodStore()->register($node->name, $funcData);
         } else {
             $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $funcData);
         }

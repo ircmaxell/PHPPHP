@@ -5,17 +5,21 @@ namespace PHPPHP\Engine\Objects;
 use PHPPHP\Engine\ExecuteData;
 use PHPPHP\Engine\Objects\ClassInstance;
 use PHPPHP\Engine\FunctionData;
+use PHPPHP\Engine\FunctionStore;
 use PHPPHP\Engine\Zval\Ptr;
 use PHPPHP\Engine\Zval;
 
 class ClassEntry
 {
     private $name;
-    private $methods = array();
+    private $methods;
+    private $parent;
 
-    public function __construct($name)
+    public function __construct($name, ClassEntry $parent = null)
     {
+        $this->methods = new FunctionStore;
         $this->name = $name;
+        $this->parent = $parent;
     }
 
     public function getName()
@@ -23,26 +27,37 @@ class ClassEntry
         return $this->name;
     }
 
-    public function instantiate(ExecuteData $data, array $properties, array $args = array())
-    {
-        return new ClassInstance($this, $properties);
+    public function getMethodStore() {
+        return $this->methods;
     }
 
-    public function addMethod($name, FunctionData $method)
+    public function getParent() {
+        return $this->parent;
+    }
+
+    public function instantiate(ExecuteData $data, array $properties, array $args = array())
     {
-        $this->methods[$name] = $method;
+        $instance = new ClassInstance($this, $properties);
+        $instance->callConstructor($data, $args);
+        return $instance;
     }
 
     public function callMethod(ExecuteData $data, ClassInstance $ci, $name, array $args, Ptr $result = null)
     {
-        if (!isset($this->methods[$name])) {
-            throw new \RuntimeException(sprintf('Call to undefined method %s::%s()', $this->getName(), $name));
+        $parent = $this;
+        do {
+            $exists = $parent->methods->exists($name);
+        } while (!$exists && ($parent = $parent->parent));
+
+        if (!$exists) {
+            throw new \RuntimeException('Call To Undefined Function ' . $name);
         }
-        $method = $this->methods[$name];
+
+        $method = $parent->methods->get($name);
         if (!$result) {
             $result = Zval::ptrFactory();
         }
-        $method->execute($data->executor, $args, $result);
+        $method->execute($data->executor, $args, $result, $ci);
     }
 }
 

@@ -21,6 +21,22 @@ class ClassInstance
         }, $this->properties);
     }
 
+    public function callConstructor(ExecuteData $data, array $args) {
+        $parent = $this->ce;
+        do {
+            $ms = $parent->getMethodStore();
+            if ($ms->exists('__construct')) {
+                $this->callMethod($data, '__construct', $args);
+            } else {
+                $className = $parent->getName();
+                if ($ms->exists($className)) {
+                    $this->callMethod($data, $className, $args);
+                    return;
+                }
+           }
+        } while ($parent = $parent->getParent());
+    }
+
     public function getProperty($name) {
         if (!isset($this->properties[$name])) {
             $value = Zval::ptrFactory();

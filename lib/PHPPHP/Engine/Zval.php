@@ -21,6 +21,13 @@ abstract class Zval {
         return new Zval\Ptr($value);
     }
 
+    public static function lockedPtrFactory($value = null) {
+        if (!$value instanceof Zval\Value) {
+            $value = static::factory($value);
+        }
+        return new Zval\LockedPtr($value);
+    }
+
     public static function variableFactory(Zval $name) {
         return new Zval\Variable($name);
     }

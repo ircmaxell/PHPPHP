@@ -2,6 +2,23 @@
 
 namespace PHPPHP\Engine;
 
+function PHP_call_user_func(Executor $executor, array $args, Zval $return) {
+    $cb = array_shift($args);
+    if ($cb->isArray()) {
+        $cbArray = $cb->getArray();
+        $cbName = $cbArray[1]->toString();
+        if ($cbArray[0]->isObject()) {
+            $cbArray[0]->getValue()->callMethod($executor->getCurrent(), $cbName, $args, $return);
+        } else {
+            throw new \LogicException('Static methods are not supported yet');
+        }
+    } else {
+        $cbName = $cb->toString();
+        $func = $executor->getFunctionStore()->get($cbName);
+        $func->execute($executor, $args, $return);
+    }
+}
+
 function PHP_define(Executor $executor, array $args) {
     $executor->getConstantStore()->register($args[0]->toString(), $args[1]->getZval());
 }

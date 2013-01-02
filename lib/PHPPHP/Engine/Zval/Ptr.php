@@ -6,7 +6,7 @@ use PHPPHP\Engine\Zval;
 
 class Ptr extends Zval {
 
-    private $zval;
+    protected $zval;
 
     public function __construct(Value $zval) {
         $this->zval = $zval;
@@ -74,6 +74,8 @@ class Ptr extends Zval {
             if ($this->zval->isRef()) {
                 $this->zval->setValue($value);
             } elseif ($value->isRef()) {
+                $this->zval->setValue($value);
+            } elseif ($this->zval->getRefcount() == 1) {
                 $this->zval->setValue($value);
             } else {
                 $this->forceValue($value);

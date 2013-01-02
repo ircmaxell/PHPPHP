@@ -11,8 +11,8 @@ class Internal implements Engine\FunctionData {
         $this->callback = $callback;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return) {
-        $ret = call_user_func_array($this->callback, array($executor, $args, $return));
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
+        $ret = call_user_func_array($this->callback, array($executor, $args, $return, $ci));
     }
 
 }
