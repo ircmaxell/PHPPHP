@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 11:13:01</h2>
+<h2>Time Start: 2013-01-02 12:42:55</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -29,7 +29,7 @@
 <tr><td>PASS</td><td>Testing do-while loop</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>$this in constructor test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Alternative syntaxes test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #12647 (Locale settings affecting float parsing)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -176,7 +176,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_num_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_num_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_num_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 11:14:08</h2>
+<h2>Time End: 2013-01-02 12:44:12</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  175 ( 64.1%) ( 66.5%)
+Tests failed    :  173 ( 63.4%) ( 65.8%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :   88 ( 32.2%) ( 33.5%)
+Tests passed    :   90 ( 33.0%) ( 34.2%)
 ---------------------------------------------------------------------
-Time taken      :   67 seconds
+Time taken      :   77 seconds
 =====================================================================
 
 =====================================================================
@@ -300,7 +300,6 @@ Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.php
 Mean recursion test [vendor/php/php-src/tests/lang/025.phpt]
 Testing calling user-level functions from C [vendor/php/php-src/tests/lang/028.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
-Bug #16227 (Internal hash position bug on assignment) [vendor/php/php-src/tests/lang/031.phpt]
 Class method registration [vendor/php/php-src/tests/lang/032.phpt]
 Bug #12647 (Locale settings affecting float parsing) [vendor/php/php-src/tests/lang/034.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
@@ -433,7 +432,6 @@ func_get_arg test [vendor/php/php-src/tests/lang/func_get_arg_variation.phpt]
 func_get_args with no args [vendor/php/php-src/tests/lang/func_get_args.001.phpt]
 func_get_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_get_args.003.phpt]
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_get_args.004.phpt]
-func_num_args with no args [vendor/php/php-src/tests/lang/func_num_args.001.phpt]
 func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_num_args.004.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]

@@ -22,6 +22,11 @@ class Ptr extends Zval {
         return call_user_func_array(array($this->zval, $method), $args);
     }
 
+    public function &getArray() {
+        $ret = &$this->zval->getArray();
+        return $ret;
+    }
+
     public function getZval() {
         $tmp = $this->zval;
         do {
@@ -35,8 +40,10 @@ class Ptr extends Zval {
         if ($this->zval instanceof Variable) {
             return $this->zval->makeRef();
         }
-        $this->separateIfNotRef();
-        $this->zval->makeRef();
+        if (!$this->zval->isRef()) {
+            $this->separateIfNotRef();
+            $this->zval->makeRef();
+        }
     }
 
     public function assignZval(Zval $value) {
@@ -57,7 +64,7 @@ class Ptr extends Zval {
         if ($value instanceof Zval) {
             $value = $value->getZval();
         }
-        if ($this->zval instanceof Variable) {
+        if ($this->zval instanceof Variable || $this->zval instanceof VariableList) {
             return $this->zval->setValue($value);
         }
         if ($value instanceof Zval) {
@@ -74,7 +81,7 @@ class Ptr extends Zval {
         }
     }
 
-    protected function separate() {
+    public function separate() {
         if ($this->zval instanceof Variable) {
             return $this->zval->separate();
         }
@@ -84,7 +91,7 @@ class Ptr extends Zval {
         return $this;
     }
 
-    protected function separateIfNotRef() {
+    public function separateIfNotRef() {
         if ($this->zval instanceof Variable) {
             return $this->zval->separateIfNotRef();
         }
@@ -94,7 +101,7 @@ class Ptr extends Zval {
         return $this;
     }
 
-    protected function &separateIfRef() {
+    public function &separateIfRef() {
         if ($this->zval instanceof Variable) {
             return $this->zval->separateIfRef();
         }

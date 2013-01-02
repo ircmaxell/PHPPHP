@@ -32,6 +32,7 @@ class Compiler {
         'Expr_UnaryMinus'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryMinus', 'expr'),
         'Expr_ConstFetch'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchConstant', 'name'),
         'Stmt_Echo'        => array('UnaryOp', 'PHPPHP\Engine\OpLines\EchoOp', 'exprs'),
+        'Expr_Print'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\PrintOp', 'expr'),
         'Stmt_Return'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
         // binary operators
@@ -183,6 +184,23 @@ class Compiler {
         $this->compileChild($node, 'value', $valuePtr);
 
         $this->opArray[] = new OpLines\AddArrayElement($keyPtr, $valuePtr, $returnContext);
+    }
+
+    protected function compile_Expr_List($node, $returnContext = null) {
+        if ($returnContext) {
+            $vars = array();
+            foreach ($node->vars as $subNode) {
+                if ($subNode) {
+                    $ret = Zval::ptrFactory();
+                    $vars[] = $ret;
+                    $this->compileNode($subNode, $ret);
+                } else {
+                    $vars[] = null;
+                }
+            }
+            $listPtr = new Zval\VariableList($vars);
+            $returnContext->forceValue($listPtr);
+        }
     }
 
     protected function compile_Expr_Ternary($node, $returnContext = null) {

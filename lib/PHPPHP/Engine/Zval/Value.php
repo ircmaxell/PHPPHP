@@ -137,4 +137,11 @@ class Value extends Zval {
         $this->value = $value;
     }
 
+    public function &getArray() {
+        if (is_array($this->value)) {
+            return $this->value;
+        }
+        throw new \LogicException('Getting array on non-array');
+    }
+
 }

@@ -19,6 +19,12 @@ class Variable extends Zval {
         return call_user_func_array(array($this->zval, $method), $args);
     }
 
+    public function &getArray() {
+        $this->zval = $this->executor->getCurrent()->fetchVariable($this->name->toString());
+        $ret = &$this->zval->getArray();
+        return $ret;
+    }
+
     public function setExecutor(\PHPPHP\Engine\Executor $executor) {
         $this->executor = $executor;
     }

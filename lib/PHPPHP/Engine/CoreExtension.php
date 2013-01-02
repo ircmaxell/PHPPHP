@@ -44,6 +44,7 @@ final class CoreExtension extends Extension\Base {
     }
 
     protected function loadFunctions() {
+        require_once __DIR__ . '/ext/Array.php';
         require_once __DIR__ . '/ext/Functions.php';
         require_once __DIR__ . '/ext/OutputBuffer.php';
     }
