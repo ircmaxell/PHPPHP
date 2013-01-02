@@ -9,13 +9,11 @@ class ArrayDimFetch extends \PHPPHP\Engine\OpLine {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $key = $this->op2->getValue();
         if ($this->op1->isArray()) {
-            $ht = $this->op1->getHashTable();
-
-            if (!$ht->exists($key)) {
-                $new = Zval::ptrFactory();
-                $ht->store($key, $new);
-            }    
-            $this->result->setValue($ht->get($key));
+            $array = $this->op1->toArray();
+            if (!isset($array[$key])) {
+                $array[$key] = Zval::ptrFactory();
+            }
+            $this->result->setValue($array[$key]);
         } elseif ($this->op1->isString()) {
             $value = $this->op1->getValue();
             if (isset($value[$key])) {

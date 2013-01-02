@@ -28,7 +28,6 @@ final class CoreExtension extends Extension\Base {
         $coreFunctions = array(
             'array_merge',
             'bin2hex',
-            'count',
             'implode',
             'join',
             'php_uname',

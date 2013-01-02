@@ -8,7 +8,8 @@ class PostInc extends \PHPPHP\Engine\OpLine {
         $ret = $this->op1->getZval();
         $this->result->setValue($ret);
 
-        $this->op1->setValue($this->op1->getValue() + 1);
+        $val = $this->op1->getValue();
+        $this->op1->setValue(++$val);
 
         $data->nextOp();
     }

@@ -6,14 +6,12 @@ class RecvInit extends \PHPPHP\Engine\OpLine {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $args = $data->arguments;
 
-        $n = (int) $this->op1->value;
+        $n = $this->op1->toLong();
         if (isset($args[$n])) {
-            $this->result->value = $args[$n]->value;
+            $this->result->setValue($args[$n]);
         } else {
-            $this->result->value = $this->op2->value;
+            $this->result->setValue($this->op2);
         }
-
-        $this->result->rebuildType();
 
         $data->nextOp();
     }

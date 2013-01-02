@@ -14,7 +14,7 @@ class BreakOp extends \PHPPHP\Engine\OpLine {
             $jump = array_pop($data->statementStack);
         }
         if ($jump) {
-            $data->jumpTo($jump);
+            $data->jumpTo($jump->endOp);
             $data->nextOp();
         } else {
             throw new \RuntimeException('break from without context');

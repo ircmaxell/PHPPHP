@@ -1,5 +1,5 @@
 {
-    "hash": "c018d31236a55e99de69807814e3820f",
+    "hash": "f0ee609f3432252c6d3294f592159a73",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -39,43 +39,6 @@
                 "parser"
             ],
             "time": "1356092915"
-        },
-        {
-            "name": "nikita2206/hash-table",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikita2206/php-canis-majoris",
-                "reference": "ce5f1bc28cb34796d7883ca46325278b48573d54"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/nikita2206/php-canis-majoris/zipball/ce5f1bc28cb34796d7883ca46325278b48573d54",
-                "reference": "ce5f1bc28cb34796d7883ca46325278b48573d54",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.x-dev"
-            },
-            "time": "1356884769",
-            "type": "library",
-            "installation-source": "source",
-            "autoload": {
-                "psr-0": {
-                    "CanisM": "src/"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Nikita Nefedov",
-                    "email": "inefedor@gmail.com"
-                }
-            ],
-            "description": "PHP arrays (hash table) fully implemented in PHP using SplFixedArray.",
-            "support": {
-                "source": "https://github.com/nikita2206/php-canis-majoris/tree/master",
-                "issues": "https://github.com/nikita2206/php-canis-majoris/issues"
-            }
         }
     ],
     "packages-dev": null,
@@ -85,7 +48,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "nikic/php-parser": 20,
-        "nikita2206/hash-table": 20,
         "php/php-src": 20
     }
 }

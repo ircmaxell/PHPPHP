@@ -2,6 +2,10 @@
 
 namespace PHPPHP\Engine;
 
+function PHP_count(Executor $executor, array $args, Zval $return) {
+    $return->setValue(count($args[0]->toArray()));
+}
+
 function PHP_define(Executor $executor, array $args) {
     $executor->getConstantStore()->register($args[0]->toString(), $args[1]->getZval());
 }

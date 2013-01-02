@@ -2,7 +2,6 @@
 
 namespace PHPPHP\Engine\Zval;
 
-use CanisM\HashTable\HashTable;
 use PHPPHP\Engine\Zval;
 
 class Value extends Zval {
@@ -46,25 +45,19 @@ class Value extends Zval {
         $this->isRef = true;
     }
 
+    public function getZval() {
+        return $this;
+    }
+
     public function getValue() {
         return $this->value;
     }
 
     public function getIterator() {
-        if ($this->value instanceof HashTable) {
-            // Fix bug with single iterator for HT.
-            $ret = clone $this->value;
-            $ret->rewind();
-            return $ret;
+        if (is_array($this->value)) {
+            return new \ArrayIterator($this->value);;
         }
         throw new \LogicException('No Default Iterator Provided');
-    }
-
-    public function getHashTable() {
-        if ($this->value instanceof HashTable) {
-            return $this->value;
-        }
-        throw new \LogicException('Getting hash table of invalid zval');
     }
 
     public function makePrintable() {
@@ -92,7 +85,7 @@ class Value extends Zval {
     }
 
     public function isArray() {
-        return $this->value instanceof HashTable;
+        return is_array($this->value);
     }
 
     public function isBool() {
@@ -115,14 +108,7 @@ class Value extends Zval {
     }
 
     public function toArray() {
-        if (!$this->isArray()) {
-            $ht = new HashTable;
-            if (!$this->isNull()) {
-                $ht->append($this->value);
-            }
-            return $ht;
-        }
-        return clone $this->value;
+        return (array) $this->value;
     }
 
     public function toBool() {
@@ -148,13 +134,6 @@ class Value extends Zval {
             $value = $value->getValue();
         }
 
-        if (is_array($value)) {
-            $ht = new HashTable;
-            foreach ($value as $key => $val) {
-                $ht->store($key, static::factory($val));
-            }
-            $value = $ht;
-        }
         $this->value = $value;
     }
 

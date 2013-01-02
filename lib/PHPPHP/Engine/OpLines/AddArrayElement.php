@@ -6,11 +6,13 @@ class AddArrayElement extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $key = $this->op1->toString();
+        $array = $this->result->toArray();
         if ($key) {
-            $this->result->getHashTable()->store($key, $this->op2);
+            $array[$key] = $this->op2;
         } else {
-            $this->result->getHashTable()->append($this->op2);
+            $array[] = $this->op2;
         }
+        $this->result->setValue($array);
         $data->nextOp();
     }
 

@@ -23,10 +23,12 @@ class Ptr extends Zval {
     }
 
     public function getZval() {
-        if ($this->zval instanceof Variable) {
-            return $this->zval->getZval();
-        }
-        return $this->zval;
+        $tmp = $this->zval;
+        do {
+            $value = $tmp;
+            $tmp = $value->getZval();
+        } while ($value !== $tmp);
+        return $value;
     }
 
     public function makeRef() {
@@ -45,23 +47,18 @@ class Ptr extends Zval {
     }
 
     public function forceValue(Zval $value) {
-        if ($this->zval instanceof Variable) {
-            return $this->zval->forceValue($value);
-        }
-        if ($value instanceof Ptr) {
-            $value = $value->getZval();
-        }
+        $value = $value->getZval();
         $this->zval->delRef();
         $this->zval = $value;
         $this->zval->addRef();
     }
 
     public function setValue($value) {
+        if ($value instanceof Zval) {
+            $value = $value->getZval();
+        }
         if ($this->zval instanceof Variable) {
             return $this->zval->setValue($value);
-        }
-        if ($value instanceof Ptr) {
-            $value = $value->zval;
         }
         if ($value instanceof Zval) {
             if ($this->zval->isRef()) {

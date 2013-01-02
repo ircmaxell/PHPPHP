@@ -33,6 +33,8 @@ class Compiler {
         'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
         'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
         'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
+        'Expr_AssignDiv'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignDiv', 'var', 'expr'),
+        'Expr_AssignMinus'    => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMinus', 'var', 'expr'),
         'Expr_AssignMul'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMul', 'var', 'expr'),
         'Expr_AssignPlus'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignPlus', 'var', 'expr'),
         'Expr_AssignRef'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignRef', 'var', 'expr'),
@@ -125,7 +127,9 @@ class Compiler {
             if (!$returnContext->isArray()) {
                 $returnContext->setValue($returnContext->toArray());
             }
-            $returnContext->getHashTable()->append($op1);
+            $array = $returnContext->toArray();
+            $array[] = $op1;
+            $returnContext->setValue($array);
         }
     }
 
@@ -229,11 +233,20 @@ class Compiler {
         $this->opArray[] = new OpLines\BreakOp($op1);
     }
 
+    protected function compile_Stmt_Continue($node) {
+        $op1 = null;
+        if ($node->num) {
+            $op1 = Zval::ptrFactory();
+            $this->compileChild($node, 'num', $op1);
+        }
+        $this->opArray[] = new OpLines\ContinueOp($op1);
+    }
+
     protected function compile_Stmt_For($node) {
         $this->compileChild($node, 'init');
         $startOp = new OpLines\NoOp;
         $endOp = new OpLines\StatementStackPop;
-        $this->opArray[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\StatementStackPush($startOp, $endOp);
         $this->opArray[] = $startOp;
         $condPtr = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $condPtr);
@@ -248,8 +261,9 @@ class Compiler {
         $iteratePtr = Zval::ptrFactory();
 
         $this->compileChild($node, 'expr', $iteratePtr);
+        $nextOp = new OpLines\NoOp;
         $endOp = new OpLines\StatementStackPop;
-        $this->opArray[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\StatementStackPush($nextOp, $endOp);
 
         $key = null;
         if ($node->keyVar) {
@@ -268,6 +282,7 @@ class Compiler {
 
         $this->compileChild($node, 'stmts');
 
+        $this->opArray[] = $nextOp;
         $this->opArray[] = new OpLines\IterateNext($iterator, $iterateValues);
         $this->opArray[] = $endOp;
     }
@@ -289,13 +304,20 @@ class Compiler {
 
             $var = Zval::variableFactory(Zval::factory($param->name));
             $this->opArray->addCompiledVariable($var);
-            $this->opArray[] = new OpLines\Assign($var, $arg);
+            if ($param->byRef) {
+                $this->opArray[] = new OpLines\AssignRef($var, $arg);
+            } else {
+                $this->opArray[] = new OpLines\Assign($var, $arg);
+            }
         }
 
         $this->compileChild($node, 'stmts');
 
         $this->opArray[] = new OpLines\ReturnOp;
-        $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $this->opArray);
+
+        $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef);
+        
+        $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $funcData);
 
         $this->opArray = $prevOpArray;
     }
@@ -365,7 +387,7 @@ class Compiler {
 
         $endOp = new OpLines\StatementStackPop;
 
-        $this->opArray[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\StatementStackPush(null, $endOp);
 
         foreach ($node->cases as $case) {
             if ($case->cond) {
@@ -393,7 +415,7 @@ class Compiler {
         $this->compileChild($node, 'cond', $op1);
 
         $endOp = new OpLines\StatementStackPop;
-        $this->opArray[] = new OpLines\StatementStackPush($endOp);
+        $this->opArray[] = new OpLines\StatementStackPush($startJumpPos, $endOp);
         $this->opArray[] = new OpLines\JumpIfNot($op1, $endOp);
 
         $this->compileChild($node, 'stmts');
@@ -407,8 +429,9 @@ class Compiler {
         $op1 = Zval::ptrFactory();
 
         $endOp = new OpLines\StatementStackPop;
-        $this->opArray[] = new OpLines\StatementStackPush($endOp);
         $startOp = new OpLines\NoOp;
+        $this->opArray[] = new OpLines\StatementStackPush($startOp, $endOp);
+        
         $this->opArray[] = $startOp;
         $this->compileChild($node, 'stmts');
         $this->compileChild($node, 'cond', $op1);

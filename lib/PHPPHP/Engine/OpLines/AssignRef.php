@@ -6,7 +6,6 @@ class AssignRef extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $this->op2->makeRef();
-        $this->op1->makeRef();
         $this->op1->forceValue($this->op2->getZval());
 
         if ($this->result) {

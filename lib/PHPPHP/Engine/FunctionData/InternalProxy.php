@@ -11,7 +11,7 @@ class InternalProxy implements Engine\FunctionData {
         $this->callback = $callback;
     }
 
-    public function execute(Engine\Executor $executor, \CanisM\HashTable\HashTable $args, Engine\Zval\Ptr $return = null) {
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null) {
         $rawArgs = $this->compileArguments($args);
         $ret = call_user_func_array($this->callback, $rawArgs);
         if ($return) {
@@ -21,9 +21,9 @@ class InternalProxy implements Engine\FunctionData {
 
     public function compileReturn($value) {
         if (is_array($value)) {
-            $result = new \CanisM\HashTable\HashTable;
+            $result = array();
             foreach ($value as $key => $item) {
-                $result->store($key, $this->compileReturn($item));
+                $result[$key] = $this->compileReturn($item);
             }
             return Engine\Zval::factory($result);
         } else {
@@ -31,7 +31,7 @@ class InternalProxy implements Engine\FunctionData {
         }
     }
 
-    public function compileArguments(\CanisM\HashTable\HashTable $args) {
+    public function compileArguments(array $args) {
         $ret = array();
         foreach ($args as $key => $value) {
             if ($value->isArray()) {
