@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 08:13:16</h2>
+<h2>Time Start: 2013-01-02 08:26:28</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -269,25 +269,25 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>Multiple declarations of the same static variable</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Statics in nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Static variables in methods & nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>String conversion with multiple decimal points</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>String conversion with multiple decimal points</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catching an exception thrown from an included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 08:14:06</h2>
+<h2>Time End: 2013-01-02 08:27:20</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  177 ( 64.8%) ( 67.3%)
+Tests failed    :  176 ( 64.5%) ( 66.9%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :   86 ( 31.5%) ( 32.7%)
+Tests passed    :   87 ( 31.9%) ( 33.1%)
 ---------------------------------------------------------------------
-Time taken      :   50 seconds
+Time taken      :   52 seconds
 =====================================================================
 
 =====================================================================
@@ -466,7 +466,6 @@ short_open_tag: On, asp_tags: On [vendor/php/php-src/tests/lang/short_tags.003.p
 short_open_tag: Off, asp_tags: Off [vendor/php/php-src/tests/lang/short_tags.004.phpt]
 Statics in nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_001.phpt]
 Static variables in methods & nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_002.phpt]
-String conversion with multiple decimal points [vendor/php/php-src/tests/lang/string_decimals_001.phpt]
 Test to catch early assignment of $this [vendor/php/php-src/tests/lang/this_assignment.phpt]
 Catching an exception thrown from an included file [vendor/php/php-src/tests/lang/throw_variation_001.phpt]
 ZE2 type hinting [vendor/php/php-src/tests/lang/type_hints_001.phpt]
