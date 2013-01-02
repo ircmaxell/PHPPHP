@@ -9,7 +9,7 @@ class IterateNext extends \PHPPHP\Engine\OpLine {
         if (!$this->op1->getIterator()->valid()) {
             $data->nextOp();
         } else {
-            $data->jumpTo($this->op2);
+            $data->jump($this->op2);
         }
     }
 

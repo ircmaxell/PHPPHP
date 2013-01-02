@@ -10,20 +10,15 @@ class ContinueOp extends \PHPPHP\Engine\OpLine {
             $num = $this->op1->toLong();
         }
         $jump = null;
-        $stack = $data->statementStack;
         for ($i = 0; $i < $num; $i++) {
             $jump = array_pop($data->statementStack);
             if ($jump && !$jump->startOp) $i--;
         }
         if ($jump && $jump->startOp) {
-            if (is_int($jump->startOp)) {
-                $data->jump($jump->startOp);
-            } elseif ($jump->startOp instanceof \PHPPHP\Engine\OpLine) {
-                $data->jumpTo($jump->startOp);
-            }
+            $data->jump($jump->startOp);
+        } else {
+            throw new \RuntimeException('continue from without context');
         }
-        throw new \RuntimeException('break from without context');
-
     }
 
 }

@@ -23,7 +23,7 @@ class OpArray implements \ArrayAccess, \IteratorAggregate {
             foreach ($this->compiledVariables as $variable) {
                 $variable->setExecutor($executor);
             }
-        }   
+        }
     }
 
     public function offsetGet($offset) {

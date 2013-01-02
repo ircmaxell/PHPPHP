@@ -37,17 +37,6 @@ class ExecuteData {
         }
     }
 
-    public function jumpTo(OpLine $opLine) {
-        foreach ($this->opArray as $position => $value) {
-            if ($opLine === $value && spl_object_hash($opLine) === spl_object_hash($value)) {
-                $this->opPosition = $position;
-                $this->opLine = $value;
-                return;
-            }
-        }
-        throw new \Exception('Invalid Jump');
-    }
-
     public function nextOp() {
         $this->jump($this->opPosition + 1);
     }
