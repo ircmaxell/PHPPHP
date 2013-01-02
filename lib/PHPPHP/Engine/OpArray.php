@@ -3,9 +3,28 @@
 namespace PHPPHP\Engine;
 
 class OpArray implements \ArrayAccess, \IteratorAggregate {
+    protected $compiledVariables = array();
+    protected $executor;
     /** @var OpLine[] */
     protected $opLines = array();
     protected $numOps = 0;
+
+    public function addCompiledVariable(Zval\Variable $variable) {
+        $this->compiledVariables[] = $variable;
+    }
+
+    public function getCompiledVariables() {
+        return $this->compiledVariables;
+    }
+
+    public function registerExecutor(Executor $executor) {
+        if (!$this->executor) {
+            $this->executor = $executor;
+            foreach ($this->compiledVariables as $variable) {
+                $variable->setExecutor($executor);
+            }
+        }   
+    }
 
     public function offsetGet($offset) {
         return $this->opLines[$offset];

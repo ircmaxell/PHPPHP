@@ -11,31 +11,35 @@ class InternalProxy implements Engine\FunctionData {
         $this->callback = $callback;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\ZvalPtr $return) {
+    public function execute(Engine\Executor $executor, \CanisM\HashTable\HashTable $args, Engine\Zval\Ptr $return = null) {
         $rawArgs = $this->compileArguments($args);
         $ret = call_user_func_array($this->callback, $rawArgs);
-        $return->zval = $this->compileReturn($ret)->zval;
+        if ($return) {
+            $return->setValue($this->compileReturn($ret));
+        }
     }
 
     public function compileReturn($value) {
         if (is_array($value)) {
-            $result = array();
+            $result = new \CanisM\HashTable\HashTable;
             foreach ($value as $key => $item) {
-                $result[$key] = $this->compileReturn($item);
+                $result->store($key, $this->compileReturn($item));
             }
-            return Engine\Zval::ptrFactory($result);
+            return Engine\Zval::factory($result);
         } else {
-            return Engine\Zval::ptrFactory($value);
+            return Engine\Zval::factory($value);
         }
     }
 
-    public function compileArguments(array $args) {
-        $self = $this;
-        return array_map(function($value) use ($self) { 
-            if ($value->type == Engine\Zval::IS_ARRAY) {
-                return $self->compileArguments($value->value);
+    public function compileArguments(\CanisM\HashTable\HashTable $args) {
+        $ret = array();
+        foreach ($args as $key => $value) {
+            if ($value->isArray()) {
+                $ret[$key] = $this->compileArguments($value->toArray());
+            } else {
+                $ret[$key] = $value->getValue();
             }
-            return $value->value; 
-        }, $args);
+        }
+        return $ret;
     }
 }

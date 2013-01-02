@@ -15,7 +15,7 @@ class IncludeOp extends \PHPPHP\Engine\OpLine {
         if (!is_file($fileName)) {
             throw new \RuntimeException('Including bad file!');
         }
-        switch ($this->op1->value) {
+        switch ($this->op1->getValue()) {
             case IncludeNode::TYPE_INCLUDE_ONCE:
             case IncludeNode::TYPE_REQUIRE_ONCE:
                 if ($data->executor->hasFile($fileName)) {

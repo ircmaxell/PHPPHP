@@ -7,17 +7,21 @@ use PHPPHP\Engine\Zval;
 class ArrayDimFetch extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $key = $this->op2->toString();
-        if ($this->op1->type == Zval::IS_ARRAY) {
-            if (!isset($this->op1->zval->value[$key])) {
-                $this->op1->zval->value[$key] = Zval::ptrFactory();
+        $key = $this->op2->getValue();
+        if ($this->op1->isArray()) {
+            $ht = $this->op1->getHashTable();
+
+            if (!$ht->exists($key)) {
+                $new = Zval::ptrFactory();
+                $ht->store($key, $new);
             }    
-            $this->result->zval = $this->op1->zval->value[$key]->zval;
-        } elseif ($this->op1->type == Zval::IS_STRING) {
-            if (isset($this->op1->zval->value[$key])) {
-                $this->result->zval = Zval::factory($this->op1->zval->value[$key]);
+            $this->result->setValue($ht->get($key));
+        } elseif ($this->op1->isString()) {
+            $value = $this->op1->getValue();
+            if (isset($value[$key])) {
+                $this->result->setValue($value[$key]);
             } else {
-                $this->result->zval = Zval::factory('');
+                $this->result->setValue('');
             }
         }
         $data->nextOp();

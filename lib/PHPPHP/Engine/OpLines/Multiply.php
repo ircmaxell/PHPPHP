@@ -5,8 +5,7 @@ namespace PHPPHP\Engine\OpLines;
 class Multiply extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $this->result->value = $this->op1->value * $this->op2->value;
-        $this->result->rebuildType();
+        $this->result->setValue($this->op1->getValue() * $this->op2->getValue());
 
         $data->nextOp();
     }

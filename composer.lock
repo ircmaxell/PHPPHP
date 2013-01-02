@@ -1,5 +1,5 @@
 {
-    "hash": "f0ee609f3432252c6d3294f592159a73",
+    "hash": "c018d31236a55e99de69807814e3820f",
     "packages": [
         {
             "name": "nikic/php-parser",
@@ -18,7 +18,6 @@
             "require": {
                 "php": ">=5.2"
             },
-            "time": "2012-12-21 12:28:35",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -26,7 +25,6 @@
                     "PHPParser": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -39,29 +37,55 @@
             "keywords": [
                 "php",
                 "parser"
-            ]
-        }
-    ],
-    "packages-dev": [
+            ],
+            "time": "1356092915"
+        },
         {
-            "name": "php/php-src",
+            "name": "nikita2206/hash-table",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php/php-src",
-                "reference": "master"
+                "url": "https://github.com/nikita2206/php-canis-majoris",
+                "reference": "ce5f1bc28cb34796d7883ca46325278b48573d54"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/nikita2206/php-canis-majoris/zipball/ce5f1bc28cb34796d7883ca46325278b48573d54",
+                "reference": "ce5f1bc28cb34796d7883ca46325278b48573d54",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.x-dev"
+            },
+            "time": "1356884769",
             "type": "library",
             "installation-source": "source",
-            "time": "2012-12-30 04:16:53"
+            "autoload": {
+                "psr-0": {
+                    "CanisM": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Nikita Nefedov",
+                    "email": "inefedor@gmail.com"
+                }
+            ],
+            "description": "PHP arrays (hash table) fully implemented in PHP using SplFixedArray.",
+            "support": {
+                "source": "https://github.com/nikita2206/php-canis-majoris/tree/master",
+                "issues": "https://github.com/nikita2206/php-canis-majoris/issues"
+            }
         }
     ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": {
         "nikic/php-parser": 20,
+        "nikita2206/hash-table": 20,
         "php/php-src": 20
     }
 }

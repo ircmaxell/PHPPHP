@@ -13,8 +13,7 @@ class EvalOp extends \PHPPHP\Engine\OpLine {
         }
         $return = $data->executor->execute($opCodes, $data->symbolTable);
         if ($return) {
-            $this->result->value = $return->value;
-            $this->result->rebuildType();
+            $this->result->setValue($return);
         }
         $data->nextOp();
     }

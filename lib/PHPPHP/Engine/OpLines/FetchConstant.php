@@ -8,8 +8,7 @@ class FetchConstant extends \PHPPHP\Engine\OpLine {
         $consts = $data->executor->getConstantStore();
         $value = $consts->get($this->op1->toString());
 
-        $this->result->value = $value->value;
-        $this->result->type = $value->type;
+        $this->result->setValue($value);
 
         $data->nextOp();
     }

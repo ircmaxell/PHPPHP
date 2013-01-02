@@ -6,13 +6,12 @@ class Recv extends \PHPPHP\Engine\OpLine {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $args = $data->arguments;
 
-        $n = (int) $this->op1->value;
+        $n = $this->op1->toLong();
         if (!isset($args[$n])) {
             throw new \Exception("Missing required argument $n");
         }
 
-        $this->result->value = $args[$n]->value;
-        $this->result->rebuildType();
+        $this->result->setValue($args[$n]);
 
         $data->nextOp();
     }

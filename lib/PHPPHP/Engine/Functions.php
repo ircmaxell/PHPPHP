@@ -3,7 +3,7 @@
 namespace PHPPHP\Engine;
 
 function PHP_define(Executor $executor, array $args) {
-    $executor->getConstantStore()->register($args[0]->toString(), $args[1]);
+    $executor->getConstantStore()->register($args[0]->toString(), $args[1]->getZval());
 }
 
 function PHP_error_reporting(Executor $executor, array $args, Zval $return) {
@@ -11,34 +11,31 @@ function PHP_error_reporting(Executor $executor, array $args, Zval $return) {
 }
 
 function PHP_func_get_arg(Executor $executor, array $args, Zval $return) {
-    $num = (int) $args[0]->value;
+    $num = $args[0]->toLong();
     $current = $executor->getCurrent();
     if (!$current->arguments || !isset($current->arguments[$num])) {
-        $return->value = false;
+        $return->setValue(false);
     } else {
-        $return->zval = Zval::factory($current->arguments[$num]);
+        $return->setValue($current->arguments[$num]);
     }
-    $return->rebuildType();
 }
 
 function PHP_func_get_args(Executor $executor, array $args, Zval $return) {
     $current = $executor->getCurrent();
     if ($current->arguments) {
-        $return->zval = Zval::factory($current->arguments);
+        $return->setValue($current->arguments);
     } else {
-        $return->value = false;
+        $return->setValue(false);
     }
-    $return->rebuildType();
 }
 
 function PHP_func_num_args(Executor $executor, array $args, Zval $return) {
     $current = $executor->getCurrent();
     if ($current->arguments) {
-        $return->value = count($current->arguments);
+        $return->setValue(count($current->arguments));
     } else {
-        $return->value = false;
+        $return->setValue(false);
     }
-    $return->rebuildType();
 }
 
 function PHP_function_exists(Executor $executor, array $args, Zval $return) {

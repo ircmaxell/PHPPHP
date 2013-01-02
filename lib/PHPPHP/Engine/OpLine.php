@@ -8,8 +8,8 @@ abstract class OpLine {
     public $result;
 
     public function __construct($op1 = null, $op2 = null, $result = null) {
-        $this->op1 = $op1;
-        $this->op2 = $op2;
+        $this->op1    = $op1;
+        $this->op2    = $op2;
         $this->result = $result;
     }
 

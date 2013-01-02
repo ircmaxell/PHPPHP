@@ -11,7 +11,7 @@ class FetchGlobalVariable extends \PHPPHP\Engine\OpLine {
         if (!isset($data->executor->executorGlobals->symbolTable[$varName])) {
             $data->executor->executorGlobals->symbolTable[$varName] = Zval::ptrFactory();
         }
-        $data->symbolTable[$varName] = Zval::ptrFactory($data->executor->executorGlobals->symbolTable[$varName]->zval);
+        $data->symbolTable[$varName] = $data->executor->executorGlobals->symbolTable[$varName];
         $data->nextOp();
     }
 

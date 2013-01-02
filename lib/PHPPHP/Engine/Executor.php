@@ -49,8 +49,9 @@ class Executor {
         return $this->compiler->compile($ast);
     }
 
-    public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array()) {
+    public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array(), Zval $result = null) {
         if ($this->shutdown) return;
+        $opArray->registerExecutor($this);
         $scope = new ExecuteData($this, $opArray);
         if ($function) {
             $scope->function = $function;
@@ -73,16 +74,17 @@ class Executor {
             switch ($ret) {
                 case self::DO_RETURN:
                     array_pop($this->stack);
-                    if ($scope->parent) {
-                        $scope->parent->opLine->result->zval = $scope->returnValue->zval;
+                    if ($result) {
+                        $result->setValue($scope->returnValue);
                     }
                     $this->current = end($this->stack);
-                    return $scope->returnValue;
+                    return;
                 case self::DO_SHUTDOWN:
                     $this->shutdown = true;
                     return;
             }
         }
+        die('Should never reach this point!');
     }
 
     public function getCurrent() {

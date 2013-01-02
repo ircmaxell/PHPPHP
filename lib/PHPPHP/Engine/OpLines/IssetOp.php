@@ -7,8 +7,9 @@ use PHPPHP\Engine\Zval;
 class IssetOp extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $this->result->value = $this->op1->type != Zval::IS_NULL;
-        $this->result->type = Zval::IS_BOOL;
+        $varName = $this->op1->getName();
+        $ret = isset($data->symbolTable[$varName]) && !$data->symbolTable[$varName]->isNull();
+        $this->result->setValue($ret);
         $data->nextOp();
     }
 

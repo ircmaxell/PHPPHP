@@ -21,7 +21,7 @@ class PHP {
         $opCodes = $this->executor->compile($code);
         $retval = $this->executor->execute($opCodes);
         if ($retval) {
-            return $retval->value;
+            return $retval->getValue();
         }
         return null;
     }

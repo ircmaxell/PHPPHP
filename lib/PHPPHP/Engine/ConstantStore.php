@@ -6,7 +6,7 @@ class ConstantStore {
     /** @var Constant[] */
     protected $constants = array();
 
-    public function register($name, Zval $value, $isCaseSensitive = true) {
+    public function register($name, Zval\Value $value, $isCaseSensitive = true) {
         if ($this->exists($name)) {
             throw new \RuntimeException("Constant \"$name\" already exists");
         }

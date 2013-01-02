@@ -7,7 +7,7 @@ class BreakOp extends \PHPPHP\Engine\OpLine {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $num = 1;
         if ($this->op1) {
-            $num = (int) $this->op1->value;
+            $num = $this->op1->toLong();
         }
         $jump = null;
         for ($i = 0; $i < $num; $i++) {

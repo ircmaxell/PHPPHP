@@ -13,12 +13,17 @@ class User implements Engine\FunctionData {
         $this->opArray = $opArray;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\ZvalPtr $return) {
+    public function execute(Engine\Executor $executor, \CanisM\HashTable\HashTable $args, Engine\Zval\Ptr $return) {
         $scope = array();
         foreach ($this->staticContext as $key => $value) {
             $scope[$key] = $value;
         }
-        $executor->execute($this->opArray, $scope, $this, $args);
+        if ($args->count()) {
+            $args = $args->toArray();
+        } else {
+            $args = array();
+        }
+        $executor->execute($this->opArray, $scope, $this, $args, $return);
     }
 
 }

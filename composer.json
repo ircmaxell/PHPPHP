@@ -11,11 +11,16 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/nikita2206/php-canis-majoris"
         }
     ],
     "require": {
         "php": ">=5.3.0",
-        "nikic/php-parser": "dev-master"
+        "nikic/php-parser": "dev-master",
+        "nikita2206/hash-table": "dev-master"
     },
     "require-dev": {
         "php/php-src": "dev-master"

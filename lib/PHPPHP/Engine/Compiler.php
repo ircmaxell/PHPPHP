@@ -23,7 +23,6 @@ class Compiler {
         'Expr_PostInc'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
         'Expr_PreDec'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PreDec', 'var'),
         'Expr_PreInc'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PreInc', 'var'),
-        'Expr_Variable'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchVariable', 'name'),
         'Expr_UnaryPlus'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryPlus', 'expr'),
         'Expr_UnaryMinus' => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryMinus', 'expr'),
         'Expr_ConstFetch' => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchConstant', 'name'),
@@ -36,6 +35,7 @@ class Compiler {
         'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
         'Expr_AssignMul'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMul', 'var', 'expr'),
         'Expr_AssignPlus'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignPlus', 'var', 'expr'),
+        'Expr_AssignRef'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignRef', 'var', 'expr'),
         'Expr_BooleanAnd'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
         'Expr_BooleanOr'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
         'Expr_Smaller'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller'),
@@ -65,23 +65,25 @@ class Compiler {
     /** @var OpArray */
     protected $opArray;
 
-    public function compile(array $ast, Zval $returnContext = null) {
+    public function compile(array $ast, Zval\Ptr $returnContext = null) {
         $opArray = new OpArray;
 
         $this->opArray = $opArray;
         $this->compileNodes($ast, $returnContext);
         unset($this->opArray);
 
+        $opArray[] = new OpLines\ReturnOp();
+
         return $opArray;
     }
 
-    public function compileNodes(array $ast, Zval $returnContext = null) {
+    public function compileNodes(array $ast, Zval\Ptr $returnContext = null) {
         foreach ($ast as $node) {
             $this->compileNode($node, $returnContext);
         }
     }
 
-    protected function compileNode(\PHPParser_Node $node, Zval $returnContext = null) {
+    protected function compileNode(\PHPParser_Node $node, Zval\Ptr $returnContext = null) {
         $nodeType = $node->getType();
         if (isset($this->operators[$nodeType])) {
             call_user_func_array(
@@ -108,8 +110,7 @@ class Compiler {
         }
 
         if (is_scalar($childNode)) {
-            $returnContext->value = $childNode;
-            $returnContext->rebuildType();
+            $returnContext->setValue($childNode);
         } elseif (is_array($childNode)) {
             $this->compileNodes($childNode, $returnContext);
         } else {
@@ -121,7 +122,10 @@ class Compiler {
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, $left, $op1);
         if ($returnContext) {
-            $returnContext->zval->value[] = $op1;
+            if (!$returnContext->isArray()) {
+                $returnContext->setValue($returnContext->toArray());
+            }
+            $returnContext->getHashTable()->append($op1);
         }
     }
 
@@ -144,18 +148,16 @@ class Compiler {
     protected function compileScalarOp($node, $returnContext, $name = 'value', $sep = '') {
         if ($returnContext) {
             if ($sep) {
-                $returnContext->value = implode($sep, $node->$name);
+                $returnContext->setValue(implode($sep, $node->$name));
             } else {
-                $returnContext->value = $node->$name;
+                $returnContext->setValue($node->$name);
             }
-            $returnContext->rebuildType();
         }
     }
 
     protected function compile_Expr_Array($node, $returnContext = null) {
         if ($returnContext) {
-            $returnContext->type = Zval::IS_ARRAY;
-            $returnContext->value = array();
+            $returnContext->setValue($returnContext->toArray());
             foreach ($node->items as $subNode) {
                 $this->compileNode($subNode, $returnContext);
             }
@@ -194,6 +196,14 @@ class Compiler {
         $this->compileChild($node, 'else', $elseAssign);
         $this->opArray[] = new OpLines\Assign($returnContext, $elseAssign);
         $this->opArray[] = $endOp;
+    }
+
+    protected function compile_Expr_Variable($node, $returnContext) {
+        $name = Zval::ptrFactory();
+        $this->compileChild($node, 'name', $name);
+        $variable = Zval::variableFactory($name);
+        $this->opArray->addCompiledVariable($variable);
+        $returnContext->assignZval($variable);
     }
 
     protected function compile_Scalar_Encapsed($node, $returnContext = null) {
@@ -249,14 +259,16 @@ class Compiler {
         $value = Zval::ptrFactory();
         $this->compileChild($node, 'valueVar', $value);
 
-        $this->opArray[] = new OpLines\Iterate($iteratePtr, $endOp);
+        $iterator = Zval::iteratorFactory();
 
-        $iterateValues = new OpLines\IterateValues($iteratePtr, $key, $value);
+        $this->opArray[] = new OpLines\Iterate($iteratePtr, $endOp, $iterator);
+
+        $iterateValues = new OpLines\IterateValues($iterator, $key, $value);
         $this->opArray[] = $iterateValues;
 
         $this->compileChild($node, 'stmts');
 
-        $this->opArray[] = new OpLines\IterateNext($iteratePtr, $iterateValues);
+        $this->opArray[] = new OpLines\IterateNext($iterator, $iterateValues);
         $this->opArray[] = $endOp;
     }
 
@@ -268,9 +280,8 @@ class Compiler {
             $arg = Zval::ptrFactory();
             $this->opArray[] = new OpLines\Recv(Zval::factory($i), null, $arg);
 
-            $var = Zval::ptrFactory();
-            $this->opArray[] = new OpLines\FetchVariable(Zval::factory($param->name), null, $var);
-
+            $var = Zval::variableFactory(Zval::factory($param->name));
+            $this->opArray->addCompiledVariable($var);
             $this->opArray[] = new OpLines\Assign($var, $arg);
 
             // no default values for now. For those we need an AST -> zval conversion
@@ -278,6 +289,7 @@ class Compiler {
 
         $this->compileChild($node, 'stmts');
 
+        $this->opArray[] = new OpLines\ReturnOp;
         $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $this->opArray);
 
         $this->opArray = $prevOpArray;
