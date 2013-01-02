@@ -15,7 +15,12 @@ class Variable extends Zval {
     }
 
     public function __call($method, $args) {
-        $this->zval = $this->executor->getCurrent()->fetchVariable($this->name->toString());
+        $varName = $this->name->toString();
+        if ($varName == 'this') {
+            $this->zval = Zval::lockedPtrFactory($this->executor->getCurrent()->ci);
+        } else {
+            $this->zval = $this->executor->getCurrent()->fetchVariable($varName);
+        }
         return call_user_func_array(array($this->zval, $method), $args);
     }
 

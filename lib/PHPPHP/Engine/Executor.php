@@ -78,10 +78,6 @@ class Executor {
             $scope->symbolTable =& $this->executorGlobals->symbolTable;
         }
 
-        if ($ci) {
-            $scope->symbolTable['this'] = Zval::lockedPtrFactory($ci);
-        }
-
         while (!$this->shutdown && $scope->opLine) {
             $ret = $scope->opLine->execute($scope);
             switch ($ret) {
