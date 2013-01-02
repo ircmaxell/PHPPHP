@@ -272,19 +272,24 @@ class Compiler {
         $this->opArray[] = $endOp;
     }
 
-    protected function compile_Stmt_Function($node) {
+    protected function compile_Stmt_Function(\PHPParser_Node_Stmt_Function $node) {
         $prevOpArray = $this->opArray;
         $this->opArray = new OpArray;
 
         foreach ($node->params as $i => $param) {
             $arg = Zval::ptrFactory();
-            $this->opArray[] = new OpLines\Recv(Zval::factory($i), null, $arg);
+
+            if ($param->default) {
+                $this->opArray[] = new OpLines\RecvInit(
+                    Zval::factory($i), $this->makeZvalFromNode($param->default), $arg
+                );
+            } else {
+                $this->opArray[] = new OpLines\Recv(Zval::factory($i), null, $arg);
+            }
 
             $var = Zval::variableFactory(Zval::factory($param->name));
             $this->opArray->addCompiledVariable($var);
             $this->opArray[] = new OpLines\Assign($var, $arg);
-
-            // no default values for now. For those we need an AST -> zval conversion
         }
 
         $this->compileChild($node, 'stmts');
@@ -413,5 +418,39 @@ class Compiler {
 
     protected function compile_Stmt_InlineHtml($node) {
         $this->opArray[] = new OpLines\EchoOp(Zval::ptrFactory($node->value));
+    }
+
+    protected function makeZvalFromNodeStrict(\PHPParser_Node $node) {
+        $zval = $this->makeZvalFromNode($node);
+
+        if (null === $zval) {
+            throw new \Exception('Cannot evaluate non-constant expression at compile time');
+        }
+
+        return $zval;
+    }
+
+    protected function makeZvalFromNode(\PHPParser_Node $node) {
+        if ($node instanceof \PHPParser_Node_Scalar_LNumber
+            || $node instanceof \PHPParser_Node_Scalar_DNumber
+            || $node instanceof \PHPParser_Node_Scalar_String
+        ) {
+            return Zval::factory($node->value);
+        } elseif ($node instanceof \PHPParser_Node_Expr_Array) {
+            $array = array();
+            foreach ($node->items as $item) {
+                if ($item->byRef) {
+                    return null;
+                }
+
+                $array[$this->makeZvalFromNode($item->key)] = $this->makeZvalFromNode($item->value);
+            }
+            return $array;
+        } elseif ($node instanceof \PHPParser_Node_Scalar_FileConst /* ... */) {
+            /* TODO */
+            return null;
+        } else {
+            return null;
+        }
     }
 }
