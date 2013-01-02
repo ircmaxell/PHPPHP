@@ -11,6 +11,8 @@ To see what's supported so far, check out the opcodes.
 
 Right now, functions (definitions and calls) are supported, if statements (with basic boolean operations), if statements, as are variables and some basic variable operations...
 
+To see the current state of the implementation versus the [Core Language Test Suite](https://github.com/php/php-src/tree/master/tests/lang), check out the [test results file](https://github.com/ircmaxell/PHPPHP/blob/master/test-results.html.md).
+
 Installation
 ============
 
