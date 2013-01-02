@@ -3,6 +3,8 @@
 namespace PHPPHP\Engine\Zval;
 
 use PHPPHP\Engine\Zval;
+use PHPPHP\Engine\Objects\ClassInstance;
+use PHPPHP\Engine\ExecuteData;
 
 class Value extends Zval {
 
@@ -107,6 +109,10 @@ class Value extends Zval {
         return is_string($this->value);
     }
 
+    public function isObject() {
+        return $this->value instanceof ClassInstance;
+    }
+
     public function toArray() {
         return (array) $this->value;
     }
@@ -125,6 +131,22 @@ class Value extends Zval {
 
     public function toString() {
         return (string) $this->value;
+    }
+
+    public function toObject(ExecuteData $data) {
+        if ($this->isObject()) {
+            return $this->value;
+        } else {
+            if ($this->isArray()) {
+                $properties = $this;
+            } else {
+                $properties = array(
+                    'scalar' => Zval::ptrFactory($this->value),
+                );
+            }
+            $ce = $data->executor->getClassStore()->get('stdClass');
+            return $ce->instantiate($data, $properties);
+        }
     }
 
     public function setValue($value) {

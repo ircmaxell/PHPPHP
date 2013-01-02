@@ -22,13 +22,15 @@ class Executor {
 
     protected $functionStore;
     protected $constantStore;
+    protected $classStore;
 
-    public function __construct(FunctionStore $functionStore, ConstantStore $constantStore) {
+    public function __construct(FunctionStore $functionStore, ConstantStore $constantStore, ClassStore $classStore) {
         $this->executorGlobals = new ExecutorGlobals;
         $this->parser = new Parser;
         $this->compiler = new Compiler;
         $this->functionStore = $functionStore;
         $this->constantStore = $constantStore;
+        $this->classStore = $classStore;
 
         $this->extensions = new \SplObjectStorage;
     }
@@ -103,6 +105,10 @@ class Executor {
 
     public function getConstantStore() {
         return $this->constantStore;
+    }
+
+    public function getClassStore() {
+        return $this->classStore;
     }
 
     public function registerExtension(Extension $extension) {

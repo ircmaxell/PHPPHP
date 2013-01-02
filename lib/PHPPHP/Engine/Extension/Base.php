@@ -18,6 +18,10 @@ abstract class Base implements \PHPPHP\Engine\Extension {
         foreach ($this->getConstants() as $name => $value) {
             $constantStore->register($name, Engine\Zval::factory($value));
         }
+        $classStore = $executor->getClassStore();
+        foreach ($this->getClasses() as $ce) {
+            $classStore->register($ce);
+        }
     }
 
     public function getName() {
@@ -40,6 +44,10 @@ abstract class Base implements \PHPPHP\Engine\Extension {
     abstract protected function loadFunctions();
 
     protected function getConstants() {
+        return array();
+    }
+
+    protected function getClasses() {
         return array();
     }
 }

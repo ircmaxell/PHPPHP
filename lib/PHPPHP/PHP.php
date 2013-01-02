@@ -11,8 +11,9 @@ class PHP {
     public function __construct() {
         $functions = new Engine\FunctionStore;
         $constants = new Engine\ConstantStore;
+        $classes = new Engine\ClassStore;
 
-        $this->executor = new Engine\Executor($functions, $constants);
+        $this->executor = new Engine\Executor($functions, $constants, $classes);
         $this->executor->setOutput(new Engine\Output\Std($this->executor));
 
         $this->executor->registerExtension(new Engine\CoreExtension);

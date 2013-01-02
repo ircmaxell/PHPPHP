@@ -2,6 +2,8 @@
 
 namespace PHPPHP\Engine;
 
+use PHPPHP\Engine\Objects\ClassEntry;
+
 class Compiler {
 
     protected $operators = array(
@@ -19,6 +21,7 @@ class Compiler {
         'Expr_Cast_Double' => array('UnaryOp', 'PHPPHP\Engine\OpLines\CastDouble', 'expr'),
         'Expr_Cast_Int'    => array('UnaryOp', 'PHPPHP\Engine\OpLines\CastInt', 'expr'),
         'Expr_Cast_String' => array('UnaryOp', 'PHPPHP\Engine\OpLines\CastString', 'expr'),
+        'Expr_Cast_Object' => array('UnaryOp', 'PHPPHP\Engine\OpLines\CastObject', 'expr'),
         'Expr_Eval'        => array('UnaryOp', 'PHPPHP\Engine\OpLines\EvalOp', 'expr'),
         'Expr_Exit'        => array('UnaryOp', 'PHPPHP\Engine\OpLines\ExitOp', 'expr'),
         'Expr_BooleanNot'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\BooleanNot'),
@@ -72,6 +75,9 @@ class Compiler {
 
     /** @var OpArray */
     protected $opArray;
+
+    /** @var ClassEntry */
+    protected $currentClass;
 
     public function compile(array $ast, Zval\Ptr $returnContext = null) {
         $opArray = new OpArray;
@@ -315,38 +321,7 @@ class Compiler {
     }
 
     protected function compile_Stmt_Function(\PHPParser_Node_Stmt_Function $node) {
-        $prevOpArray = $this->opArray;
-        $this->opArray = new OpArray;
-
-        foreach ($node->params as $i => $param) {
-            $arg = Zval::ptrFactory();
-
-            if ($param->default) {
-                $this->opArray[] = new OpLines\RecvInit(
-                    Zval::factory($i), $this->makeZvalFromNode($param->default), $arg
-                );
-            } else {
-                $this->opArray[] = new OpLines\Recv(Zval::factory($i), null, $arg);
-            }
-
-            $var = Zval::variableFactory(Zval::factory($param->name));
-            $this->opArray->addCompiledVariable($var);
-            if ($param->byRef) {
-                $this->opArray[] = new OpLines\AssignRef($var, $arg);
-            } else {
-                $this->opArray[] = new OpLines\Assign($var, $arg);
-            }
-        }
-
-        $this->compileChild($node, 'stmts');
-
-        $this->opArray[] = new OpLines\ReturnOp;
-
-        $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef);
-
-        $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $funcData);
-
-        $this->opArray = $prevOpArray;
+        $this->compileFunction($node);
     }
 
     protected function compile_Stmt_Global($node) {
@@ -463,6 +438,72 @@ class Compiler {
 
     protected function compile_Stmt_InlineHtml($node) {
         $this->opArray[] = new OpLines\EchoOp(Zval::ptrFactory($node->value));
+    }
+
+    protected function compile_Stmt_Class($node) {
+        $class = new ClassEntry($node->name);
+        $this->currentClass = $class;
+        $this->compileChild($node, 'stmts');
+        $this->currentClass = null;
+        $this->opArray[] = new OpLines\ClassDef($class);
+    }
+
+    protected function compile_Stmt_Property($node) {
+    }
+
+    protected function compile_Stmt_ClassMethod($node) {
+        $this->compileFunction($node);
+    }
+
+    public function compile_Expr_New($node, $returnContext = null) {
+        $this->opArray[] = new OpLines\NewOp(Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
+    }
+
+    public function compile_Expr_MethodCall($node, $returnContext = null) {
+        $var = Zval::ptrFactory();
+        $this->compileChild($node, 'var', $var);
+        $op = new OpLines\MethodCall(Zval::ptrFactory($node->name), Zval::ptrFactory($node->args), $returnContext);
+        $op->setObjectOp($var);
+        $this->opArray[] = $op;
+    }
+
+    protected function compileFunction($node) {
+        $prevOpArray = $this->opArray;
+        $this->opArray = new OpArray;
+
+        foreach ($node->params as $i => $param) {
+            $arg = Zval::ptrFactory();
+
+            if ($param->default) {
+                $this->opArray[] = new OpLines\RecvInit(
+                    Zval::factory($i), $this->makeZvalFromNode($param->default), $arg
+                );
+            } else {
+                $this->opArray[] = new OpLines\Recv(Zval::factory($i), null, $arg);
+            }
+
+            $var = Zval::variableFactory(Zval::factory($param->name));
+            $this->opArray->addCompiledVariable($var);
+            if ($param->byRef) {
+                $this->opArray[] = new OpLines\AssignRef($var, $arg);
+            } else {
+                $this->opArray[] = new OpLines\Assign($var, $arg);
+            }
+        }
+
+        $this->compileChild($node, 'stmts');
+
+        $this->opArray[] = new OpLines\ReturnOp;
+
+        $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef);
+
+        if ($this->currentClass) {
+            $this->currentClass->addMethod($node->name, $funcData);
+        } else {
+            $prevOpArray[] = new OpLines\FunctionDef(Zval::factory($node->name), $funcData);
+        }
+
+        $this->opArray = $prevOpArray;
     }
 
     protected function makeZvalFromNodeStrict(\PHPParser_Node $node) {
