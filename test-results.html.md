@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 08:04:15</h2>
+<h2>Time Start: 2013-01-02 08:13:16</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -260,7 +260,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Returning a reference from a static method via another static method</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Returning a reference from a non-static method via another non-static method</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Returning a references returned by another function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td><script> tag</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>&lt;script&gt; tag</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>short_open_tag: On</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>short_open_tag: Off</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>short_open_tag: On, asp_tags: On</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,7 +276,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 08:05:03</h2>
+<h2>Time End: 2013-01-02 08:14:06</h2>
 <hr/>
 <pre>
 
@@ -287,7 +287,7 @@ Tests failed    :  177 ( 64.8%) ( 67.3%)
 Expected fail   :    0 (  0.0%) (  0.0%)
 Tests passed    :   86 ( 31.5%) ( 32.7%)
 ---------------------------------------------------------------------
-Time taken      :   48 seconds
+Time taken      :   50 seconds
 =====================================================================
 
 =====================================================================
