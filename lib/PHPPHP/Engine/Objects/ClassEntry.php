@@ -22,6 +22,17 @@ class ClassEntry
         $this->parent = $parent;
     }
 
+    public function isInstanceOf($name) {
+        $parent = $this;
+        $name = strtolower($name);
+        do {
+            if ($name == strtolower($parent->name)) {
+                return true;
+            }
+        } while ($parent = $parent->parent);
+        return false;
+    }
+
     public function getName()
     {
         return $this->name;
