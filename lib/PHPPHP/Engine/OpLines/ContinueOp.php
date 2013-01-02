@@ -12,9 +12,10 @@ class ContinueOp extends \PHPPHP\Engine\OpLine {
         $jump = null;
         for ($i = 0; $i < $num; $i++) {
             $jump = array_pop($data->statementStack);
-            if ($jump && !$jump->startOp) $i--;
+            if ($jump && null === $jump->startOp) $i--;
         }
-        if ($jump && $jump->startOp) {
+        if ($jump && null !== $jump->startOp) {
+            $data->statementStack[] = $jump;
             $data->jump($jump->startOp);
         } else {
             throw new \RuntimeException('continue from without context');

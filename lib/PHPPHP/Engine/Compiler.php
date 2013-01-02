@@ -247,11 +247,12 @@ class Compiler {
         $this->compileChild($node, 'init');
 
         $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush;
-        $stackPushOp->op1 = $startJumpPos = $this->opArray->getNextOffset();
+        $startJumpPos = $this->opArray->getNextOffset();
         $condPtr = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $condPtr);
         $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($condPtr);
         $this->compileChild($node, 'stmts');
+        $stackPushOp->op1 = $this->opArray->getNextOffset();
         $this->compileChild($node, 'loop');
         $this->opArray[] = new OpLines\Jump($startJumpPos);
         $stackPushOp->op2 = $endJumpOp->op2 = $this->opArray->getNextOffset();
@@ -425,8 +426,9 @@ class Compiler {
         $op1 = Zval::ptrFactory();
 
         $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush;
-        $stackPushOp->op1 = $startJumpPos = $this->opArray->getNextOffset();
+        $startJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'stmts');
+        $stackPushOp->op1 = $this->opArray->getNextOffset();
         $this->compileChild($node, 'cond', $op1);
         $this->opArray[] = new OpLines\JumpIf($op1, $startJumpPos);
         $stackPushOp->op2 = $this->opArray->getNextOffset();
