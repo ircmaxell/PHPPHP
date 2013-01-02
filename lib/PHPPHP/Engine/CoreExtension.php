@@ -2,6 +2,8 @@
 
 namespace PHPPHP\Engine;
 
+use PHPPHP\Engine\Objects\ClassEntry;
+
 final class CoreExtension extends Extension\Base {
 
     protected $name = 'Core';
@@ -57,4 +59,9 @@ final class CoreExtension extends Extension\Base {
         );
     }
 
+    protected function getClasses() {
+        return array(
+            new ClassEntry('stdClass'),
+        );
+    }
 }
