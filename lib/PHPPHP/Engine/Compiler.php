@@ -365,17 +365,15 @@ class Compiler {
     }
 
     protected function compile_Stmt_Static($node) {
-        $endOp = new OpLines\NoOp;
-        $this->opArray[] = new OpLines\StaticOp($endOp);
         $this->compileChild($node, 'vars');
-        $this->opArray[] = $endOp;
     }
 
     protected function compile_Stmt_StaticVar($node) {
         $varName = Zval::ptrFactory();
         $this->compileChild($node, 'name', $varName);
-        $varValue = Zval::ptrFactory();
+        $varValue = null;
         if ($node->default) {
+            $varValue = Zval::ptrFactory();
             $this->compileChild($node, 'default', $varValue);
         }
         $this->opArray[] = new OpLines\StaticAssign($varName, $varValue);

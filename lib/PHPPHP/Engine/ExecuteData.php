@@ -13,10 +13,11 @@ class ExecuteData {
     public $symbolTable = array();
     protected $opPosition = 0;
 
-    public function __construct(Executor $executor, OpArray $opArray) {
+    public function __construct(Executor $executor, OpArray $opArray, FunctionData $function = null) {
         $this->executor = $executor;
         $this->opArray = $opArray;
         $this->opLine = $opArray[0];
+        $this->function = $function;
         $this->returnValue = Zval::ptrFactory();
     }
 

@@ -13,7 +13,7 @@ class BreakOp extends \PHPPHP\Engine\OpLine {
         for ($i = 0; $i < $num; $i++) {
             $jump = array_pop($data->statementStack);
         }
-        if ($jump) {
+        if ($jump && $jump->endOp) {
             $data->jumpTo($jump->endOp);
             $data->nextOp();
         } else {
