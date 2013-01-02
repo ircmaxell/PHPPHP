@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 13:19:40</h2>
+<h2>Time Start: 2013-01-02 14:05:17</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -30,7 +30,7 @@
 <tr><td>FAIL</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>$this in constructor test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Alternative syntaxes test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #12647 (Locale settings affecting float parsing)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2: set_exception_handler()</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -120,7 +120,7 @@
 <tr><td>FAIL</td><td>Catchable fatal error [2]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>#-style comments</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>#-style comments (part 2)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test standard 'compare' object handler</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test standard 'compare' object handler</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Test object compare when object handler different</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Binary safety of each() for both keys and values</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>empty() on array elements</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 13:20:52</h2>
+<h2>Time End: 2013-01-02 14:06:20</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  166 ( 60.8%) ( 63.1%)
+Tests failed    :  164 ( 60.1%) ( 62.4%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :   97 ( 35.5%) ( 36.9%)
+Tests passed    :   99 ( 36.3%) ( 37.6%)
 ---------------------------------------------------------------------
-Time taken      :   72 seconds
+Time taken      :   63 seconds
 =====================================================================
 
 =====================================================================
@@ -300,7 +300,6 @@ Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.php
 Mean recursion test [vendor/php/php-src/tests/lang/025.phpt]
 Testing calling user-level functions from C [vendor/php/php-src/tests/lang/028.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
-Class method registration [vendor/php/php-src/tests/lang/032.phpt]
 Bug #12647 (Locale settings affecting float parsing) [vendor/php/php-src/tests/lang/034.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
 Child public element should not override parent private element in parent methods [vendor/php/php-src/tests/lang/036.phpt]
@@ -375,7 +374,6 @@ Bug #45392 (ob_start()/ob_end_clean() and memory_limit) [vendor/php/php-src/test
 Bug #7515 (weird & invisible referencing of objects) [vendor/php/php-src/tests/lang/bug7515.phpt]
 Catchable fatal error [1] [vendor/php/php-src/tests/lang/catchable_error_001.phpt]
 Catchable fatal error [2] [vendor/php/php-src/tests/lang/catchable_error_002.phpt]
-Test standard 'compare' object handler [vendor/php/php-src/tests/lang/compare_objects_basic1.phpt]
 Test object compare when object handler different [vendor/php/php-src/tests/lang/compare_objects_basic2.phpt]
 Binary safety of each() for both keys and values [vendor/php/php-src/tests/lang/each_binary_safety.phpt]
 empty() on array elements [vendor/php/php-src/tests/lang/empty_variation.phpt]
