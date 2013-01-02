@@ -16,6 +16,7 @@ class Executor {
     protected $shutdown = false;
     protected $compiler;
     protected $files = array();
+    protected $output;
 
     protected $extensions;
 
@@ -30,6 +31,14 @@ class Executor {
         $this->constantStore = $constantStore;
 
         $this->extensions = new \SplObjectStorage;
+    }
+
+    public function getOutput() {
+        return $this->output;
+    }
+
+    public function setOutput(Output $output) {
+        $this->output = $output;
     }
 
     public function hasFile($fileName) {

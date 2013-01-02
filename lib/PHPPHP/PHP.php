@@ -13,6 +13,7 @@ class PHP {
         $constants = new Engine\ConstantStore;
 
         $this->executor = new Engine\Executor($functions, $constants);
+        $this->executor->setOutput(new Engine\Output\Std($this->executor));
 
         $this->executor->registerExtension(new Engine\CoreExtension);
     }
@@ -23,6 +24,7 @@ class PHP {
         if ($retval) {
             return $retval->getValue();
         }
+        $this->executor->getOutput()->finish();
         return null;
     }
 

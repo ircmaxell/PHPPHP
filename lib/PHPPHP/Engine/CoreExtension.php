@@ -44,7 +44,8 @@ final class CoreExtension extends Extension\Base {
     }
 
     protected function loadFunctions() {
-        require_once __DIR__ . '/Functions.php';
+        require_once __DIR__ . '/ext/Functions.php';
+        require_once __DIR__ . '/ext/OutputBuffer.php';
     }
 
     protected function getConstants() {
@@ -54,6 +55,10 @@ final class CoreExtension extends Extension\Base {
             'PHP_OS'       => PHP_OS,
             'PHP_VERSION'  => PHP_VERSION,
             'E_ERROR'      => E_ERROR,
+
+            'PHP_OUTPUT_HANDLER_START' => PHP_OUTPUT_HANDLER_START,
+            'PHP_OUTPUT_HANDLER_END'   => PHP_OUTPUT_HANDLER_END,
+
         );
     }
 

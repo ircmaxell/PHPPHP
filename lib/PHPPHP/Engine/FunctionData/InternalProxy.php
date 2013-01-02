@@ -13,7 +13,12 @@ class InternalProxy implements Engine\FunctionData {
 
     public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null) {
         $rawArgs = $this->compileArguments($args);
+        ob_start();
         $ret = call_user_func_array($this->callback, $rawArgs);
+        $out = ob_get_clean();
+        if ($out) {
+            $executor->getOutput()->write($out);
+        }
         if ($return) {
             $return->setValue($this->compileReturn($ret));
         }
