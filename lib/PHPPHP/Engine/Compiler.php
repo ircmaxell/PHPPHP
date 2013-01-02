@@ -293,10 +293,18 @@ class Compiler {
 
         $iterator = Zval::iteratorFactory();
 
-        $this->opArray[] = $iterateOp = new OpLines\Iterate($iteratePtr, null, $iterator);
+        
+        if ($node->byRef) {
+            $this->opArray[] = $iterateOp = new OpLines\IterateByRef($iteratePtr, null, $iterator);
 
-        $iterateValuesJumpPos = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\IterateValues($iterator, $key, $value);
+            $iterateValuesJumpPos = $this->opArray->getNextOffset();
+            $this->opArray[] = new OpLines\IterateValuesByRef($iterator, $key, $value);
+        } else {
+            $this->opArray[] = $iterateOp = new OpLines\Iterate($iteratePtr, null, $iterator);
+
+            $iterateValuesJumpPos = $this->opArray->getNextOffset();
+            $this->opArray[] = new OpLines\IterateValues($iterator, $key, $value);
+        }
 
         $this->compileChild($node, 'stmts');
 

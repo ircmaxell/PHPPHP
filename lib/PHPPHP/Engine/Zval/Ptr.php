@@ -54,6 +54,9 @@ class Ptr extends Zval {
     }
 
     public function forceValue(Zval $value) {
+        if ($this->zval instanceof Variable) {
+            return $this->zval->forceValue($value);
+        }
         $value = $value->getZval();
         $this->zval->delRef();
         $this->zval = $value;

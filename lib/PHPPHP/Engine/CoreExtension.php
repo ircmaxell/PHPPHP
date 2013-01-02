@@ -32,6 +32,7 @@ final class CoreExtension extends Extension\Base {
             'join',
             'php_uname',
             'phpversion',
+            'print_r',
             'realpath',
             'strlen',
             'var_dump',

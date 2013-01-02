@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 12:42:55</h2>
+<h2>Time Start: 2013-01-02 13:19:40</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -44,10 +44,10 @@
 <tr><td>FAIL</td><td>Dynamic call for static methods</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Dynamic call for static methods dynamically named</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Timeout again inside register_shutdown_function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Square bracket array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Square bracket associative array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Testing array shortcut and bracket operator</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Testing nested array shortcut</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Square bracket array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Square bracket associative array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Testing array shortcut and bracket operator</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Testing nested array shortcut</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bison weirdness</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #17115 (lambda functions produce segfault with static vars)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #18872 (class constant used as default parameter)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -114,7 +114,7 @@
 <tr><td>PASS</td><td>Bug #44654 (syntax error for #)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #44827 (Class error when trying to access :: as constant)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #45392 (ob_start()/ob_end_clean() and memory_limit)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #7515 (weird & invisible referencing of objects)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catchable fatal error [1]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catchable fatal error [2]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -142,7 +142,7 @@
 <tr><td>FAIL</td><td>Foreach loop tests - modifying the array during the loop: special case. Behaviour is good since php 5.2.2.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - error case: key is a reference.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - foreach operates on the original array if the array is referenced outside the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
+<tr><td>PASS</td><td>This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
 It will pass only if the 'contentious code' in PHPValue.decReferences() is enabled.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Changing from an interable type to a non iterable type during the iteration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Directly modifying an unreferenced array when foreach'ing over it.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -164,7 +164,7 @@ It will pass only if the 'contentious code' in PHPValue.decReferences() is enabl
 <tr><td>FAIL</td><td>Foreach loop tests - removing properties before and after the current property during the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - substituting the entire iterated entity during the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>foreach() with foreach($o->mthd()->arr)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>foreach() with references</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>foreach() with references</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_arg with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_arg outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 12:44:12</h2>
+<h2>Time End: 2013-01-02 13:20:52</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  173 ( 63.4%) ( 65.8%)
+Tests failed    :  166 ( 60.8%) ( 63.1%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :   90 ( 33.0%) ( 34.2%)
+Tests passed    :   97 ( 35.5%) ( 36.9%)
 ---------------------------------------------------------------------
-Time taken      :   77 seconds
+Time taken      :   72 seconds
 =====================================================================
 
 =====================================================================
@@ -313,10 +313,6 @@ Dynamic access of constants [vendor/php/php-src/tests/lang/042.phpt]
 Dynamic call for static methods [vendor/php/php-src/tests/lang/043.phpt]
 Dynamic call for static methods dynamically named [vendor/php/php-src/tests/lang/044.phpt]
 Timeout again inside register_shutdown_function [vendor/php/php-src/tests/lang/045.phpt]
-Square bracket array shortcut test [vendor/php/php-src/tests/lang/array_shortcut_001.phpt]
-Square bracket associative array shortcut test [vendor/php/php-src/tests/lang/array_shortcut_002.phpt]
-Testing array shortcut and bracket operator [vendor/php/php-src/tests/lang/array_shortcut_003.phpt]
-Testing nested array shortcut [vendor/php/php-src/tests/lang/array_shortcut_005.phpt]
 Bison weirdness [vendor/php/php-src/tests/lang/bison1.phpt]
 Bug #17115 (lambda functions produce segfault with static vars) [vendor/php/php-src/tests/lang/bug17115.phpt]
 Bug #18872 (class constant used as default parameter) [vendor/php/php-src/tests/lang/bug18872.phpt]
@@ -376,7 +372,6 @@ Bug #38579 (include_once() may include the same file twice) [vendor/php/php-src/
 Bug #43958 (class name added into the error message) [vendor/php/php-src/tests/lang/bug43958.phpt]
 Bug #44827 (Class error when trying to access :: as constant) [vendor/php/php-src/tests/lang/bug44827.phpt]
 Bug #45392 (ob_start()/ob_end_clean() and memory_limit) [vendor/php/php-src/tests/lang/bug45392.phpt]
-Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params) [vendor/php/php-src/tests/lang/bug55754.phpt]
 Bug #7515 (weird & invisible referencing of objects) [vendor/php/php-src/tests/lang/bug7515.phpt]
 Catchable fatal error [1] [vendor/php/php-src/tests/lang/catchable_error_001.phpt]
 Catchable fatal error [2] [vendor/php/php-src/tests/lang/catchable_error_002.phpt]
@@ -402,8 +397,6 @@ Foreach loop tests - using an array element as the $value [vendor/php/php-src/te
 Foreach loop tests - modifying the array during the loop: special case. Behaviour is good since php 5.2.2. [vendor/php/php-src/tests/lang/foreachLoop.005.phpt]
 Foreach loop tests - error case: key is a reference. [vendor/php/php-src/tests/lang/foreachLoop.006.phpt]
 Foreach loop tests - foreach operates on the original array if the array is referenced outside the loop. [vendor/php/php-src/tests/lang/foreachLoop.009.phpt]
-This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
-It will pass only if the 'contentious code' in PHPValue.decReferences() is enabled. [vendor/php/php-src/tests/lang/foreachLoop.010.phpt]
 Changing from an interable type to a non iterable type during the iteration [vendor/php/php-src/tests/lang/foreachLoop.011.phpt]
 Directly modifying an unreferenced array when foreach'ing over it. [vendor/php/php-src/tests/lang/foreachLoop.012.phpt]
 Directly modifying an unreferenced array when foreach'ing over it while using &$value syntax. [vendor/php/php-src/tests/lang/foreachLoop.013.phpt]
@@ -423,7 +416,6 @@ Foreach loop tests - Removing the current element from an iterated object. [vend
 Foreach loop tests - removing properties before and after the current property during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.005.phpt]
 Foreach loop tests - substituting the entire iterated entity during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.006.phpt]
 foreach() with foreach($o->mthd()->arr) [vendor/php/php-src/tests/lang/foreach_with_object_001.phpt]
-foreach() with references [vendor/php/php-src/tests/lang/foreach_with_references_001.phpt]
 func_get_arg outside of a function declaration [vendor/php/php-src/tests/lang/func_get_arg.003.phpt]
 func_get_arg on non-existent arg [vendor/php/php-src/tests/lang/func_get_arg.004.phpt]
 A variable, which is referenced by another variable, is passed by value.
