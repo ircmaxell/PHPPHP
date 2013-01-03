@@ -67,8 +67,8 @@ class Value extends Zval {
     }
 
     public function makePrintable() {
-        $ret = 'unknown';
-        switch (gettype($this->value)) {
+        $type = gettype($this->value);
+        switch ($type) {
             case 'NULL':
                 $ret = '';
                 break;
@@ -82,13 +82,11 @@ class Value extends Zval {
             case 'float':
             case 'integer':
             case 'long':
+            case 'string':
                 $ret = (string) $this->value;
                 break;
-            case 'string':
-                $ret = $this->value;
-                break;
             default:
-                throw new \LogicException('Unknown Type: ' . gettype($this->value));
+                throw new \LogicException('Unknown Type: ' . $type);
         }
         return self::factory($ret);
     }
