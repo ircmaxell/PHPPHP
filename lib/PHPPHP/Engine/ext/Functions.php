@@ -19,6 +19,55 @@ function PHP_call_user_func(Executor $executor, array $args, Zval $return) {
     }
 }
 
+function PHP_debug_backtrace(Executor $executor, array $args, Zval $return) {
+    $array = array();
+    $current = $executor->getCurrent();
+    while ($current->parent) {
+        $parent = $current->parent;
+        $ret = array(
+            'line' => $parent->opLine->attributes['startLine'],
+            'file' => $parent->opArray->getFileName(),
+        );
+        if ($current->function) {
+            if ($current->ci) {
+                $ret['class'] = $current->ci->getClassEntry()->getName();
+                $ret['object'] = $current->ci;
+                $ret['type'] = '->';
+                $ret['function'] = $current->ci->getClassEntry()->getMethodStore()->getName($current->function);
+            } else {
+                $ret['function'] = $current->executor->getFunctionStore()->getName($current->function);
+            }
+            $ret['args'] = $current->arguments;
+        }
+        $array[] = $ret;
+        $current = $parent;
+    }
+    $return->setValue($array);
+}
+
+function PHP_debug_print_backtrace(Executor $executor, array $args) {
+    $return = Zval::ptrFactory();
+    PHP_debug_backtrace($executor, $args, $return);
+    $output = $executor->getOutput();
+    $frames = $return->toArray();
+    foreach ($frames as $num => $stackFrame) {
+        if (isset($stackFrame['function'])) {
+            $class = isset($stackFrame['class']) ? $stackFrame['class'] : '';
+            $class .= isset($stackFrame['type']) ? $stackFrame['type'] : '';
+            $args = '';
+            $sep = '';
+            foreach ($stackFrame['args'] as $arg) {
+                $args .= $sep . $arg->makePrintable()->getValue();
+                $sep = ', ';
+            }
+            $line = "#$num $class{$stackFrame['function']}($args) called at [{$stackFrame['file']}:{$stackFrame['line']}]";
+        } else {
+            $line = "#$num include() [{$stackFrame['file']}:{$stackFrame['line']}]";
+        }
+        $output->write($line . "\n");
+    } 
+}
+
 function PHP_define(Executor $executor, array $args) {
     $executor->getConstantStore()->register($args[0]->toString(), $args[1]->getZval());
 }

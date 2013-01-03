@@ -63,14 +63,34 @@ class Value extends Zval {
     }
 
     public function makePrintable() {
-        if (!$this->isString()) {
-            return $this->castTo('string');
+        $ret = 'unknown';
+        switch (gettype($this->value)) {
+            case 'NULL':
+                $ret = 'null';
+                break;
+            case 'array':
+                $ret = 'array';
+                break;
+            case 'boolean':
+                $ret = $this->value ? 'true' : 'false';
+                break;
+            case 'double':
+            case 'flost':
+            case 'long':
+                $ret = (string) $this->value;
+                break;
+            case 'string':
+                return '"' . $this->value . '"';
+            default:
+                throw new \LogicException('Unknown Type: ' . $this->type);
         }
-        return $this;
+        return self::factory($ret);
     }
 
     public function castTo($type) {
         switch ($type) {
+            case 'null':
+                return static::factory(null);
             case 'array':
                 return static::factory($this->toArray());
             case 'bool':

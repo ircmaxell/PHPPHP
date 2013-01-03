@@ -20,6 +20,10 @@ class ClassInstance
             $property->addRef();
         }, $this->properties);
     }
+    
+    public function getClassEntry() {
+        return $this->ce;
+    }
 
     public function callConstructor(ExecuteData $data, array $args) {
         $parent = $this->ce;

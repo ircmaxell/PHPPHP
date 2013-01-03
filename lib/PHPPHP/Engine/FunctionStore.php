@@ -27,4 +27,13 @@ class FunctionStore {
 
         return $this->functions[$name];
     }
+    
+    public function getName(FunctionData $func) {
+        foreach ($this->functions as $name => $test) {
+            if ($test === $func) {
+                return $name;
+            }
+        }
+        return '';
+    }
 }
