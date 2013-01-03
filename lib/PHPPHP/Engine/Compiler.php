@@ -177,13 +177,13 @@ class Compiler {
         $this->compileChild($node, $left, $op1);
         $this->compileChild($node, $right, $op2);
 
-        $this->opArray[] = new $class($node, $op1, $op2, $returnContext ?: Zval::ptrFactory());
+        $this->opArray[] = new $class($node->getLine(), $op1, $op2, $returnContext ?: Zval::ptrFactory());
     }
 
     protected function compileUnaryOp($node, $returnContext, $class, $expr = 'expr') {
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, $expr, $op1);
-        $this->opArray[] = new $class($node, $op1, null, $returnContext ?: Zval::ptrFactory());
+        $this->opArray[] = new $class($node->getLine(), $op1, null, $returnContext ?: Zval::ptrFactory());
     }
 
     protected function compileScalarOp($node, $returnContext, $name = 'value', $sep = '') {
@@ -214,15 +214,15 @@ class Compiler {
         $valuePtr = Zval::ptrFactory();
         $this->compileChild($node, 'value', $valuePtr);
 
-        $this->opArray[] = new OpLines\AddArrayElement($node, $keyPtr, $valuePtr, $returnContext);
+        $this->opArray[] = new OpLines\AddArrayElement($node->getLine(), $keyPtr, $valuePtr, $returnContext);
     }
 
     protected function compile_Expr_ErrorSuppress($node, $returnContext = null) {
         // Place holder for opcode to turn on suppression
-        $this->opArray[] = new OpLines\NoOp($node);
+        $this->opArray[] = new OpLines\NoOp($node->getLine());
         $this->compileChild($node, 'expr', $returnContext);
         // Place holder for opcode to turn off suppression
-        $this->opArray[] = new OpLines\NoOp($node);
+        $this->opArray[] = new OpLines\NoOp($node->getLine());
     }
 
     protected function compile_Expr_FuncCall($node, $returnContext = null) {
@@ -235,19 +235,19 @@ class Compiler {
             $this->compileChild($arg, 'value', $ptr);
             $args[] = $ptr;
         }
-        $this->opArray[] = new OpLines\InitFCallByName($node, null, $namePtr);
+        $this->opArray[] = new OpLines\InitFCallByName($node->getLine(), null, $namePtr);
 
         foreach ($args as $key => $arg) {
-            $this->opArray[] = new OpLines\Send($node, $arg, $key);
+            $this->opArray[] = new OpLines\Send($node->getLine(), $arg, $key);
         }
 
-        $this->opArray[] = new OpLines\FunctionCall($node, null, null, $returnContext ?: Zval::ptrFactory());;
+        $this->opArray[] = new OpLines\FunctionCall($node->getLine(), null, null, $returnContext ?: Zval::ptrFactory());;
     }
 
     public function compile_Expr_MethodCall($node, $returnContext = null) {
         $var = Zval::ptrFactory();
         $this->compileChild($node, 'var', $var);
-        $op = new OpLines\MethodCall($node, Zval::ptrFactory($node->name), Zval::ptrFactory($node->args), $returnContext);
+        $op = new OpLines\MethodCall($node->getLine(), Zval::ptrFactory($node->name), Zval::ptrFactory($node->args), $returnContext);
         $op->setObjectOp($var);
         $this->opArray[] = $op;
     }
@@ -275,31 +275,31 @@ class Compiler {
 
         foreach ($node->parts as $part) {
             if (is_string($part)) {
-                $this->opArray[] = new OpLines\AssignConcat($node, $lineContext, Zval::ptrFactory($part));
+                $this->opArray[] = new OpLines\AssignConcat($node->getLine(), $lineContext, Zval::ptrFactory($part));
             } else {
                 $ret = Zval::ptrFactory();
                 $this->compileNode($part, $ret);
-                $this->opArray[] = new OpLines\AssignConcat($node, $lineContext, $ret);
+                $this->opArray[] = new OpLines\AssignConcat($node->getLine(), $lineContext, $ret);
             }
         }
-        $this->opArray[] = new OpLines\ShellExec($node, null, null, $returnContext);
+        $this->opArray[] = new OpLines\ShellExec($node->getLine(), null, null, $returnContext);
     }
 
     protected function compile_Expr_Ternary($node, $returnContext = null) {
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $op1);
 
-        $this->opArray[] = $midJumpOp = new OpLines\JumpIfNot($node, $op1);
+        $this->opArray[] = $midJumpOp = new OpLines\JumpIfNot($node->getLine(), $op1);
 
         $ifAssign = Zval::ptrFactory();
         $this->compileChild($node, 'if', $ifAssign);
-        $this->opArray[] = new OpLines\Assign($node, $returnContext, $ifAssign);
-        $this->opArray[] = $endJumpOp = new OpLines\Jump($node);
+        $this->opArray[] = new OpLines\Assign($node->getLine(), $returnContext, $ifAssign);
+        $this->opArray[] = $endJumpOp = new OpLines\Jump($node->getLine());
 
         $midJumpOp->op2 = $this->opArray->getNextOffset();
         $elseAssign = Zval::ptrFactory();
         $this->compileChild($node, 'else', $elseAssign);
-        $this->opArray[] = new OpLines\Assign($node, $returnContext, $elseAssign);
+        $this->opArray[] = new OpLines\Assign($node->getLine(), $returnContext, $elseAssign);
         $endJumpOp->op1 = $this->opArray->getNextOffset();
     }
 
@@ -313,14 +313,14 @@ class Compiler {
 
     protected function compile_Scalar_Encapsed($node, $returnContext = null) {
         $returnContext = $returnContext ?: Zval::ptrFactory();
-        $this->opArray[] = new OpLines\Assign($node, $returnContext, Zval::ptrFactory(''));
+        $this->opArray[] = new OpLines\Assign($node->getLine(), $returnContext, Zval::ptrFactory(''));
         foreach ($node->parts as $part) {
             if (is_string($part)) {
-                $this->opArray[] = new OpLines\AssignConcat($node, $returnContext, Zval::ptrFactory($part));
+                $this->opArray[] = new OpLines\AssignConcat($node->getLine(), $returnContext, Zval::ptrFactory($part));
             } else {
                 $ret = Zval::ptrFactory();
                 $this->compileNode($part, $ret);
-                $this->opArray[] = new OpLines\AssignConcat($node, $returnContext, $ret);
+                $this->opArray[] = new OpLines\AssignConcat($node->getLine(), $returnContext, $ret);
             }
         }
     }
@@ -343,7 +343,7 @@ class Compiler {
             $op1 = Zval::ptrFactory();
             $this->compileChild($node, 'num', $op1);
         }
-        $this->opArray[] = new OpLines\BreakOp($node, $op1);
+        $this->opArray[] = new OpLines\BreakOp($node->getLine(), $op1);
     }
 
     protected function compile_Stmt_Continue($node) {
@@ -352,30 +352,30 @@ class Compiler {
             $op1 = Zval::ptrFactory();
             $this->compileChild($node, 'num', $op1);
         }
-        $this->opArray[] = new OpLines\ContinueOp($node, $op1);
+        $this->opArray[] = new OpLines\ContinueOp($node->getLine(), $op1);
     }
 
     protected function compile_Stmt_For($node) {
         $this->compileChild($node, 'init');
 
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node);
+        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
         $startJumpPos = $this->opArray->getNextOffset();
         $condPtr = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $condPtr);
-        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node, $condPtr);
+        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node->getLine(), $condPtr);
         $this->compileChild($node, 'stmts');
         $stackPushOp->op1 = $this->opArray->getNextOffset();
         $this->compileChild($node, 'loop');
-        $this->opArray[] = new OpLines\Jump($node, $startJumpPos);
+        $this->opArray[] = new OpLines\Jump($node->getLine(), $startJumpPos);
         $stackPushOp->op2 = $endJumpOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node);
+        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
     }
 
     protected function compile_Stmt_Foreach($node) {
         $iteratePtr = Zval::ptrFactory();
 
         $this->compileChild($node, 'expr', $iteratePtr);
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node);
+        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
 
         $key = null;
         if ($node->keyVar) {
@@ -389,23 +389,23 @@ class Compiler {
 
 
         if ($node->byRef) {
-            $this->opArray[] = $iterateOp = new OpLines\IterateByRef($node, $iteratePtr, null, $iterator);
+            $this->opArray[] = $iterateOp = new OpLines\IterateByRef($node->getLine(), $iteratePtr, null, $iterator);
 
             $iterateValuesJumpPos = $this->opArray->getNextOffset();
-            $this->opArray[] = new OpLines\IterateValuesByRef($node, $iterator, $key, $value);
+            $this->opArray[] = new OpLines\IterateValuesByRef($node->getLine(), $iterator, $key, $value);
         } else {
-            $this->opArray[] = $iterateOp = new OpLines\Iterate($node, $iteratePtr, null, $iterator);
+            $this->opArray[] = $iterateOp = new OpLines\Iterate($node->getLine(), $iteratePtr, null, $iterator);
 
             $iterateValuesJumpPos = $this->opArray->getNextOffset();
-            $this->opArray[] = new OpLines\IterateValues($node, $iterator, $key, $value);
+            $this->opArray[] = new OpLines\IterateValues($node->getLine(), $iterator, $key, $value);
         }
 
         $this->compileChild($node, 'stmts');
 
         $stackPushOp->op1 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\IterateNext($node, $iterator, $iterateValuesJumpPos);
+        $this->opArray[] = new OpLines\IterateNext($node->getLine(), $iterator, $iterateValuesJumpPos);
         $iterateOp->op2 = $stackPushOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node);
+        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
     }
 
     protected function compile_Stmt_Function(\PHPParser_Node_Stmt_Function $node) {
@@ -415,7 +415,7 @@ class Compiler {
     protected function compile_Stmt_Global($node) {
         foreach ($node->vars as $var) {
             $varName = (string) $var->name;
-            $this->opArray[] = new OpLines\FetchGlobalVariable($node, Zval::ptrFactory($varName));
+            $this->opArray[] = new OpLines\FetchGlobalVariable($node->getLine(), Zval::ptrFactory($varName));
         }
     }
 
@@ -425,11 +425,11 @@ class Compiler {
 
         $endJumpOps = array();
 
-        $this->opArray[] = $midJumpOp = new OpLines\JumpIfNot($node, $op1);
+        $this->opArray[] = $midJumpOp = new OpLines\JumpIfNot($node->getLine(), $op1);
 
         $this->compileChild($node, 'stmts');
 
-        $this->opArray[] = $endJumpOps[] = new OpLines\Jump($node);
+        $this->opArray[] = $endJumpOps[] = new OpLines\Jump($node->getLine());
 
         $midJumpOp->op2 = $this->opArray->getNextOffset();
 
@@ -438,9 +438,9 @@ class Compiler {
             $op1 = Zval::ptrFactory();
             $this->compileChild($child, 'cond', $op1);
 
-            $this->opArray[] = $midJumpOp = new OpLines\JumpIfNot($node, $op1);
+            $this->opArray[] = $midJumpOp = new OpLines\JumpIfNot($node->getLine(), $op1);
             $this->compileChild($child, 'stmts');
-            $this->opArray[] = $endJumpOps[] = new OpLines\Jump($node);
+            $this->opArray[] = $endJumpOps[] = new OpLines\Jump($node->getLine());
             $midJumpOp->op2 = $this->opArray->getNextOffset();
         }
 
@@ -465,22 +465,22 @@ class Compiler {
             $varValue = Zval::ptrFactory();
             $this->compileChild($node, 'default', $varValue);
         }
-        $this->opArray[] = new OpLines\StaticAssign($node, $varName, $varValue);
+        $this->opArray[] = new OpLines\StaticAssign($node->getLine(), $varName, $varValue);
     }
 
     protected function compile_Stmt_Switch($node) {
         $condPtr = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $condPtr);
 
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node);
+        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
 
         foreach ($node->cases as $case) {
             if ($case->cond) {
                 $comparePtr = Zval::ptrFactory();
                 $this->compileChild($case, 'cond', $comparePtr);
                 $conditionPtr = Zval::ptrFactory();
-                $this->opArray[] = new OpLines\Equal($node, $condPtr, $comparePtr, $conditionPtr);
-                $this->opArray[] = $caseEndJumpOp = new OpLines\JumpIfNot($node, $conditionPtr);
+                $this->opArray[] = new OpLines\Equal($node->getLine(), $condPtr, $comparePtr, $conditionPtr);
+                $this->opArray[] = $caseEndJumpOp = new OpLines\JumpIfNot($node->getLine(), $conditionPtr);
                 $this->compileChild($case, 'stmts');
                 $caseEndJumpOp->op2 = $this->opArray->getNextOffset();
             } else {
@@ -490,42 +490,42 @@ class Compiler {
         }
 
         $stackPushOp->op1 = $stackPushOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node);
+        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
     }
 
     protected function compile_Stmt_While($node) {
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node);
+        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
         $stackPushOp->op1 = $startJumpPos = $this->opArray->getNextOffset();
 
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $op1);
 
-        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node, $op1);
+        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node->getLine(), $op1);
 
         $this->compileChild($node, 'stmts');
 
         // jump back to cond
-        $this->opArray[] = new OpLines\Jump($node, $startJumpPos);
+        $this->opArray[] = new OpLines\Jump($node->getLine(), $startJumpPos);
 
         $stackPushOp->op2 = $endJumpOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node);
+        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
     }
 
     protected function compile_Stmt_Do($node) {
         $op1 = Zval::ptrFactory();
 
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node);
+        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
         $startJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'stmts');
         $stackPushOp->op1 = $this->opArray->getNextOffset();
         $this->compileChild($node, 'cond', $op1);
-        $this->opArray[] = new OpLines\JumpIf($node, $op1, $startJumpPos);
+        $this->opArray[] = new OpLines\JumpIf($node->getLine(), $op1, $startJumpPos);
         $stackPushOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node);
+        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
     }
 
     protected function compile_Stmt_InlineHtml($node) {
-        $this->opArray[] = new OpLines\EchoOp($node, Zval::ptrFactory($node->value));
+        $this->opArray[] = new OpLines\EchoOp($node->getLine(), Zval::ptrFactory($node->value));
     }
 
     protected function compile_Stmt_Class($node) {
@@ -533,7 +533,7 @@ class Compiler {
         $this->currentClass = $class;
         $this->compileChild($node, 'stmts');
         $this->currentClass = null;
-        $this->opArray[] = new OpLines\ClassDef($node, $class);
+        $this->opArray[] = new OpLines\ClassDef($node->getLine(), $class);
     }
 
     protected function compile_Stmt_Property($node) {
@@ -544,7 +544,7 @@ class Compiler {
     }
 
     public function compile_Expr_New($node, $returnContext = null) {
-        $this->opArray[] = new OpLines\NewOp($node, Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
+        $this->opArray[] = new OpLines\NewOp($node->getLine(), Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
     }
 
     protected function compileFunction($node) {
@@ -557,22 +557,22 @@ class Compiler {
             $params[] = new ParamData($param->name, $param->byRef, $param->type, (bool) $param->default);
 
             if ($param->default) {
-                $this->opArray[] = new OpLines\RecvInit($node, Zval::factory($i), $this->makeZvalFromNode($param->default));
+                $this->opArray[] = new OpLines\RecvInit($node->getLine(), Zval::factory($i), $this->makeZvalFromNode($param->default));
             } else {
-                $this->opArray[] = new OpLines\Recv($node, Zval::factory($i));
+                $this->opArray[] = new OpLines\Recv($node->getLine(), Zval::factory($i));
             }
         }
 
         $this->compileChild($node, 'stmts');
 
-        $this->opArray[] = new OpLines\ReturnOp($node);
+        $this->opArray[] = new OpLines\ReturnOp($node->getLine());
 
         $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef, $params);
 
         if ($this->currentClass) {
             $this->currentClass->getMethodStore()->register($node->name, $funcData);
         } else {
-            $prevOpArray[] = new OpLines\FunctionDef($node, Zval::factory($node->name), $funcData);
+            $prevOpArray[] = new OpLines\FunctionDef($node->getLine(), Zval::factory($node->name), $funcData);
         }
 
         $this->opArray = $prevOpArray;

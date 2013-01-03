@@ -36,7 +36,7 @@ Use the `php.sh` shell script to invoke php.php. This requires that `php` be in 
 ## Windows
 Use the `php.bat` shell script to invoke php.php. This requires that `php.exe` be in your system path.
 
-    php.bat -r "var_dump('foo');
+    php.bat -r "var_dump('foo');"
 
 ## Manual
 You can run the implementation from the command line using the `php.php` file directly.
