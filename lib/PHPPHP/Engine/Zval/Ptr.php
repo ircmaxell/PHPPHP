@@ -74,6 +74,7 @@ class Ptr extends Zval {
             if ($this->zval->isRef()) {
                 $this->zval->setValue($value);
             } elseif ($value->isRef()) {
+                $this->separateIfNotRef();
                 $this->zval->setValue($value);
             } elseif ($this->zval->getRefcount() == 1) {
                 $this->zval->setValue($value);

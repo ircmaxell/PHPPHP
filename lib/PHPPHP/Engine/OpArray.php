@@ -9,6 +9,16 @@ class OpArray implements \ArrayAccess, \IteratorAggregate {
     protected $opLines = array();
     protected $numOps = 0;
 
+    protected $fileName = '';
+    
+    public function __construct($fileName) {
+        $this->fileName = $fileName;
+    }
+    
+    public function getFileName() {
+        return $this->fileName;
+    }
+    
     public function addCompiledVariable(Zval\Variable $variable) {
         $this->compiledVariables[] = $variable;
     }
@@ -16,7 +26,7 @@ class OpArray implements \ArrayAccess, \IteratorAggregate {
     public function getCompiledVariables() {
         return $this->compiledVariables;
     }
-
+    
     public function registerExecutor(Executor $executor) {
         if (!$this->executor) {
             $this->executor = $executor;

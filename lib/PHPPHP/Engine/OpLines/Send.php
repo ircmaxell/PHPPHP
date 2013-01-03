@@ -2,10 +2,10 @@
 
 namespace PHPPHP\Engine\OpLines;
 
-class BooleanNot extends \PHPPHP\Engine\OpLine {
+class Send extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $this->result->setValue(!$this->op1->getValue());
+        $this->result->assignValue($this->op1);
 
         $data->nextOp();
     }

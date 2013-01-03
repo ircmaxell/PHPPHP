@@ -20,7 +20,20 @@ class PHP {
     }
 
     public function execute($code) {
-        $opCodes = $this->executor->compile($code);
+        $opCodes = $this->executor->compile($code, 'Command line code');
+        return $this->executeOpLines($opCodes);
+    }
+
+    public function executeFile($file) {
+        if (empty($file)) {
+            throw new \RuntimException('Filename must not be emptys');
+        }
+        
+        $opCodes = $this->executor->compileFile($file);
+        return $this->executeOpLines($opCodes);
+    }
+
+    public function executeOpLines(Engine\OpArray $opCodes) {
         $retval = $this->executor->execute($opCodes);
         if ($retval) {
             return $retval->getValue();
@@ -28,15 +41,5 @@ class PHP {
         $this->executor->getOutput()->finish();
         return null;
     }
-
-    public function executeFile($file) {
-        if (empty($file)) {
-            return;
-        }
-        $this->executor->executorGlobals->cwd = dirname($file);
-        $code = file_get_contents($file);
-        $this->execute($code);
-    }
-
 
 }

@@ -48,15 +48,19 @@ class Executor {
     }
 
     public function compileFile($fileName) {
+        $this->compiler->setFileName($fileName);
         if (!isset($this->files[$fileName])) {
             $code = file_get_contents($fileName);
             $this->files[$fileName] = $this->parser->parse($code);
         }
-        return $this->compiler->compile($this->files[$fileName]);
+        
+        $ret = $this->compiler->compile($this->files[$fileName]);
+        return $ret;
     }
 
-    public function compile($code) {
+    public function compile($code, $context) {
         $ast = $this->parser->parse($code);
+        $this->compiler->setFileName($context);
         return $this->compiler->compile($ast);
     }
 
