@@ -107,12 +107,12 @@ class Executor {
         die('Should never reach this point!');
     }
 
-    public function callCallback($callback, ExecuteData $data, array $args = array(), Zval $return = null) {
+    public function callCallback($callback, Executor $executor, array $args = array(), Zval $return = null) {
         if ($callback instanceof Zval) {
             $callback = $callback->getValue();
         }
         if (is_string($callback)) {
-            $this->functionStore->get($callback)->execute($data, $args, $return);
+            $this->functionStore->get($callback)->execute($executor, $args, $return);
             return;
         } elseif (is_array($callback)) {
             $class = $callback[0];
@@ -121,17 +121,17 @@ class Executor {
                 $class = $class->getValue();
             }
             if ($method instanceof Zval) {
-                $method = $class->getValue();
+                $method = $method->getValue();
             }
             if ($class instanceof Objects\ClassInstance) {
-                $class->callMethod($data, (string) $method, $args, $return);
+                $class->callMethod($executor->getCurrent(), (string) $method, $args, $return);
                 return;
             }
             if (is_string($class)) {
                 $class = $this->classStore->get($class);
             }
             if ($class instanceof Objects\ClassEntry) {
-                $class->callMethod($data, null, (string) $method, $args, $return);
+                $class->callMethod($executor->getCurrent(), null, (string) $method, $args, $return);
                 return;
             }
         }

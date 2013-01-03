@@ -6,6 +6,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $php = new PHPPHP\PHP;
 
+$php->registerExtensionByName('Shim'); // This *MUST* be the last core extension to be loaded!!!
+
 list($options, $args) = parseCliArgs($argv);
 
 if (isset($options['v'])) {

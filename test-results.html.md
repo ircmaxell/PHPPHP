@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-03 15:01:23</h2>
+<h2>Time Start: 2013-01-03 15:40:46</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -27,7 +27,7 @@
 <tr><td>PASS</td><td>Mean recursion test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing string scanner confirmance</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing do-while loop</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>$this in constructor test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -78,7 +78,7 @@
 <tr><td>FAIL</td><td>Bug #24499 (bogus handling of a public property as a private one)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24573 (debug_backtrace() crashes if $this is set to null)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24640 (var_export and var_dump can't output large float)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #24652 (broken array_flip())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #24652 (broken array_flip())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24658 (combo of typehint / reference causes crash)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)")</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24908 (super-globals can not be used in __destruct())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -94,13 +94,13 @@
 <tr><td>FAIL</td><td>Bug #26869 (constant as the key of static array)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #27354 (Modulus operator crashes PHP)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #27439 (foreach() with $this segfaults)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #27443 (defined() returns wrong type)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #27443 (defined() returns wrong type)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #27535 (Objects pointing to each other cause Apache to crash)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #28213 (crash in debug_print_backtrace in static methods)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #28800 (Incorrect string to number conversion for strings starting with 'inf')</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #29566 (foreach/string handling strangeness)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #29893 (segfault when using array as index)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #29944 (function defined in switch crashes PHP)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #29944 (function defined in switch crashes PHP)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30578 (Output buffers flushed before calling __desctruct functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #30726 (-.1 like numbers are not being handled correctly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-03 15:02:19</h2>
+<h2>Time End: 2013-01-03 15:42:19</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               262
 Tests skipped   :   11 (  4.0%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  152 ( 55.7%) ( 58.0%)
+Tests failed    :  148 ( 54.2%) ( 56.5%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  110 ( 40.3%) ( 42.0%)
+Tests passed    :  114 ( 41.8%) ( 43.5%)
 ---------------------------------------------------------------------
-Time taken      :   56 seconds
+Time taken      :   93 seconds
 =====================================================================
 
 =====================================================================
@@ -296,7 +296,6 @@ FAILED TEST SUMMARY
 eval() test [vendor/php/php-src/tests/lang/019.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
 Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
-Testing calling user-level functions from C [vendor/php/php-src/tests/lang/028.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
 Bug #12647 (Locale settings affecting float parsing) [vendor/php/php-src/tests/lang/034.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
@@ -339,7 +338,6 @@ Bug #24436 (isset() and empty() produce errors with non-existent variables in ob
 Bug #24499 (bogus handling of a public property as a private one) [vendor/php/php-src/tests/lang/bug24499.phpt]
 Bug #24573 (debug_backtrace() crashes if $this is set to null) [vendor/php/php-src/tests/lang/bug24573.phpt]
 Bug #24640 (var_export and var_dump can't output large float) [vendor/php/php-src/tests/lang/bug24640.phpt]
-Bug #24652 (broken array_flip()) [vendor/php/php-src/tests/lang/bug24652.phpt]
 Bug #24658 (combo of typehint / reference causes crash) [vendor/php/php-src/tests/lang/bug24658.phpt]
 Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)") [vendor/php/php-src/tests/lang/bug24783.phpt]
 Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/tests/lang/bug24908.phpt]
@@ -352,11 +350,9 @@ Bug #26182 (Object properties created redundantly) [vendor/php/php-src/tests/lan
 Bug #26866 (segfault when exception raised in __get) [vendor/php/php-src/tests/lang/bug26866.phpt]
 Bug #26869 (constant as the key of static array) [vendor/php/php-src/tests/lang/bug26869.phpt]
 Bug #27439 (foreach() with $this segfaults) [vendor/php/php-src/tests/lang/bug27439.phpt]
-Bug #27443 (defined() returns wrong type) [vendor/php/php-src/tests/lang/bug27443.phpt]
 Bug #28213 (crash in debug_print_backtrace in static methods) [vendor/php/php-src/tests/lang/bug28213.phpt]
 Bug #29566 (foreach/string handling strangeness) [vendor/php/php-src/tests/lang/bug29566.phpt]
 Bug #29893 (segfault when using array as index) [vendor/php/php-src/tests/lang/bug29893.phpt]
-Bug #29944 (function defined in switch crashes PHP) [vendor/php/php-src/tests/lang/bug29944.phpt]
 Bug #30578 (Output buffers flushed before calling __desctruct functions) [vendor/php/php-src/tests/lang/bug30578.phpt]
 Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X) [vendor/php/php-src/tests/lang/bug30638.phpt]
 Bug #30862 (Static array with boolean indexes) [vendor/php/php-src/tests/lang/bug30862.phpt]

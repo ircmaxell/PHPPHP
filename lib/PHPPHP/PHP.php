@@ -16,7 +16,20 @@ class PHP {
         $this->executor = new Engine\Executor($functions, $constants, $classes);
         $this->executor->setOutput(new Engine\Output\Std($this->executor));
 
-        $this->executor->registerExtension(new Engine\CoreExtension);
+        $this->registerExtension(new Engine\CoreExtension);
+    }
+
+    public function registerExtension(Engine\Extension $extension) {
+        $this->executor->registerExtension($extension);
+    }
+
+    public function registerExtensionByName($name) {
+        $class = __NAMESPACE__ . '\Ext\\' . $name . '\Extension';
+        if (class_exists($class)) {
+            $this->executor->registerExtension(new $class);
+        } else {
+            throw new \RuntimeException('Could not find extension: ' . $name);
+        }
     }
 
     public function setCWD($dir) {
