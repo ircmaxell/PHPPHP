@@ -26,6 +26,7 @@ class Compiler {
         'Expr_Exit'        => array('UnaryOp', 'PHPPHP\Engine\OpLines\ExitOp', 'expr'),
         'Expr_BooleanNot'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\BooleanNot'),
         'Expr_BitwiseNot'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\BitwiseNot'),
+        'Expr_Empty'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EmptyOp', 'vars'),
         'Expr_Isset'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
         'Expr_PostDec'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostDec', 'var'),
         'Expr_PostInc'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostInc', 'var'),
@@ -203,6 +204,14 @@ class Compiler {
         $this->opArray[] = new OpLines\AddArrayElement($node, $keyPtr, $valuePtr, $returnContext);
     }
 
+    protected function compile_Expr_ErrorSuppress($node, $returnContext = null) {
+        // Place holder for opcode to turn on suppression
+        $this->opArray[] = new OpLines\NoOp($node);
+        $this->compileChild($node, 'expr', $returnContext);
+        // Place holder for opcode to turn off suppression
+        $this->opArray[] = new OpLines\NoOp($node);
+    }
+    
     protected function compile_Expr_FuncCall($node, $returnContext = null) {
         $namePtr = Zval::ptrFactory();
         $argsPtr = Zval::ptrFactory();
@@ -236,6 +245,22 @@ class Compiler {
             $listPtr = new Zval\VariableList($vars);
             $returnContext->forceValue($listPtr);
         }
+    }
+    
+    protected function compile_Expr_ShellExec($node, $returnContext = null) {
+        $returnContext = $returnContext ?: Zval::ptrFactory();
+        $lineContext = Zval::ptrFactory();
+        
+        foreach ($node->parts as $part) {
+            if (is_string($part)) {
+                $this->opArray[] = new OpLines\AssignConcat($node, $lineContext, Zval::ptrFactory($part));
+            } else {
+                $ret = Zval::ptrFactory();
+                $this->compileNode($part, $ret);
+                $this->opArray[] = new OpLines\AssignConcat($node, $lineContext, $ret);
+            }
+        }
+        $this->opArray[] = new OpLines\ShellExec($node, null, null, $returnContext);
     }
 
     protected function compile_Expr_Ternary($node, $returnContext = null) {
@@ -289,7 +314,7 @@ class Compiler {
             $returnContext->setValue($this->fileName);
         }
     }
-
+    
     protected function compile_Stmt_Break($node) {
         $op1 = null;
         if ($node->num) {

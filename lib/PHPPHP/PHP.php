@@ -26,7 +26,7 @@ class PHP {
 
     public function executeFile($file) {
         if (empty($file)) {
-            throw new \RuntimException('Filename must not be emptys');
+            throw new \RuntimeException('Filename must not be empty');
         }
         
         $opCodes = $this->executor->compileFile($file);
