@@ -62,6 +62,10 @@ class Value extends Zval {
         throw new \LogicException('No Default Iterator Provided');
     }
 
+    public function getType() {
+        return gettype($this->value);
+    }
+
     public function makePrintable() {
         $ret = 'unknown';
         switch (gettype($this->value)) {

@@ -85,20 +85,24 @@ class Executor {
         } else {
             $scope->symbolTable =& $this->executorGlobals->symbolTable;
         }
+        $scope->returnValue = $result ?: Zval::ptrFactory();
+        if ($function && $function->isByRef()) {
+            $scope->returnValue->makeRef();
+        }
 
         while (!$this->shutdown && $scope->opLine) {
             $ret = $scope->opLine->execute($scope);
             switch ($ret) {
                 case self::DO_RETURN:
-                    if ($result) {
-                        $result->setValue($scope->returnValue);
-                    }
                     $this->current = $this->current->parent;
                     return;
                 case self::DO_SHUTDOWN:
                     $this->shutdown = true;
                     return;
             }
+        }
+        if ($this->shutdown) {
+            return;
         }
         die('Should never reach this point!');
     }

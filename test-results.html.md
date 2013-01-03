@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-03 14:07:52</h2>
+<h2>Time Start: 2013-01-03 15:01:23</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -71,7 +71,7 @@
 <tr><td>FAIL</td><td>Bug #23584 (error line numbers off by one when using #!php)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23624 (foreach leaves current array key as null)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23922 (scope doesn't properly propagate into internal functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #24054 (Assignment operator *= broken)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #24054 (Assignment operator *= broken)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24396 (global $$variable broken)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24403 (scope doesn't properly propagate into internal functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24436 (isset() and empty() produce errors with non-existent variables in objects)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -103,13 +103,13 @@
 <tr><td>FAIL</td><td>Bug #29944 (function defined in switch crashes PHP)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30578 (Output buffers flushed before calling __desctruct functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #30726 (-.1 like numbers are not being handled correctly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #30726 (-.1 like numbers are not being handled correctly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30862 (Static array with boolean indexes)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #32828 (Throwing exception in output_callback function with ob_start and ob_end_clean leads to segfault)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #32924 (prepend does not add file to included files)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #32924 (prepend does not add file to included files)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #35176 (include()/require()/*_once() produce wrong error messages about main())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #35382 (Comment in end of file produces fatal error)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #38579 (include_once() may include the same file twice)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>SKIP</td><td>Bug #38579 (include_once() may include the same file twice)</td><td>reason: only for Windows</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #43958 (class name added into the error message)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #44654 (syntax error for #)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #44827 (Class error when trying to access :: as constant)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -142,7 +142,7 @@
 <tr><td>FAIL</td><td>Foreach loop tests - modifying the array during the loop: special case. Behaviour is good since php 5.2.2.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - error case: key is a reference.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - foreach operates on the original array if the array is referenced outside the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
+<tr><td>PASS</td><td>This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
 It will pass only if the 'contentious code' in PHPValue.decReferences() is enabled.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Changing from an interable type to a non iterable type during the iteration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Directly modifying an unreferenced array when foreach'ing over it.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -173,13 +173,13 @@ It will pass only if the 'contentious code' in PHPValue.decReferences() is enabl
 During the call, the original variable is updated. This should not affect func_get_arg().</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_num_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>include() a file from the current script directory</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from an included function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from eval'd code</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -247,11 +247,11 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Pass uninitialised variables by reference and by value to test implicit initialisation.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass uninitialised objects and arrays by reference to test implicit initialisation.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass function and method calls by reference and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Assignement as argument</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Passing assignments by reference</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Test pass by reference semantics</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Returning a reference from a function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Returning a reference from a function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Returning a reference from a function.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Returning a reference from a function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Returning a reference from a static method</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-03 14:09:04</h2>
+<h2>Time End: 2013-01-03 15:02:19</h2>
 <hr/>
 <pre>
 
-Number of tests :  273               263
-Tests skipped   :   10 (  3.7%) --------
+Number of tests :  273               262
+Tests skipped   :   11 (  4.0%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  162 ( 59.3%) ( 61.6%)
+Tests failed    :  152 ( 55.7%) ( 58.0%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  101 ( 37.0%) ( 38.4%)
+Tests passed    :  110 ( 40.3%) ( 42.0%)
 ---------------------------------------------------------------------
-Time taken      :   72 seconds
+Time taken      :   56 seconds
 =====================================================================
 
 =====================================================================
@@ -333,7 +333,6 @@ Bug #23524 (Improper handling of constants in array indices) [vendor/php/php-src
 Bug #23584 (error line numbers off by one when using #!php) [vendor/php/php-src/tests/lang/bug23584.phpt]
 Bug #23624 (foreach leaves current array key as null) [vendor/php/php-src/tests/lang/bug23624.phpt]
 Bug #23922 (scope doesn't properly propagate into internal functions) [vendor/php/php-src/tests/lang/bug23922.phpt]
-Bug #24054 (Assignment operator *= broken) [vendor/php/php-src/tests/lang/bug24054.phpt]
 Bug #24396 (global $$variable broken) [vendor/php/php-src/tests/lang/bug24396.phpt]
 Bug #24403 (scope doesn't properly propagate into internal functions) [vendor/php/php-src/tests/lang/bug24403.phpt]
 Bug #24436 (isset() and empty() produce errors with non-existent variables in objects) [vendor/php/php-src/tests/lang/bug24436.phpt]
@@ -360,12 +359,9 @@ Bug #29893 (segfault when using array as index) [vendor/php/php-src/tests/lang/b
 Bug #29944 (function defined in switch crashes PHP) [vendor/php/php-src/tests/lang/bug29944.phpt]
 Bug #30578 (Output buffers flushed before calling __desctruct functions) [vendor/php/php-src/tests/lang/bug30578.phpt]
 Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X) [vendor/php/php-src/tests/lang/bug30638.phpt]
-Bug #30726 (-.1 like numbers are not being handled correctly) [vendor/php/php-src/tests/lang/bug30726.phpt]
 Bug #30862 (Static array with boolean indexes) [vendor/php/php-src/tests/lang/bug30862.phpt]
 Bug #32828 (Throwing exception in output_callback function with ob_start and ob_end_clean leads to segfault) [vendor/php/php-src/tests/lang/bug32828.phpt]
-Bug #32924 (prepend does not add file to included files) [vendor/php/php-src/tests/lang/bug32924.phpt]
 Bug #35176 (include()/require()/*_once() produce wrong error messages about main()) [vendor/php/php-src/tests/lang/bug35176.phpt]
-Bug #38579 (include_once() may include the same file twice) [vendor/php/php-src/tests/lang/bug38579.phpt]
 Bug #43958 (class name added into the error message) [vendor/php/php-src/tests/lang/bug43958.phpt]
 Bug #44827 (Class error when trying to access :: as constant) [vendor/php/php-src/tests/lang/bug44827.phpt]
 Bug #45392 (ob_start()/ob_end_clean() and memory_limit) [vendor/php/php-src/tests/lang/bug45392.phpt]
@@ -394,8 +390,6 @@ Foreach loop tests - using an array element as the $value [vendor/php/php-src/te
 Foreach loop tests - modifying the array during the loop: special case. Behaviour is good since php 5.2.2. [vendor/php/php-src/tests/lang/foreachLoop.005.phpt]
 Foreach loop tests - error case: key is a reference. [vendor/php/php-src/tests/lang/foreachLoop.006.phpt]
 Foreach loop tests - foreach operates on the original array if the array is referenced outside the loop. [vendor/php/php-src/tests/lang/foreachLoop.009.phpt]
-This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
-It will pass only if the 'contentious code' in PHPValue.decReferences() is enabled. [vendor/php/php-src/tests/lang/foreachLoop.010.phpt]
 Changing from an interable type to a non iterable type during the iteration [vendor/php/php-src/tests/lang/foreachLoop.011.phpt]
 Directly modifying an unreferenced array when foreach'ing over it. [vendor/php/php-src/tests/lang/foreachLoop.012.phpt]
 Directly modifying an unreferenced array when foreach'ing over it while using &$value syntax. [vendor/php/php-src/tests/lang/foreachLoop.013.phpt]
@@ -418,11 +412,8 @@ foreach() with foreach($o->mthd()->arr) [vendor/php/php-src/tests/lang/foreach_w
 func_get_arg outside of a function declaration [vendor/php/php-src/tests/lang/func_get_arg.003.phpt]
 func_get_arg on non-existent arg [vendor/php/php-src/tests/lang/func_get_arg.004.phpt]
 func_get_arg test [vendor/php/php-src/tests/lang/func_get_arg_variation.phpt]
-func_get_args with variable number of args [vendor/php/php-src/tests/lang/func_get_args.002.phpt]
 func_get_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_get_args.003.phpt]
-Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_get_args.004.phpt]
 func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
-Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_num_args.004.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
 Test / operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/divide_variationStr.phpt]
@@ -434,11 +425,9 @@ passing the return value from a function by reference [vendor/php/php-src/tests/
 Pass uninitialised variables by reference and by value to test implicit initialisation. [vendor/php/php-src/tests/lang/passByReference_005.phpt]
 Pass uninitialised objects and arrays by reference to test implicit initialisation. [vendor/php/php-src/tests/lang/passByReference_006.phpt]
 Pass function and method calls by reference and by value. [vendor/php/php-src/tests/lang/passByReference_007.phpt]
-Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/passByReference_008.phpt]
 Assignement as argument [vendor/php/php-src/tests/lang/passByReference_009.phpt]
 Passing assignments by reference [vendor/php/php-src/tests/lang/passByReference_010.phpt]
 Test pass by reference semantics [vendor/php/php-src/tests/lang/passByReference_012.phpt]
-Returning a reference from a function [vendor/php/php-src/tests/lang/returnByReference.001.phpt]
 Returning a reference from a function. [vendor/php/php-src/tests/lang/returnByReference.002.phpt]
 Returning a reference from a function [vendor/php/php-src/tests/lang/returnByReference.003.phpt]
 Returning a reference from a static method [vendor/php/php-src/tests/lang/returnByReference.004.phpt]

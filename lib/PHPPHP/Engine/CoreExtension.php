@@ -26,7 +26,7 @@ final class CoreExtension extends Extension\Base {
     }
     
     protected function registerCoreFunctions() {
-        return array(
+        $ret = array(
             'array_merge' => new FunctionData\InternalProxy(
                 'array_merge',
                 false,
@@ -41,21 +41,34 @@ final class CoreExtension extends Extension\Base {
                     new ParamData('str')
                 )
             ),
-            'implode'      => new FunctionData\InternalProxy('implode'),
-            'join'         => new FunctionData\InternalProxy('join'),
-            'php_uname'    => new FunctionData\InternalProxy('php_uname'),
-            'phpversion'   => new FunctionData\InternalProxy('phpversion'),
-            'print_r'      => new FunctionData\InternalProxy('print_r'),
-            'realpath'     => new FunctionData\InternalProxy('realpath'),
-            'strlen'       => new FunctionData\InternalProxy('strlen'),
-            'var_dump'     => new FunctionData\InternalProxy('var_dump'),
-            'zend_version' => new FunctionData\InternalProxy('zend_version'),
         );
+        $aliases = array(
+            'dirname',
+            'explode',
+            'implode',
+            'join',
+            'php_uname',
+            'phpversion',
+            'printf',
+            'print_r',
+            'realpath',
+            'strlen',
+            'strpos',
+            'substr',
+            'trim',
+            'var_dump',
+            'zend_version',
+        );
+        foreach ($aliases as $alias) {
+            $ret[$alias] = new FunctionData\InternalProxy($alias);
+        }
+        return $ret;
     }
 
     protected function getFunctions() {
         $funcs = require_once __DIR__ . '/ext/Functions.php';
         $funcs += require_once __DIR__ . '/ext/Array.php';
+        $funcs += require_once __DIR__ . '/ext/Types.php';
         return $funcs + $this->registerCoreFunctions();
     }
 
@@ -66,6 +79,7 @@ final class CoreExtension extends Extension\Base {
             'PHP_OS'       => PHP_OS,
             'PHP_VERSION'  => PHP_VERSION,
             'E_ERROR'      => E_ERROR,
+            'E_ALL'        => E_ALL,
 
             'PHP_OUTPUT_HANDLER_START' => PHP_OUTPUT_HANDLER_START,
             'PHP_OUTPUT_HANDLER_END'   => PHP_OUTPUT_HANDLER_END,

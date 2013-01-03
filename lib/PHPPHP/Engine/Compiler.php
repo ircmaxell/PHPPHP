@@ -544,8 +544,6 @@ class Compiler {
         $this->opArray[] = new OpLines\NewOp($node, Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
     }
 
-
-
     protected function compileFunction($node) {
         $prevOpArray = $this->opArray;
         $this->opArray = new OpArray($this->fileName);

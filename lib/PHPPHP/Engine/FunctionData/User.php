@@ -4,12 +4,12 @@ namespace PHPPHP\Engine\FunctionData;
 
 use PHPPHP\Engine;
 
-class User implements Engine\FunctionData {
+class User extends Base {
     protected $opArray;
     protected $byRef = false;
     protected $params = array();
 
-    public function __construct(Engine\OpArray $opArray, $byRef = false, array $params) {
+    public function __construct(Engine\OpArray $opArray, $byRef = false, array $params = array()) {
         $this->opArray = $opArray;
         $this->byRef = $byRef;
         $this->params = $params;
@@ -26,15 +26,4 @@ class User implements Engine\FunctionData {
         $executor->execute($this->opArray, $scope, $this, $args, $return, $ci);
     }
 
-    public function isByRef() {
-        return $this->byRef;
-    }
-
-    public function isArgByRef($n) {
-        return false;
-    }
-
-    public function getParam($n) {
-        return isset($this->params[$n]) ? $this->params[$n] : false;
-    }
 }

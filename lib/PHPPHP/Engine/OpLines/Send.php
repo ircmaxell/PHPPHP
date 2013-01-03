@@ -10,8 +10,10 @@ class Send extends \PHPPHP\Engine\OpLine {
         $ptr = null;
         if($data->executor->executorGlobals->call->getFunction()->isArgByRef($this->op2)) {
             if ($this->op1->isVariable()) {
-                $this->op1->makeRef();
-                $ptr = Zval::ptrFactory($this->op1->getZval());
+                $op = $this->op1->getPtr();
+                $op->makeRef();
+                $op->addRef();
+                $ptr = Zval::ptrFactory($op->getZval());
             } else {
                 throw new \RuntimeException("Can't pass parameter {$this->op2} by reference");
             }

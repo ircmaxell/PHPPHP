@@ -36,6 +36,13 @@ class Ptr extends Zval {
         return $ret;
     }
 
+    public function getPtr() {
+        if ($this->zval instanceof Variable) {
+            return $this->zval->getPtr();
+        }
+        return $this;
+    }
+
     public function getZval() {
         $tmp = $this->zval;
         do {

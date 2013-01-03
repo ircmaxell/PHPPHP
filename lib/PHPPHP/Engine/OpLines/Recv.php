@@ -14,7 +14,8 @@ class Recv extends \PHPPHP\Engine\OpLine {
         if ($param) {
             $var = $data->fetchVariable($param->name);
             if ($param->isRef) {
-                $var->assignZval($args[$n]);
+                $var->assignZval($args[$n]->getZval());
+                $var->addRef();
             } else {
                 $var->setValue($args[$n]);
             }
