@@ -13,9 +13,14 @@ foreach ($funcs['internal'] as $func) {
     $output .= ', array(';
     foreach ($r->getParameters() as $param) {
         $output .= "new ParamData('" . $param->getName() . "', ";
-        $output .= $param->isPassedByReference() ? "true, " : "false, ";
-        $output .= ", '', " . $param->isOptional() ? "true" : 'false';
-        $output .= "),";
+        $output .= $param->isPassedByReference() ? "true" : "false";
+        if ($param->isArray()) {
+            $output .= ", 'array', ";
+        } else {
+            $output .= ", '', ";
+        }
+        $output .= ($param->isOptional() ? "true" : 'false');
+        $output .= "), ";
     }
     $output .= ")),\n";
 }
