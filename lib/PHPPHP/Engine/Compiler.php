@@ -39,16 +39,24 @@ class Compiler {
         'Expr_Print'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\PrintOp', 'expr'),
         'Stmt_Return'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
+        // assignment operators
+        'Expr_Assign'           => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign',           'var', 'expr'),
+        'Expr_AssignRef'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignRef',        'var', 'expr'),
+        'Expr_AssignPlus'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignAdd',        'var', 'expr'),
+        'Expr_AssignMinus'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignSub',        'var', 'expr'),
+        'Expr_AssignMul'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMul',        'var', 'expr'),
+        'Expr_AssignDiv'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignDiv',        'var', 'expr'),
+        'Expr_AssignMod'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMod',        'var', 'expr'),
+        'Expr_AssignConcat'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat',     'var', 'expr'),
+        'Expr_AssignBitwiseAnd' => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignBitwiseAnd', 'var', 'expr'),
+        'Expr_AssignBitwiseOr'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignBitwiseOr',  'var', 'expr'),
+        'Expr_AssignBitwiseXor' => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignBitwiseXor', 'var', 'expr'),
+        'Expr_AssignShiftLeft'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignShiftLeft',  'var', 'expr'),
+        'Expr_AssignShiftRight' => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignShiftRight', 'var', 'expr'),
+
         // binary operators
         'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
         'Expr_PropertyFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ObjectPropertyFetch', 'var', 'name'),
-        'Expr_Assign'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr'),
-        'Expr_AssignConcat'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat', 'var', 'expr'),
-        'Expr_AssignDiv'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignDiv', 'var', 'expr'),
-        'Expr_AssignMinus'    => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMinus', 'var', 'expr'),
-        'Expr_AssignMul'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMul', 'var', 'expr'),
-        'Expr_AssignPlus'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignPlus', 'var', 'expr'),
-        'Expr_AssignRef'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignRef', 'var', 'expr'),
         'Expr_BooleanAnd'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
         'Expr_BooleanOr'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
         'Expr_Smaller'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller'),
@@ -61,7 +69,7 @@ class Compiler {
         'Expr_NotIdentical'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\NotIdentical'),
         'Expr_Plus'           => array('BinaryOp', 'PHPPHP\Engine\OpLines\Add'),
         'Expr_Minus'          => array('BinaryOp', 'PHPPHP\Engine\OpLines\Sub'),
-        'Expr_Mul'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Multiply'),
+        'Expr_Mul'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Mul'),
         'Expr_Div'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Div'),
         'Expr_Mod'            => array('BinaryOp', 'PHPPHP\Engine\OpLines\Mod'),
         'Expr_Concat'         => array('BinaryOp', 'PHPPHP\Engine\OpLines\Concat'),
@@ -83,16 +91,16 @@ class Compiler {
     protected $fileName = '';
     // Needed because it may be CWD not the dirname of the filename
     protected $currentDir = '';
-    
+
     public function setFileName($name, $dir) {
         $this->fileName = $name;
         $this->currentDir = $dir;
     }
-    
+
     public function getFileName() {
         return $this->fileName;
     }
-    
+
     public function compile(array $ast, Zval\Ptr $returnContext = null) {
         $opArray = new OpArray($this->fileName);
 
@@ -213,7 +221,7 @@ class Compiler {
         // Place holder for opcode to turn off suppression
         $this->opArray[] = new OpLines\NoOp($node);
     }
-    
+
     protected function compile_Expr_FuncCall($node, $returnContext = null) {
         $namePtr = Zval::ptrFactory();
         $args = array();
@@ -257,11 +265,11 @@ class Compiler {
             $returnContext->forceValue($listPtr);
         }
     }
-    
+
     protected function compile_Expr_ShellExec($node, $returnContext = null) {
         $returnContext = $returnContext ?: Zval::ptrFactory();
         $lineContext = Zval::ptrFactory();
-        
+
         foreach ($node->parts as $part) {
             if (is_string($part)) {
                 $this->opArray[] = new OpLines\AssignConcat($node, $lineContext, Zval::ptrFactory($part));
@@ -313,19 +321,19 @@ class Compiler {
             }
         }
     }
-    
+
     protected function compile_Scalar_DirConst($node, $returnContext = null) {
         if ($returnContext) {
             $returnContext->setValue($this->currentDir);
         }
     }
-    
+
     protected function compile_Scalar_FileConst($node, $returnContext = null) {
         if ($returnContext) {
             $returnContext->setValue($this->fileName);
         }
     }
-    
+
     protected function compile_Stmt_Break($node) {
         $op1 = null;
         if ($node->num) {
@@ -376,7 +384,7 @@ class Compiler {
 
         $iterator = Zval::iteratorFactory();
 
-        
+
         if ($node->byRef) {
             $this->opArray[] = $iterateOp = new OpLines\IterateByRef($node, $iteratePtr, null, $iterator);
 
@@ -536,7 +544,7 @@ class Compiler {
         $this->opArray[] = new OpLines\NewOp($node, Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
     }
 
-    
+
 
     protected function compileFunction($node) {
         $prevOpArray = $this->opArray;
