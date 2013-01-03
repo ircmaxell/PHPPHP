@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-03 15:52:13</h2>
+<h2>Time Start: 2013-01-03 16:10:20</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -32,7 +32,7 @@
 <tr><td>PASS</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Alternative syntaxes test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #12647 (Locale settings affecting float parsing)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #12647 (Locale settings affecting float parsing)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2: set_exception_handler()</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Child public element should not override parent private element in parent methods</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>'Static' binding for private variables</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -48,7 +48,7 @@
 <tr><td>PASS</td><td>Square bracket associative array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing array shortcut and bracket operator</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing nested array shortcut</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bison weirdness</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bison weirdness</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #17115 (lambda functions produce segfault with static vars)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #18872 (class constant used as default parameter)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #19566 (get_declared_classes() segfaults)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -102,7 +102,7 @@
 <tr><td>FAIL</td><td>Bug #29893 (segfault when using array as index)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #29944 (function defined in switch crashes PHP)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30578 (Output buffers flushed before calling __desctruct functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>SKIP</td><td>Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X)</td><td>reason: ok to fail on MacOS X</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #30726 (-.1 like numbers are not being handled correctly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #30862 (Static array with boolean indexes)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #32828 (Throwing exception in output_callback function with ob_start and ob_end_clean leads to segfault)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-03 15:54:57</h2>
+<h2>Time End: 2013-01-03 16:12:42</h2>
 <hr/>
 <pre>
 
-Number of tests :  273               262
-Tests skipped   :   11 (  4.0%) --------
+Number of tests :  273               261
+Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  148 ( 54.2%) ( 56.5%)
+Tests failed    :  145 ( 53.1%) ( 55.6%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  114 ( 41.8%) ( 43.5%)
+Tests passed    :  116 ( 42.5%) ( 44.4%)
 ---------------------------------------------------------------------
-Time taken      :  164 seconds
+Time taken      :  142 seconds
 =====================================================================
 
 =====================================================================
@@ -297,7 +297,6 @@ eval() test [vendor/php/php-src/tests/lang/019.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
 Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
-Bug #12647 (Locale settings affecting float parsing) [vendor/php/php-src/tests/lang/034.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
 Child public element should not override parent private element in parent methods [vendor/php/php-src/tests/lang/036.phpt]
 'Static' binding for private variables [vendor/php/php-src/tests/lang/037.phpt]
@@ -309,7 +308,6 @@ Dynamic access of constants [vendor/php/php-src/tests/lang/042.phpt]
 Dynamic call for static methods [vendor/php/php-src/tests/lang/043.phpt]
 Dynamic call for static methods dynamically named [vendor/php/php-src/tests/lang/044.phpt]
 Timeout again inside register_shutdown_function [vendor/php/php-src/tests/lang/045.phpt]
-Bison weirdness [vendor/php/php-src/tests/lang/bison1.phpt]
 Bug #17115 (lambda functions produce segfault with static vars) [vendor/php/php-src/tests/lang/bug17115.phpt]
 Bug #18872 (class constant used as default parameter) [vendor/php/php-src/tests/lang/bug18872.phpt]
 Bug #19566 (get_declared_classes() segfaults) [vendor/php/php-src/tests/lang/bug19566.phpt]
@@ -354,7 +352,6 @@ Bug #28213 (crash in debug_print_backtrace in static methods) [vendor/php/php-sr
 Bug #29566 (foreach/string handling strangeness) [vendor/php/php-src/tests/lang/bug29566.phpt]
 Bug #29893 (segfault when using array as index) [vendor/php/php-src/tests/lang/bug29893.phpt]
 Bug #30578 (Output buffers flushed before calling __desctruct functions) [vendor/php/php-src/tests/lang/bug30578.phpt]
-Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X) [vendor/php/php-src/tests/lang/bug30638.phpt]
 Bug #30862 (Static array with boolean indexes) [vendor/php/php-src/tests/lang/bug30862.phpt]
 Bug #32828 (Throwing exception in output_callback function with ob_start and ob_end_clean leads to segfault) [vendor/php/php-src/tests/lang/bug32828.phpt]
 Bug #35176 (include()/require()/*_once() produce wrong error messages about main()) [vendor/php/php-src/tests/lang/bug35176.phpt]
