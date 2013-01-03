@@ -38,4 +38,19 @@ return array(
         false,
         array(new ParamData('var'))
     ),
+    'get_class' => new FunctionData\Internal(
+        function(Executor $executor, array $args, Zval $return) {
+            $var = null;
+            if (!isset($args[0]) || $args[0]->isNull()) {
+                $var = $executor->getCurrent()->ci;
+            } elseif ($args[0]->isObject()) {
+                $var = $args[0]->getValue();
+            }
+            if (!$var) {
+                throw new \RuntimeException('get_class() called without object from outside a class');
+            }
+            $return->setValue($var->getClassEntry()->getName());
+                
+        }
+    ),
 );
