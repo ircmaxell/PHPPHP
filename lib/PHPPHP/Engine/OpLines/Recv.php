@@ -10,8 +10,15 @@ class Recv extends \PHPPHP\Engine\OpLine {
         if (!isset($args[$n])) {
             throw new \Exception("Missing required argument $n");
         }
-
-        $this->result->setValue($args[$n]);
+        $param = $data->function->getParam($n);
+        if ($param) {
+            $var = $data->fetchVariable($param->name);
+            if ($param->isRef) {
+                $var->assignZval($args[$n]);
+            } else {
+                $var->setValue($args[$n]);
+            }
+        }
 
         $data->nextOp();
     }

@@ -19,6 +19,10 @@ class PHP {
         $this->executor->registerExtension(new Engine\CoreExtension);
     }
 
+    public function setCWD($dir) {
+        $this->executor->executorGlobals->cwd = $dir;
+    }
+
     public function execute($code) {
         $opCodes = $this->executor->compile($code, 'Command line code');
         return $this->executeOpLines($opCodes);
@@ -28,7 +32,7 @@ class PHP {
         if (empty($file)) {
             throw new \RuntimeException('Filename must not be empty');
         }
-        
+        $this->setCWD(dirname($file));
         $opCodes = $this->executor->compileFile($file);
         return $this->executeOpLines($opCodes);
     }

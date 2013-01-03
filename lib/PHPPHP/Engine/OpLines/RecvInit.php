@@ -2,17 +2,14 @@
 
 namespace PHPPHP\Engine\OpLines;
 
-class RecvInit extends \PHPPHP\Engine\OpLine {
+class RecvInit extends Recv {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $args = $data->arguments;
+        $args = &$data->arguments;
 
         $n = $this->op1->toLong();
-        if (isset($args[$n])) {
-            $this->result->setValue($args[$n]);
-        } else {
-            $this->result->setValue($this->op2);
+        if (!isset($args[$n])) {
+            $args[$n] = Zval::ptrFactory($this->op2->getZval());
         }
-
-        $data->nextOp();
+        parent::execute($data);
     }
 }

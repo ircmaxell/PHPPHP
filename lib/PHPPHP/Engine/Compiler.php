@@ -71,7 +71,6 @@ class Compiler {
         'Expr_ShiftLeft'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\ShiftLeft'),
         'Expr_ShiftRight'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\ShiftRight'),
 
-        'Expr_FuncCall'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\FunctionCall', 'name', 'args'),
         'Expr_Include'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\IncludeOp', 'type', 'expr'),
     );
 
@@ -82,9 +81,12 @@ class Compiler {
     protected $currentClass;
 
     protected $fileName = '';
+    // Needed because it may be CWD not the dirname of the filename
+    protected $currentDir = '';
     
-    public function setFileName($name) {
+    public function setFileName($name, $dir) {
         $this->fileName = $name;
+        $this->currentDir = $dir;
     }
     
     public function getFileName() {
@@ -214,20 +216,29 @@ class Compiler {
     
     protected function compile_Expr_FuncCall($node, $returnContext = null) {
         $namePtr = Zval::ptrFactory();
-        $argsPtr = Zval::ptrFactory();
-
-        $this->compileChild($node, 'name', $namePtr);
-        $this->compileChild($node, 'args', $argsPtr);
-
         $args = array();
 
-        foreach ($argsPtr->getArray() as $key => $arg) {
-            $argPtr = Zval::ptrFactory();
-            $args[] = $argPtr;
-            $this->opArray[] = new OpLines\Send($node, $arg, null, $argPtr);
+        $this->compileChild($node, 'name', $namePtr);
+        foreach ($node->args as $arg) {
+            $ptr = Zval::ptrFactory();
+            $this->compileChild($arg, 'value', $ptr);
+            $args[] = $ptr;
+        }
+        $this->opArray[] = new OpLines\InitFCallByName($node, null, $namePtr);
+
+        foreach ($args as $key => $arg) {
+            $this->opArray[] = new OpLines\Send($node, $arg, $key);
         }
 
-        $this->opArray[] = new OpLines\FunctionCall($node, $namePtr, $args, $returnContext ?: Zval::ptrFactory());;
+        $this->opArray[] = new OpLines\FunctionCall($node, null, null, $returnContext ?: Zval::ptrFactory());;
+    }
+
+    public function compile_Expr_MethodCall($node, $returnContext = null) {
+        $var = Zval::ptrFactory();
+        $this->compileChild($node, 'var', $var);
+        $op = new OpLines\MethodCall($node, Zval::ptrFactory($node->name), Zval::ptrFactory($node->args), $returnContext);
+        $op->setObjectOp($var);
+        $this->opArray[] = $op;
     }
 
     protected function compile_Expr_List($node, $returnContext = null) {
@@ -305,7 +316,7 @@ class Compiler {
     
     protected function compile_Scalar_DirConst($node, $returnContext = null) {
         if ($returnContext) {
-            $returnContext->setValue(dirname($this->fileName));
+            $returnContext->setValue($this->currentDir);
         }
     }
     
@@ -525,38 +536,25 @@ class Compiler {
         $this->opArray[] = new OpLines\NewOp($node, Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
     }
 
-    public function compile_Expr_MethodCall($node, $returnContext = null) {
-        $var = Zval::ptrFactory();
-        $this->compileChild($node, 'var', $var);
-        $op = new OpLines\MethodCall($node, Zval::ptrFactory($node->name), Zval::ptrFactory($node->args), $returnContext);
-        $op->setObjectOp($var);
-        $this->opArray[] = $op;
-    }
+    
 
     protected function compileFunction($node) {
         $prevOpArray = $this->opArray;
         $this->opArray = new OpArray($this->fileName);
 
-        foreach ($node->params as $i => $param) {
-            $arg = Zval::ptrFactory();
+        $params = array();
 
-            if ($param->byRef) {
-                $arg->makeRef();
-            }
+        foreach ($node->params as $i => $param) {
+            $paramData = new ParamData;
+            $paramData->name = $param->name;
+            $paramData->isRef = $param->byRef;
+            $paramData->type = $param->type;
+            $params[] = $paramData;
 
             if ($param->default) {
-                $this->opArray[] = new OpLines\RecvInit(
-                    $node, Zval::factory($i), $this->makeZvalFromNode($param->default), $arg
-                );
+                $this->opArray[] = new OpLines\RecvInit($node, Zval::factory($i), $this->makeZvalFromNode($param->default));
             } else {
-                $this->opArray[] = new OpLines\Recv($node, Zval::factory($i), null, $arg);
-            }
-            $var = Zval::variableFactory(Zval::factory($param->name));
-            $this->opArray->addCompiledVariable($var);
-            if ($param->byRef) {
-                $this->opArray[] = new OpLines\AssignRef($node, $var, $arg);
-            } else {
-                $this->opArray[] = new OpLines\Assign($node, $var, $arg);
+                $this->opArray[] = new OpLines\Recv($node, Zval::factory($i));
             }
         }
 
@@ -564,7 +562,7 @@ class Compiler {
 
         $this->opArray[] = new OpLines\ReturnOp($node);
 
-        $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef);
+        $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef, $params);
 
         if ($this->currentClass) {
             $this->currentClass->getMethodStore()->register($node->name, $funcData);

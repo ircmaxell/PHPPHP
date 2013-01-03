@@ -9,7 +9,7 @@ class Executor {
     public $executorGlobals;
     public $structureStack = array();
 
-    protected $stack = array();
+    protected $stack;
     protected $current;
     protected $globalScope = array();
     protected $parser;
@@ -33,6 +33,11 @@ class Executor {
         $this->classStore = $classStore;
 
         $this->extensions = new \SplObjectStorage;
+        $this->stack = new \SplStack;
+    }
+
+    public function getStack() {
+        return $this->stack;
     }
 
     public function getOutput() {
@@ -48,7 +53,7 @@ class Executor {
     }
 
     public function compileFile($fileName) {
-        $this->compiler->setFileName($fileName);
+        $this->compiler->setFileName($fileName, dirname($fileName));
         if (!isset($this->files[$fileName])) {
             $code = file_get_contents($fileName);
             $this->files[$fileName] = $this->parser->parse($code);
@@ -60,7 +65,7 @@ class Executor {
 
     public function compile($code, $context) {
         $ast = $this->parser->parse($code);
-        $this->compiler->setFileName($context);
+        $this->compiler->setFileName($context, $this->executorGlobals->cwd);
         return $this->compiler->compile($ast);
     }
 
@@ -74,7 +79,6 @@ class Executor {
         if ($this->current) {
             $scope->parent = $this->current;
         }
-        $this->stack[] = $scope;
         $this->current = $scope;
         if ($symbolTable || $function) {
             $scope->symbolTable =& $symbolTable;
@@ -86,11 +90,10 @@ class Executor {
             $ret = $scope->opLine->execute($scope);
             switch ($ret) {
                 case self::DO_RETURN:
-                    array_pop($this->stack);
                     if ($result) {
                         $result->setValue($scope->returnValue);
                     }
-                    $this->current = end($this->stack);
+                    $this->current = $this->current->parent;
                     return;
                 case self::DO_SHUTDOWN:
                     $this->shutdown = true;

@@ -15,4 +15,12 @@ class Internal implements Engine\FunctionData {
         $ret = call_user_func_array($this->callback, array($executor, $args, $return, $ci));
     }
 
+    public function isArgByRef($n) {
+        return false;
+    }
+
+    public function getParam($n) {
+        return false;
+    }
+
 }

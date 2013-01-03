@@ -40,11 +40,25 @@ class InternalProxy implements Engine\FunctionData {
         $ret = array();
         foreach ($args as $key => $value) {
             if ($value->isArray()) {
-                $ret[$key] = $this->compileArguments($value->toArray());
+                $tmp = $this->compileArguments($value->toArray());
             } else {
-                $ret[$key] = $value->getValue();
+                $tmp = $value->getValue();
             }
+            if ($value->isRef()) {
+                $ret[$key] =& $tmp;
+            } else {
+                $ret[$key] = $tmp;
+            }
+            unset($tmp);
         }
         return $ret;
+    }
+
+    public function isArgByRef($n) {
+        return false;
+    }
+
+    public function getParam($n) {
+        return false;
     }
 }

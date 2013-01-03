@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-03 09:58:54</h2>
+<h2>Time Start: 2013-01-03 11:58:21</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -14,8 +14,8 @@
 <tr><td>PASS</td><td>Testing stack after early function return</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing eval function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing eval function inside user-defined function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Testing include</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Testing user-defined function in included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Testing include</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Testing user-defined function in included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing user-defined function falling out of an If into another</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -24,10 +24,10 @@
 <tr><td>FAIL</td><td>Switch test 3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Regression test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Looped regression test (may take a while)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Mean recursion test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Mean recursion test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing string scanner confirmance</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing do-while loop</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Testing calling user-level functions from C</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>$this in constructor test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #16227 (Internal hash position bug on assignment)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Class method registration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -142,7 +142,7 @@
 <tr><td>FAIL</td><td>Foreach loop tests - modifying the array during the loop: special case. Behaviour is good since php 5.2.2.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - error case: key is a reference.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - foreach operates on the original array if the array is referenced outside the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
+<tr><td>FAIL</td><td>This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
 It will pass only if the 'contentious code' in PHPValue.decReferences() is enabled.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Changing from an interable type to a non iterable type during the iteration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Directly modifying an unreferenced array when foreach'ing over it.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -173,14 +173,14 @@ It will pass only if the 'contentious code' in PHPValue.decReferences() is enabl
 During the call, the original variable is updated. This should not affect func_get_arg().</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_num_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>include() a file from the current script directory</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>include() a file from the current script directory</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from an included function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from eval'd code</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test + operator : 64bit long tests</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,30 +276,28 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-03 09:59:50</h2>
+<h2>Time End: 2013-01-03 11:59:31</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  164 ( 60.1%) ( 62.4%)
+Tests failed    :  163 ( 59.7%) ( 62.0%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :   99 ( 36.3%) ( 37.6%)
+Tests passed    :  100 ( 36.6%) ( 38.0%)
 ---------------------------------------------------------------------
-Time taken      :   56 seconds
+Time taken      :   70 seconds
 =====================================================================
 
 =====================================================================
 FAILED TEST SUMMARY
 ---------------------------------------------------------------------
-Testing include [vendor/php/php-src/tests/lang/015.phpt]
-Testing user-defined function in included file [vendor/php/php-src/tests/lang/016.phpt]
 eval() test [vendor/php/php-src/tests/lang/019.phpt]
 Switch test 3 [vendor/php/php-src/tests/lang/022.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
 Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
-Mean recursion test [vendor/php/php-src/tests/lang/025.phpt]
+Testing calling user-level functions from C [vendor/php/php-src/tests/lang/028.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
 Bug #12647 (Locale settings affecting float parsing) [vendor/php/php-src/tests/lang/034.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
@@ -395,6 +393,8 @@ Foreach loop tests - using an array element as the $value [vendor/php/php-src/te
 Foreach loop tests - modifying the array during the loop: special case. Behaviour is good since php 5.2.2. [vendor/php/php-src/tests/lang/foreachLoop.005.phpt]
 Foreach loop tests - error case: key is a reference. [vendor/php/php-src/tests/lang/foreachLoop.006.phpt]
 Foreach loop tests - foreach operates on the original array if the array is referenced outside the loop. [vendor/php/php-src/tests/lang/foreachLoop.009.phpt]
+This test illustrates the impact of invoking destructors when refcount is decremented to 0 on foreach.
+It will pass only if the 'contentious code' in PHPValue.decReferences() is enabled. [vendor/php/php-src/tests/lang/foreachLoop.010.phpt]
 Changing from an interable type to a non iterable type during the iteration [vendor/php/php-src/tests/lang/foreachLoop.011.phpt]
 Directly modifying an unreferenced array when foreach'ing over it. [vendor/php/php-src/tests/lang/foreachLoop.012.phpt]
 Directly modifying an unreferenced array when foreach'ing over it while using &$value syntax. [vendor/php/php-src/tests/lang/foreachLoop.013.phpt]
@@ -420,11 +420,11 @@ A variable, which is referenced by another variable, is passed by value.
 During the call, the original variable is updated. This should not affect func_get_arg(). [vendor/php/php-src/tests/lang/func_get_arg.005.phpt]
 func_get_arg test [vendor/php/php-src/tests/lang/func_get_arg_variation.phpt]
 func_get_args with no args [vendor/php/php-src/tests/lang/func_get_args.001.phpt]
+func_get_args with variable number of args [vendor/php/php-src/tests/lang/func_get_args.002.phpt]
 func_get_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_get_args.003.phpt]
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_get_args.004.phpt]
 func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_num_args.004.phpt]
-include() a file from the current script directory [vendor/php/php-src/tests/lang/include_variation1.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
 Test / operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/divide_variationStr.phpt]

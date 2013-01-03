@@ -22,6 +22,15 @@ class Ptr extends Zval {
         return call_user_func_array(array($this->zval, $method), $args);
     }
 
+    public function isVariable() {
+        if ($this->zval instanceof Variable) {
+            return true;
+        } elseif ($this->zval instanceof Ptr) {
+            return $this->zval->isVariable();
+        }
+        return false;
+    }
+
     public function &getArray() {
         $ret = &$this->zval->getArray();
         return $ret;

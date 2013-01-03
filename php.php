@@ -13,6 +13,7 @@ if (isset($options['v'])) {
 } elseif (isset($options['f'])) {
     $php->executeFile(realpath($options['f']));
 } elseif (isset($options['r'])) {
+    $php->setCWD(getcwd());
     $php->execute('<?php ' . $options['r']);
 } elseif (isset($args[0])) {
     $php->executeFile(realpath($args[0]));
