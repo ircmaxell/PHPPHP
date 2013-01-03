@@ -443,7 +443,7 @@ class Compiler {
             $varValue = Zval::ptrFactory();
             $this->compileChild($node, 'default', $varValue);
         }
-        $this->opArray[] = new OpLines\StaticAssign($node, varName, $varValue);
+        $this->opArray[] = new OpLines\StaticAssign($node, $varName, $varValue);
     }
 
     protected function compile_Stmt_Switch($node) {

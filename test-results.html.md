@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-02 15:10:28</h2>
+<h2>Time Start: 2013-01-03 09:58:54</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -14,8 +14,8 @@
 <tr><td>PASS</td><td>Testing stack after early function return</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing eval function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing eval function inside user-defined function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Testing include</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Testing user-defined function in included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Testing include</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Testing user-defined function in included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing user-defined function falling out of an If into another</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -180,7 +180,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>func_num_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_num_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>include() a file from the current script directory</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>include() a file from the current script directory</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from an included function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from eval'd code</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test + operator : 64bit long tests</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,23 +276,25 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-02 15:11:33</h2>
+<h2>Time End: 2013-01-03 09:59:50</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  161 ( 59.0%) ( 61.2%)
+Tests failed    :  164 ( 60.1%) ( 62.4%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  102 ( 37.4%) ( 38.8%)
+Tests passed    :   99 ( 36.3%) ( 37.6%)
 ---------------------------------------------------------------------
-Time taken      :   65 seconds
+Time taken      :   56 seconds
 =====================================================================
 
 =====================================================================
 FAILED TEST SUMMARY
 ---------------------------------------------------------------------
+Testing include [vendor/php/php-src/tests/lang/015.phpt]
+Testing user-defined function in included file [vendor/php/php-src/tests/lang/016.phpt]
 eval() test [vendor/php/php-src/tests/lang/019.phpt]
 Switch test 3 [vendor/php/php-src/tests/lang/022.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
@@ -422,6 +424,7 @@ func_get_args() outside of a function declaration [vendor/php/php-src/tests/lang
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_get_args.004.phpt]
 func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_num_args.004.phpt]
+include() a file from the current script directory [vendor/php/php-src/tests/lang/include_variation1.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
 Test / operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/divide_variationStr.phpt]

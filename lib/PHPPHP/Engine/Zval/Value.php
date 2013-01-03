@@ -66,23 +66,25 @@ class Value extends Zval {
         $ret = 'unknown';
         switch (gettype($this->value)) {
             case 'NULL':
-                $ret = 'null';
+                $ret = '';
                 break;
             case 'array':
                 $ret = 'array';
                 break;
             case 'boolean':
-                $ret = $this->value ? 'true' : 'false';
+                $ret = $this->value ? '1' : '';
                 break;
             case 'double':
-            case 'flost':
+            case 'float':
+            case 'integer':
             case 'long':
                 $ret = (string) $this->value;
                 break;
             case 'string':
-                return '"' . $this->value . '"';
+                $ret = $this->value;
+                break;
             default:
-                throw new \LogicException('Unknown Type: ' . $this->type);
+                throw new \LogicException('Unknown Type: ' . gettype($this->value));
         }
         return self::factory($ret);
     }
