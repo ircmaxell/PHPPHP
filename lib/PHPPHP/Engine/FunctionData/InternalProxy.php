@@ -4,11 +4,13 @@ namespace PHPPHP\Engine\FunctionData;
 
 use PHPPHP\Engine;
 
-class InternalProxy implements Engine\FunctionData {
+class InternalProxy extends Base {
     protected $callback;
 
-    public function __construct($callback) {
+    public function __construct($callback, $byRef = false, array $params = array()) {
         $this->callback = $callback;
+        $this->byRef = $byRef;
+        $this->params = $params;
     }
 
     public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
@@ -54,11 +56,4 @@ class InternalProxy implements Engine\FunctionData {
         return $ret;
     }
 
-    public function isArgByRef($n) {
-        return false;
-    }
-
-    public function getParam($n) {
-        return false;
-    }
 }

@@ -6,6 +6,10 @@ class FunctionStore {
     /** @var FunctionData[] */
     protected $functions = array();
 
+    public function alias($newName, $existingName) {
+        $this->register($newName, $this->get($existingName));
+    }
+
     public function register($name, FunctionData $func) {
         $name = strtolower($name);
         if (isset($this->functions[$name])) {

@@ -53,8 +53,7 @@ class ClassEntry
         return $instance;
     }
 
-    public function callMethod(ExecuteData $data, ClassInstance $ci, $name, array $args, Ptr $result = null)
-    {
+    public function findMethod($name) {
         $parent = $this;
         do {
             $exists = $parent->methods->exists($name);
@@ -64,7 +63,12 @@ class ClassEntry
             throw new \RuntimeException('Call To Undefined Function ' . $name);
         }
 
-        $method = $parent->methods->get($name);
+        return $parent->methods->get($name);
+    }
+
+    public function callMethod(ExecuteData $data, ClassInstance $ci = null, $name = '', array $args = array(), Ptr $result = null)
+    {
+        $method = $this->findMethod($name);
         if (!$result) {
             $result = Zval::ptrFactory();
         }

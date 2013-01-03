@@ -545,11 +545,7 @@ class Compiler {
         $params = array();
 
         foreach ($node->params as $i => $param) {
-            $paramData = new ParamData;
-            $paramData->name = $param->name;
-            $paramData->isRef = $param->byRef;
-            $paramData->type = $param->type;
-            $params[] = $paramData;
+            $params[] = new ParamData($param->name, $param->byRef, $param->type, (bool) $param->default);
 
             if ($param->default) {
                 $this->opArray[] = new OpLines\RecvInit($node, Zval::factory($i), $this->makeZvalFromNode($param->default));

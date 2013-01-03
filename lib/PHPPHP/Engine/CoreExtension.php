@@ -10,7 +10,6 @@ final class CoreExtension extends Extension\Base {
     protected $namespace = __NAMESPACE__;
 
     public function register(\PHPPHP\Engine\Executor $executor) {
-        $this->registerCoreFunctions($executor->getFunctionStore());
         $this->registerCoreConstants($executor->getConstantStore());
         parent::register($executor);
     }
@@ -26,30 +25,38 @@ final class CoreExtension extends Extension\Base {
         }
     }
     
-    protected function registerCoreFunctions(FunctionStore $functions) {
-        $coreFunctions = array(
-            'array_merge',
-            'bin2hex',
-            'implode',
-            'join',
-            'php_uname',
-            'phpversion',
-            'print_r',
-            'realpath',
-            'strlen',
-            'var_dump',
-            'zend_version',
+    protected function registerCoreFunctions() {
+        return array(
+            'array_merge' => new FunctionData\InternalProxy(
+                'array_merge',
+                false,
+                array(
+                    new ParamData('array', false, 'array')
+                )
+            ),
+            'bin2hex' => new FunctionData\InternalProxy(
+                'bin2hex',
+                false,
+                array(
+                    new ParamData('str')
+                )
+            ),
+            'implode'      => new FunctionData\InternalProxy('implode'),
+            'join'         => new FunctionData\InternalProxy('join'),
+            'php_uname'    => new FunctionData\InternalProxy('php_uname'),
+            'phpversion'   => new FunctionData\InternalProxy('phpversion'),
+            'print_r'      => new FunctionData\InternalProxy('print_r'),
+            'realpath'     => new FunctionData\InternalProxy('realpath'),
+            'strlen'       => new FunctionData\InternalProxy('strlen'),
+            'var_dump'     => new FunctionData\InternalProxy('var_dump'),
+            'zend_version' => new FunctionData\InternalProxy('zend_version'),
         );
-
-        foreach ($coreFunctions as $funcName) {
-            $functions->register($funcName, new FunctionData\InternalProxy($funcName));
-        }
     }
 
-    protected function loadFunctions() {
-        require_once __DIR__ . '/ext/Array.php';
-        require_once __DIR__ . '/ext/Functions.php';
-        require_once __DIR__ . '/ext/OutputBuffer.php';
+    protected function getFunctions() {
+        $funcs = require_once __DIR__ . '/ext/Functions.php';
+        $funcs += require_once __DIR__ . '/ext/Array.php';
+        return $funcs + $this->registerCoreFunctions();
     }
 
     protected function getConstants() {

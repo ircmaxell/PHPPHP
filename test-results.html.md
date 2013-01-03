@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-03 11:58:21</h2>
+<h2>Time Start: 2013-01-03 14:07:52</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -21,7 +21,7 @@
 <tr><td>FAIL</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Switch test 3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Switch test 3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Regression test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Looped regression test (may take a while)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Mean recursion test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -83,7 +83,7 @@
 <tr><td>FAIL</td><td>Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)")</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24908 (super-globals can not be used in __destruct())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24926 (lambda function (create_function()) cannot be stored in a class property)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Bug #25145 (SEGV on recpt of form input with name like "123[]")</td><td>reason: CGI not available</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25547 (error_handler and array index with function call)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -114,7 +114,7 @@
 <tr><td>PASS</td><td>Bug #44654 (syntax error for #)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #44827 (Class error when trying to access :: as constant)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #45392 (ob_start()/ob_end_clean() and memory_limit)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #7515 (weird & invisible referencing of objects)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catchable fatal error [1]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catchable fatal error [2]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -169,10 +169,10 @@ It will pass only if the 'contentious code' in PHPValue.decReferences() is enabl
 <tr><td>PASS</td><td>func_get_arg with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_arg outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_arg on non-existent arg</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>A variable, which is referenced by another variable, is passed by value.
+<tr><td>PASS</td><td>A variable, which is referenced by another variable, is passed by value.
 During the call, the original variable is updated. This should not affect func_get_arg().</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_get_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_get_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>func_get_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,25 +276,24 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-03 11:59:31</h2>
+<h2>Time End: 2013-01-03 14:09:04</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               263
 Tests skipped   :   10 (  3.7%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  163 ( 59.7%) ( 62.0%)
+Tests failed    :  162 ( 59.3%) ( 61.6%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  100 ( 36.6%) ( 38.0%)
+Tests passed    :  101 ( 37.0%) ( 38.4%)
 ---------------------------------------------------------------------
-Time taken      :   70 seconds
+Time taken      :   72 seconds
 =====================================================================
 
 =====================================================================
 FAILED TEST SUMMARY
 ---------------------------------------------------------------------
 eval() test [vendor/php/php-src/tests/lang/019.phpt]
-Switch test 3 [vendor/php/php-src/tests/lang/022.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
 Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
 Testing calling user-level functions from C [vendor/php/php-src/tests/lang/028.phpt]
@@ -346,6 +345,7 @@ Bug #24658 (combo of typehint / reference causes crash) [vendor/php/php-src/test
 Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)") [vendor/php/php-src/tests/lang/bug24783.phpt]
 Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/tests/lang/bug24908.phpt]
 Bug #24926 (lambda function (create_function()) cannot be stored in a class property) [vendor/php/php-src/tests/lang/bug24926.phpt]
+Bug #24951 (ob_flush() destroys output handler) [vendor/php/php-src/tests/lang/bug24951.phpt]
 Bug #25547 (error_handler and array index with function call) [vendor/php/php-src/tests/lang/bug25547.phpt]
 Bug #25652 (Calling Global functions dynamically fails from Class scope) [vendor/php/php-src/tests/lang/bug25652.phpt]
 Bug #25922 (SEGV in error_handler when context is destroyed) [vendor/php/php-src/tests/lang/bug25922.phpt]
@@ -369,6 +369,7 @@ Bug #38579 (include_once() may include the same file twice) [vendor/php/php-src/
 Bug #43958 (class name added into the error message) [vendor/php/php-src/tests/lang/bug43958.phpt]
 Bug #44827 (Class error when trying to access :: as constant) [vendor/php/php-src/tests/lang/bug44827.phpt]
 Bug #45392 (ob_start()/ob_end_clean() and memory_limit) [vendor/php/php-src/tests/lang/bug45392.phpt]
+Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params) [vendor/php/php-src/tests/lang/bug55754.phpt]
 Bug #7515 (weird & invisible referencing of objects) [vendor/php/php-src/tests/lang/bug7515.phpt]
 Catchable fatal error [1] [vendor/php/php-src/tests/lang/catchable_error_001.phpt]
 Catchable fatal error [2] [vendor/php/php-src/tests/lang/catchable_error_002.phpt]
@@ -416,10 +417,7 @@ Foreach loop tests - substituting the entire iterated entity during the loop. [v
 foreach() with foreach($o->mthd()->arr) [vendor/php/php-src/tests/lang/foreach_with_object_001.phpt]
 func_get_arg outside of a function declaration [vendor/php/php-src/tests/lang/func_get_arg.003.phpt]
 func_get_arg on non-existent arg [vendor/php/php-src/tests/lang/func_get_arg.004.phpt]
-A variable, which is referenced by another variable, is passed by value.
-During the call, the original variable is updated. This should not affect func_get_arg(). [vendor/php/php-src/tests/lang/func_get_arg.005.phpt]
 func_get_arg test [vendor/php/php-src/tests/lang/func_get_arg_variation.phpt]
-func_get_args with no args [vendor/php/php-src/tests/lang/func_get_args.001.phpt]
 func_get_args with variable number of args [vendor/php/php-src/tests/lang/func_get_args.002.phpt]
 func_get_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_get_args.003.phpt]
 Pass same variable by ref and by value. [vendor/php/php-src/tests/lang/func_get_args.004.phpt]
