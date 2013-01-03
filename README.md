@@ -60,6 +60,13 @@ To run the test suite (which mostly fails right now), install composer using the
     ./run-tests.sh
 
 ### Windows
+Before running tests on Windows, some lines must be removed or commented out from `runtests.php` (if installed via composer it will be located in `vendor/php/php-src/runtests.php`). Starting from line 185:
+
+    if (function_exists('is_executable') && !is_executable($php)) {
+        error("invalid PHP executable specified by TEST_PHP_EXECUTABLE  = $php");
+    }
+
+Tu run test suite simply type
 
     run-tests.bat
 
