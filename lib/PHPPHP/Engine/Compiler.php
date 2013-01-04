@@ -95,6 +95,12 @@ class Compiler {
     // Needed because it may be CWD not the dirname of the filename
     protected $currentDir = '';
 
+    protected $functionStore;
+
+    public function __construct(FunctionStore $functionStore) {
+        $this->functionStore = $functionStore;
+    }
+
     public function setFileName($name, $dir) {
         $this->fileName = $name;
         $this->currentDir = $dir;
@@ -106,14 +112,26 @@ class Compiler {
 
     public function compile(array $ast, Zval\Ptr $returnContext = null) {
         $opArray = new OpArray($this->fileName);
-
         $this->opArray = $opArray;
-        $this->compileNodes($ast, $returnContext);
-        unset($this->opArray);
 
+        $this->compileTopLevelFunctions($ast);
+        $this->compileNodes($ast, $returnContext);
         $opArray[] = new OpLines\ReturnOp(end($ast)->getLine());
 
+        unset($this->opArray);
         return $opArray;
+    }
+
+    protected function compileTopLevelFunctions(array $ast) {
+        foreach ($ast as $node) {
+            if ($node instanceof \PHPParser_Node_Stmt_Function) {
+                $funcData = $this->compileFunction($node);
+                $this->functionStore->register($node->namespacedName, $funcData);
+                $node->alreadyCompiled = true;
+            } elseif ($node instanceof \PHPParser_Node_Stmt_Namespace) {
+                $this->compileTopLevelFunctions($node->stmts);
+            }
+        }
     }
 
     protected function compileNodes(array $ast, Zval\Ptr $returnContext = null) {
@@ -475,8 +493,10 @@ class Compiler {
     }
 
     protected function compile_Stmt_Function(\PHPParser_Node_Stmt_Function $node) {
+        if ($node->alreadyCompiled) return;
+
         $funcData = $this->compileFunction($node);
-        $this->opArray[] = new OpLines\FunctionDef($node->getLine(), Zval::factory($node->name), $funcData);
+        $this->opArray[] = new OpLines\FunctionDef($node->getLine(), Zval::factory($node->namespacedName), $funcData);
     }
 
     protected function compile_Stmt_Global($node) {
