@@ -20,6 +20,7 @@ class User extends Base {
         if (!$args) {
             $args = array();
         }
+        $this->checkParams($executor, $args);
         if ($this->byRef) {
             $return->makeRef();
         }

@@ -19,5 +19,9 @@ class ExecutorGlobals {
     public $symbolTable = array();
     
     public $superGlobals = array();
+
+    public $timeLimit = 0;
+
+    public $timeLimitEnd = PHP_INT_MAX;
     
 }

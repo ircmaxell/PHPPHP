@@ -64,6 +64,7 @@ class PHP {
         if ($retval) {
             return $retval->getValue();
         }
+        $this->executor->shutdown();
         $this->executor->getOutput()->finish();
         return null;
     }

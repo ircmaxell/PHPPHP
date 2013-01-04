@@ -6,6 +6,9 @@ class Executor {
     const DO_RETURN = 1;
     const DO_SHUTDOWN = 2;
 
+    const IN_SHUTDOWN = 1;
+    const FINISHED_SHUTDOWN = 2;
+
     public $executorGlobals;
     public $structureStack = array();
 
@@ -21,6 +24,7 @@ class Executor {
 
     protected $extensions;
 
+    protected $shutdownFunctions = array();
     protected $functionStore;
     protected $constantStore;
     protected $classStore;
@@ -39,7 +43,17 @@ class Executor {
     }
     
     public function shutdown() {
-        $this->shutdown = true;
+        if ($this->shutdown == self::IN_SHUTDOWN) {
+            $this->shutdown = self::FINISHED_SHUTDOWN;
+        } elseif (!$this->shutdown) {
+            $this->shutdown = self::IN_SHUTDOWN;
+            $k = 0;
+            while ($this->shutdown == self::IN_SHUTDOWN && isset($this->shutdownFunctions[$k])) {
+                $cb = $this->shutdownFunctions[$k];
+                $cb($this, array(), Zval::ptrFactory());
+                $k++;
+            }
+        }
     }
     
     public function getErrorHandler() {
@@ -92,8 +106,7 @@ class Executor {
             return $this->compiler->compile($ast);
         } catch (CompilerException $e) {
             $line = $e->getRawLine();
-            $this->errorHandler->handle($this, E_COMPILE_ERROR, $message, $file, $line);
-            $this->raiseError(E_COMPILE_ERROR, $message);
+            $this->errorHandler->handle($this, E_COMPILE_ERROR, $e->getMessage(), $file, $line);
             throw new ErrorOccurredException($message, E_COMPILE_ERROR);
         }
     }
@@ -110,7 +123,8 @@ class Executor {
     }
 
     public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array(), Zval $result = null, Objects\ClassInstance $ci = null) {
-        if ($this->shutdown) return;
+        $shutdownScope = $this->shutdown;
+        if ($this->shutdown == self::FINISHED_SHUTDOWN) return;
         $opArray->registerExecutor($this);
         $scope = new ExecuteData($this, $opArray, $function);
         $scope->arguments = $args;
@@ -130,12 +144,18 @@ class Executor {
             $scope->returnValue->makeRef();
         }
 
-        while (!$this->shutdown && $scope->opLine) {
+        while ($this->shutdown == $shutdownScope && $scope->opLine) {
             try {
                 $ret = $scope->opLine->execute($scope);
             } catch (ErrorOccurredException $e) {
                 $ret = false;
                 // Ignored here, since the handler will shutdown for us
+            }
+            if ($this->shutdown == $shutdownScope && $this->executorGlobals->timeLimit && $this->executorGlobals->timeLimitEnd < time()) {
+                $limit = $this->executorGlobals->timeLimit;
+                $message = sprintf('Maximum execution time of %d second%s exceeded', $limit, $limit == 1 ? '' : 's');
+                $this->errorHandler->handle($this, E_ERROR, $message, $opArray->getFileName(), $scope->opLine->lineno);
+                return;
             }
             switch ($ret) {
                 case self::DO_RETURN:
@@ -206,6 +226,10 @@ class Executor {
 
     public function getExtensions() {
         return $this->extensions;
+    }
+
+    public function registerShutdownFunction($cb) {
+        $this->shutdownFunctions[] = $cb;
     }
 
     public function registerExtension(Extension $extension) {

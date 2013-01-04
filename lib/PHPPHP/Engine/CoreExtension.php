@@ -66,6 +66,7 @@ final class CoreExtension extends Extension\Base {
 
     protected function getFunctions() {
         $funcs = require_once __DIR__ . '/ext/Functions.php';
+        $funcs += require_once __DIR__ . '/ext/Core.php';
         $funcs += require_once __DIR__ . '/ext/Array.php';
         $funcs += require_once __DIR__ . '/ext/Types.php';
         return $funcs + $this->registerCoreFunctions();
