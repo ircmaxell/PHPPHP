@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-04 12:47:20</h2>
+<h2>Time Start: 2013-01-04 14:50:12</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -67,7 +67,7 @@
 <tr><td>FAIL</td><td>Bug #23279 (exception handler stops after first function call)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23384 (use of class constants in statics)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23489 (ob_start() is broken with method callbacks)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #23524 (Improper handling of constants in array indices)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #23524 (Improper handling of constants in array indices)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23584 (error line numbers off by one when using #!php)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23624 (foreach leaves current array key as null)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #23922 (scope doesn't properly propagate into internal functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -86,7 +86,7 @@
 <tr><td>FAIL</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Bug #25145 (SEGV on recpt of form input with name like "123[]")</td><td>reason: CGI not available</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25547 (error_handler and array index with function call)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25922 (SEGV in error_handler when context is destroyed)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #26182 (Object properties created redundantly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #26696 (string index in a switch() crashes with multiple matches)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -116,7 +116,7 @@
 <tr><td>FAIL</td><td>Bug #45392 (ob_start()/ob_end_clean() and memory_limit)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #7515 (weird & invisible referencing of objects)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Catchable fatal error [1]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Catchable fatal error [1]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catchable fatal error [2]</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>#-style comments</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>#-style comments (part 2)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -178,7 +178,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_num_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_num_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>include() a file from the current script directory</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Including a file in the current script directory from an included function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -270,24 +270,24 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Statics in nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Static variables in methods & nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>String conversion with multiple decimal points</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catching an exception thrown from an included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-04 12:50:07</h2>
+<h2>Time End: 2013-01-04 14:52:08</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  133 ( 48.7%) ( 51.0%)
+Tests failed    :  129 ( 47.3%) ( 49.4%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  128 ( 46.9%) ( 49.0%)
+Tests passed    :  132 ( 48.4%) ( 50.6%)
 ---------------------------------------------------------------------
-Time taken      :  167 seconds
+Time taken      :  116 seconds
 =====================================================================
 
 =====================================================================
@@ -322,7 +322,6 @@ Bug #22690 (ob_start() is broken with create_function() callbacks) [vendor/php/p
 Bug #23279 (exception handler stops after first function call) [vendor/php/php-src/tests/lang/bug23279.phpt]
 Bug #23384 (use of class constants in statics) [vendor/php/php-src/tests/lang/bug23384.phpt]
 Bug #23489 (ob_start() is broken with method callbacks) [vendor/php/php-src/tests/lang/bug23489.phpt]
-Bug #23524 (Improper handling of constants in array indices) [vendor/php/php-src/tests/lang/bug23524.phpt]
 Bug #23584 (error line numbers off by one when using #!php) [vendor/php/php-src/tests/lang/bug23584.phpt]
 Bug #23624 (foreach leaves current array key as null) [vendor/php/php-src/tests/lang/bug23624.phpt]
 Bug #23922 (scope doesn't properly propagate into internal functions) [vendor/php/php-src/tests/lang/bug23922.phpt]
@@ -338,6 +337,7 @@ Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/t
 Bug #24926 (lambda function (create_function()) cannot be stored in a class property) [vendor/php/php-src/tests/lang/bug24926.phpt]
 Bug #24951 (ob_flush() destroys output handler) [vendor/php/php-src/tests/lang/bug24951.phpt]
 Bug #25547 (error_handler and array index with function call) [vendor/php/php-src/tests/lang/bug25547.phpt]
+Bug #25652 (Calling Global functions dynamically fails from Class scope) [vendor/php/php-src/tests/lang/bug25652.phpt]
 Bug #25922 (SEGV in error_handler when context is destroyed) [vendor/php/php-src/tests/lang/bug25922.phpt]
 Bug #26182 (Object properties created redundantly) [vendor/php/php-src/tests/lang/bug26182.phpt]
 Bug #26866 (segfault when exception raised in __get) [vendor/php/php-src/tests/lang/bug26866.phpt]
@@ -355,7 +355,6 @@ Bug #44827 (Class error when trying to access :: as constant) [vendor/php/php-sr
 Bug #45392 (ob_start()/ob_end_clean() and memory_limit) [vendor/php/php-src/tests/lang/bug45392.phpt]
 Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_REF params) [vendor/php/php-src/tests/lang/bug55754.phpt]
 Bug #7515 (weird & invisible referencing of objects) [vendor/php/php-src/tests/lang/bug7515.phpt]
-Catchable fatal error [1] [vendor/php/php-src/tests/lang/catchable_error_001.phpt]
 Catchable fatal error [2] [vendor/php/php-src/tests/lang/catchable_error_002.phpt]
 Test object compare when object handler different [vendor/php/php-src/tests/lang/compare_objects_basic2.phpt]
 Binary safety of each() for both keys and values [vendor/php/php-src/tests/lang/each_binary_safety.phpt]
@@ -394,7 +393,6 @@ Foreach loop tests - modifying the object during the loop. [vendor/php/php-src/t
 Foreach loop tests - Removing the current element from an iterated object. [vendor/php/php-src/tests/lang/foreachLoopObjects.004.phpt]
 Foreach loop tests - removing properties before and after the current property during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.005.phpt]
 Foreach loop tests - substituting the entire iterated entity during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.006.phpt]
-func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
 Test / operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/divide_variationStr.phpt]
@@ -422,9 +420,7 @@ short_open_tag: On, asp_tags: On [vendor/php/php-src/tests/lang/short_tags.003.p
 short_open_tag: Off, asp_tags: Off [vendor/php/php-src/tests/lang/short_tags.004.phpt]
 Statics in nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_001.phpt]
 Static variables in methods & nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_002.phpt]
+Test to catch early assignment of $this [vendor/php/php-src/tests/lang/this_assignment.phpt]
 Catching an exception thrown from an included file [vendor/php/php-src/tests/lang/throw_variation_001.phpt]
-ZE2 type hinting [vendor/php/php-src/tests/lang/type_hints_001.phpt]
-ZE2 type hinting [vendor/php/php-src/tests/lang/type_hints_002.phpt]
-ZE2 type hinting [vendor/php/php-src/tests/lang/type_hints_003.phpt]
 =====================================================================
 </pre>
