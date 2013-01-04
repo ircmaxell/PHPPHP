@@ -30,5 +30,4 @@ class User extends Base {
         }
         $executor->execute($this->opArray, $scope, $this, $args, $return, $ci);
     }
-
 }

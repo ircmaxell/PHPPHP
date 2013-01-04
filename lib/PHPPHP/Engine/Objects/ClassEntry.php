@@ -8,18 +8,21 @@ use PHPPHP\Engine\FunctionData;
 use PHPPHP\Engine\FunctionStore;
 use PHPPHP\Engine\Zval\Ptr;
 use PHPPHP\Engine\Zval;
+use PHPPHP\Engine\ConstantStore;
 
 class ClassEntry
 {
     private $name;
     private $properties;
     private $methods;
+    private $constants;
     private $parent;
 
     public function __construct($name, ClassEntry $parent = null)
     {
         $this->properties = array();
         $this->methods = new FunctionStore;
+        $this->constants = new ConstantStore;
         $this->name = $name;
         $this->parent = $parent;
     }
@@ -46,6 +49,14 @@ class ClassEntry
 
     public function getMethodStore() {
         return $this->methods;
+    }
+
+    public function defineConstant($name, Zval $value) {
+        $this->constants->register($name, $value->getZval());
+    }
+
+    public function getConstantStore() {
+        return $this->constants;
     }
 
     public function getParent() {
