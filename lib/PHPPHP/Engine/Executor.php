@@ -31,7 +31,7 @@ class Executor {
     public function __construct(FunctionStore $functionStore, ConstantStore $constantStore, ClassStore $classStore) {
         $this->executorGlobals = new ExecutorGlobals;
         $this->parser = new Parser;
-        $this->compiler = new Compiler;
+        $this->compiler = new Compiler($functionStore);
         $this->functionStore = $functionStore;
         $this->constantStore = $constantStore;
         $this->classStore = $classStore;
