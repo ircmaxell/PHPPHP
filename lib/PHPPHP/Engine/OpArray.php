@@ -2,7 +2,7 @@
 
 namespace PHPPHP\Engine;
 
-class OpArray implements \ArrayAccess, \IteratorAggregate, \Countable {
+class OpArray implements \ArrayAccess, \IteratorAggregate {
     /** @var OpLine[] */
     protected $opLines = array();
     protected $numOps = 0;
