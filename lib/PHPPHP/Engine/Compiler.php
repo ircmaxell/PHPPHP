@@ -627,7 +627,7 @@ class Compiler {
         $zval = $this->makeZvalFromNode($node);
 
         if (null === $zval) {
-            throw new CompilerException('Cannot evaluate non-constant expression at compile time', $node->getLine());
+            throw new CompileException('Cannot evaluate non-constant expression at compile time', $node->getLine());
         }
 
         return $zval;
