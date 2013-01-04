@@ -35,6 +35,10 @@ abstract class Base implements Engine\FunctionData {
         return isset($this->params[$n]) ? $this->params[$n] : false;
     }
 
+    protected function getFileName() {
+        return '';
+    }
+
     protected function checkParams(\PHPPHP\Engine\Executor $executor, array &$args, $checkTooMany = false) {
         $argNo = 0;
         $required = 0;
@@ -42,6 +46,45 @@ abstract class Base implements Engine\FunctionData {
         $has = count($args);
         $varargs = false;
         while ($param = $this->getParam($argNo)) {
+            if ($param->type) {
+                $error = "";
+                if ($param->type == 'array') {
+                    if (!isset($args[$argNo]) && !$param->isOptional) {
+                        $error = "array";
+                    } elseif (!isset($args[$argNo])) {
+                        // Blank intentional
+                    } elseif (!$args[$argNo]->isArray() && !($args[$argNo]->isNull() && $param->isOptional)) {
+                        $error = "array";
+                    }
+                } else {
+                    if (!isset($args[$argNo]) && !$param->isOptional) {
+                        $error = "instance of {$param->type}";
+                    } elseif (!isset($args[$argNo])) {
+                        // Blank intentional
+                    } elseif (!$args[$argNo]->isObject() && !($args[$argNo]->isNull() && $param->isOptional)) {
+                        $error = "instance of {$param->type}";
+                    } elseif (!$args[$argNo]->isObject()) {
+                        // Blank intentional
+                    } elseif (!$args[$argNo]->getValue()->getClassEntry()->isInstanceOf($param->type)) {
+                        $error = "instance of {$param->type}";
+                    }
+                }
+                if ($error) {
+                    $type = "none";
+                    if (isset($args[$argNo])) {
+                        $type = $args[$argNo]->getType();
+                        if ($type == 'object') {
+                            $type = 'instance of ' . $args[$argNo]->getValue()->getClassEntry()->getName();
+                        }
+                    }
+                    $extra = '';
+                    if ($this->getFileName()) {
+                        $extra = ' and defined in ' . $this->getFileName() . ' on line ' . $param->lineno;
+                    }
+                    $message = "Argument " . ($argNo + 1) . " passed to {$this->name}() must be an $error, $type given, called";
+                    $executor->raiseError(E_RECOVERABLE_ERROR, $message, $extra);
+                }
+            }
             if (!$param->isOptional) {
                 $required++;
                 if (!isset($args[$argNo])) {

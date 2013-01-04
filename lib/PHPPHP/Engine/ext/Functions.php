@@ -126,7 +126,7 @@ return array(
                 $return->setValue(count($current->arguments));
             } else {
                 $executor->raiseError(E_WARNING, 'func_num_args():  Called from the global scope - no function context');
-                $return->setValue(false);
+                $return->setValue(-1);
             }
         }
     ),

@@ -10,6 +10,7 @@ class InitFCallByName extends \PHPPHP\Engine\OpLine {
         $ci = $this->op1;
         $funcName = $this->op2->toString();
         if ($ci) {
+            $ci = $ci->getValue();
             $functionData = $ci->getClassEntry()->getMethodStore()->get($funcName);
         } else {
             $functionData = $data->executor->getFunctionStore()->get($funcName);

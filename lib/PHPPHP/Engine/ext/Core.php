@@ -2,6 +2,59 @@
 
 namespace PHPPHP\Engine;
 
+function var_dump_internal(Executor $executor, Zval $arg, $indent = '') {
+    $output = $indent;
+    switch ($arg->getType()) {
+        case 'NULL':
+            $output .= 'NULL';
+            break;
+        case 'string':
+            $length = strlen($arg->getValue());
+            $output .= 'string(' . $length . ') "' . $arg->getValue() . '"';
+            break;
+        case 'integer':
+            $output .= 'int(' . $arg->getValue() . ')';
+            break;
+        case 'double':
+            $output .= 'float(' . $arg->getValue() . ')';
+            break;
+        case 'boolean':
+            $output .= 'bool(' . ($arg->getValue() ? 'true' : 'false') . ')';
+            break;
+        case 'array':
+            $array = $arg->getArray();
+            $output .= 'array(' . count($array) . ") {\n";
+            $newIndent = $indent . '  ';
+            foreach ($array as $key => $value) {
+                if (is_string($key)) {
+                    $output .= $newIndent . "[\"$key\"]=>\n";
+                } else {
+                    $output .= $newIndent . "[$key]=>\n";
+                }
+                $output .= var_dump_internal($executor, $value, $newIndent);
+            }
+            $output .= $indent . "}";
+
+        case 'object':
+            $ci = $arg->getValue();
+            $props = $ci->getProperties();
+            $output = 'object(' . $ci->getClassEntry()->getName() . ')#' . $ci->getInstanceNumber();
+            $output .= ' (' . count($props) . ") {\n";
+            $newIndent = $indent . '  ';
+            foreach ($props as $key => $value) {
+                if (is_string($key)) {
+                    $output .= $newIndent . "[\"$key\"]=>\n";
+                } else {
+                    $output .= $newIndent . "[$key]=>\n";
+                }
+                $output .= var_dump_internal($executor, $value, $newIndent);
+            }
+            $output .= $indent . "}";
+            break;
+    }
+    return $output . "\n";
+}
+
 return array(
     'register_shutdown_function' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
@@ -32,6 +85,19 @@ return array(
         false,
         array(
             new ParamData('seconds'),
+        )
+    ),
+    'var_dump' => new FunctionData\Internal(
+        function(Executor $executor, array $args) {
+            $output = $executor->getOutput();
+            foreach ($args as $arg) {
+                $output->write(var_dump_internal($executor, $arg));
+            }
+        },
+        false,
+        array(
+            new ParamData('var'),
+            new ParamData('...', false, null, true),
         )
     ),
 );

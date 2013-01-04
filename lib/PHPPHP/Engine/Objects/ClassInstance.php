@@ -11,6 +11,7 @@ class ClassInstance
 {
     private $ce;
     private $properties = array();
+    private $instanceNumber = 0;
 
     public function __construct(ClassEntry $ce, array $properties) {
         $this->ce = $ce;
@@ -18,7 +19,15 @@ class ClassInstance
             return Zval::ptrFactory($property->getZval());
         }, $properties);
     }
-    
+
+    public function getInstanceNumber() {
+        return $this->instanceNumber;
+    }
+
+    public function setInstanceNumber($num) {
+        $this->instanceNumber = $num;
+    }
+
     public function getClassEntry() {
         return $this->ce;
     }
@@ -37,6 +46,10 @@ class ClassInstance
                 }
            }
         } while ($parent = $parent->getParent());
+    }
+
+    public function getProperties() {
+        return $this->properties;
     }
 
     public function getProperty($name) {

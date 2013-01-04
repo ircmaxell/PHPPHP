@@ -64,10 +64,10 @@ class Executor {
         $this->errorHandler = $handler;
     }
     
-    public function raiseError($level, $message) {
+    public function raiseError($level, $message, $extra = '') {
         $file = $this->current->opArray->getFileName();
         $line = $this->current->opLine->lineno;
-        $this->errorHandler->handle($this, $level, $message, $file, $line);
+        $this->errorHandler->handle($this, $level, $message, $file, $line, $extra);
     }
 
     public function getStack() {
@@ -104,7 +104,7 @@ class Executor {
     protected function compileCode(array $ast, $file) {
         try {
             return $this->compiler->compile($ast);
-        } catch (CompilerException $e) {
+        } catch (CompileException $e) {
             $line = $e->getRawLine();
             $this->errorHandler->handle($this, E_COMPILE_ERROR, $e->getMessage(), $file, $line);
             throw new ErrorOccurredException($message, E_COMPILE_ERROR);

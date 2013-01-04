@@ -135,7 +135,7 @@ class Compiler {
         $methodName = 'compile_' . $nodeType;
         if (!method_exists($this, $methodName)) {
             var_dump($node);
-            throw new CompilerException($nodeType . ' not supported yet', $node->line);
+            throw new CompileException($nodeType . ' not supported yet', $node->line);
         }
 
         call_user_func(array($this, $methodName), $node, $returnContext);
@@ -283,12 +283,24 @@ class Compiler {
         $this->opArray[] = new OpLines\FunctionCall($node->getLine(), null, null, $returnContext ?: Zval::ptrFactory());;
     }
 
-    public function compile_Expr_MethodCall($node, $returnContext = null) {
-        $var = Zval::ptrFactory();
-        $this->compileChild($node, 'var', $var);
-        $op = new OpLines\MethodCall($node->getLine(), Zval::ptrFactory($node->name), Zval::ptrFactory($node->args), $returnContext);
-        $op->setObjectOp($var);
-        $this->opArray[] = $op;
+    protected function compile_Expr_MethodCall($node, $returnContext = null) {
+        $varPtr = Zval::ptrFactory();
+        $namePtr = Zval::ptrFactory();
+        $args = array();
+        $this->compileChild($node, 'var', $varPtr);
+        $this->compileChild($node, 'name', $namePtr);
+        foreach ($node->args as $arg) {
+            $ptr = Zval::ptrFactory();
+            $this->compileChild($arg, 'value', $ptr);
+            $args[] = $ptr;
+        }
+        $this->opArray[] = new OpLines\InitFCallByName($node->getLine(), $varPtr, $namePtr);
+
+        foreach ($args as $key => $arg) {
+            $this->opArray[] = new OpLines\Send($node->getLine(), $arg, $key);
+        }
+
+        $this->opArray[] = new OpLines\FunctionCall($node->getLine(), null, null, $returnContext ?: Zval::ptrFactory());;
     }
 
     protected function compile_Expr_List($node, $returnContext = null) {
@@ -348,6 +360,12 @@ class Compiler {
         $variable = Zval::variableFactory($name);
         $this->opArray->addCompiledVariable($variable);
         $returnContext->assignZval($variable);
+    }
+
+    protected function compile_Name_FullyQualified($node, $returnContext) {
+        if ($returnContext) {
+            $returnContext->setValue(implode('\\', $node->parts));
+        }
     }
 
     protected function compile_Scalar_Encapsed($node, $returnContext = null) {
@@ -599,10 +617,25 @@ class Compiler {
         $params = array();
 
         foreach ($node->params as $i => $param) {
-            $params[] = new ParamData($param->name, $param->byRef, $param->type, (bool) $param->default);
+            $type = null;
+            if ($param->type && $param->type instanceof \PHPParser_Node) {
+                $tmpZval = Zval::ptrFactory();
+                $this->compileChild($param, 'type', $tmpZval);
+                $type = $tmpZval->toString();
+            } elseif (is_string($param->type)) {
+                $type = $param->type;
+            }
+            $params[] = new ParamData($param->name, $param->byRef, $type, (bool) $param->default, $node->getLine());
 
             if ($param->default) {
-                $this->opArray[] = new OpLines\RecvInit($node->getLine(), Zval::factory($i), $this->makeZvalFromNode($param->default));
+                $default = Zval::ptrFactory();
+                $this->compileChild($param, 'default', $default);
+                if ($param->type == 'array' && !($default->isArray() || $default->isNull())) {
+                    throw new CompileException('Default value for parameters with array type hint can only be an array or NULL', $node->getLine());
+                } elseif ($param->type != 'array' && $param->type && !$default->isNull()) {
+                    throw new CompileException('Default value for parameters with a class type hint can only be NULL', $node->getLine());
+                }
+                $this->opArray[] = new OpLines\RecvInit($node->getLine(), Zval::factory($i), $default);
             } else {
                 $this->opArray[] = new OpLines\Recv($node->getLine(), Zval::factory($i));
             }
@@ -627,7 +660,7 @@ class Compiler {
         $zval = $this->makeZvalFromNode($node);
 
         if (null === $zval) {
-            throw new CompilerException('Cannot evaluate non-constant expression at compile time', $node->getLine());
+            throw new CompileException('Cannot evaluate non-constant expression at compile time', $node->getLine());
         }
 
         return $zval;

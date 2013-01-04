@@ -2,6 +2,8 @@
 
 namespace PHPPHP\Engine\OpLines;
 
+use PHPPHP\Engine\Zval;
+
 class RecvInit extends Recv {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $args = &$data->arguments;
@@ -10,6 +12,7 @@ class RecvInit extends Recv {
         if (!isset($args[$n])) {
             $args[$n] = Zval::ptrFactory($this->op2->getZval());
         }
+
         parent::execute($data);
     }
 }

@@ -15,6 +15,10 @@ class User extends Base {
         $this->params = $params;
     }
 
+    protected function getFileName() {
+        return $this->opArray->getFileName();
+    }
+
     public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
         $scope = array();
         if (!$args) {
