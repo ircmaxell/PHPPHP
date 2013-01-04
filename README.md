@@ -66,7 +66,7 @@ Before running tests on Windows, some lines must be removed or commented out fro
         error("invalid PHP executable specified by TEST_PHP_EXECUTABLE  = $php");
     }
 
-Tu run test suite simply type
+To run test suite simply type
 
     run-tests.bat
 
