@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-04 11:55:10</h2>
+<h2>Time Start: 2013-01-04 12:05:20</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -22,8 +22,8 @@
 <tr><td>PASS</td><td>Switch test 1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Regression test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Looped regression test (may take a while)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Regression test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Looped regression test (may take a while)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Mean recursion test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing string scanner confirmance</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing do-while loop</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -86,7 +86,7 @@
 <tr><td>FAIL</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Bug #25145 (SEGV on recpt of form input with name like "123[]")</td><td>reason: CGI not available</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25547 (error_handler and array index with function call)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25922 (SEGV in error_handler when context is destroyed)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #26182 (Object properties created redundantly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #26696 (string index in a switch() crashes with multiple matches)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -128,8 +128,8 @@
 <tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Check key execution order with &new.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Ensure by value assignments leave temporaries on the stack, for all sorts of assignees.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Execution ordering with comparison operators.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -163,7 +163,7 @@ It will pass only if the 'contentious code' in PHPValue.decReferences() is enabl
 <tr><td>FAIL</td><td>Foreach loop tests - Removing the current element from an iterated object.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - removing properties before and after the current property during the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Foreach loop tests - substituting the entire iterated entity during the loop.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>foreach() with foreach($o->mthd()->arr)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>foreach() with foreach($o->mthd()->arr)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>foreach() with references</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_arg with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,25 +276,23 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-04 11:58:40</h2>
+<h2>Time End: 2013-01-04 12:08:01</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  140 ( 51.3%) ( 53.6%)
+Tests failed    :  134 ( 49.1%) ( 51.3%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  121 ( 44.3%) ( 46.4%)
+Tests passed    :  127 ( 46.5%) ( 48.7%)
 ---------------------------------------------------------------------
-Time taken      :  210 seconds
+Time taken      :  161 seconds
 =====================================================================
 
 =====================================================================
 FAILED TEST SUMMARY
 ---------------------------------------------------------------------
-Regression test [vendor/php/php-src/tests/lang/023.phpt]
-Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
 ZE2: set_exception_handler() [vendor/php/php-src/tests/lang/035.phpt]
 Child public element should not override parent private element in parent methods [vendor/php/php-src/tests/lang/036.phpt]
@@ -341,7 +339,6 @@ Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/t
 Bug #24926 (lambda function (create_function()) cannot be stored in a class property) [vendor/php/php-src/tests/lang/bug24926.phpt]
 Bug #24951 (ob_flush() destroys output handler) [vendor/php/php-src/tests/lang/bug24951.phpt]
 Bug #25547 (error_handler and array index with function call) [vendor/php/php-src/tests/lang/bug25547.phpt]
-Bug #25652 (Calling Global functions dynamically fails from Class scope) [vendor/php/php-src/tests/lang/bug25652.phpt]
 Bug #25922 (SEGV in error_handler when context is destroyed) [vendor/php/php-src/tests/lang/bug25922.phpt]
 Bug #26182 (Object properties created redundantly) [vendor/php/php-src/tests/lang/bug26182.phpt]
 Bug #26866 (segfault when exception raised in __get) [vendor/php/php-src/tests/lang/bug26866.phpt]
@@ -368,8 +365,6 @@ Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assig
 Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_002.phpt]
 Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_003.phpt]
 Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_004.phpt]
-Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_005.phpt]
-Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_006.phpt]
 Check key execution order with &new. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_007.phpt]
 Ensure by value assignments leave temporaries on the stack, for all sorts of assignees. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_008.phpt]
 Execution ordering with comparison operators. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_009.phpt]
@@ -400,7 +395,6 @@ Foreach loop tests - modifying the object during the loop. [vendor/php/php-src/t
 Foreach loop tests - Removing the current element from an iterated object. [vendor/php/php-src/tests/lang/foreachLoopObjects.004.phpt]
 Foreach loop tests - removing properties before and after the current property during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.005.phpt]
 Foreach loop tests - substituting the entire iterated entity during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.006.phpt]
-foreach() with foreach($o->mthd()->arr) [vendor/php/php-src/tests/lang/foreach_with_object_001.phpt]
 func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
