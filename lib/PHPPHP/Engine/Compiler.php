@@ -394,45 +394,54 @@ class Compiler {
         }
     }
 
-    protected function compile_Stmt_Break($node) {
-        $op1 = null;
-        if ($node->num) {
-            $op1 = Zval::ptrFactory();
-            $this->compileChild($node, 'num', $op1);
+    protected function getBreakContinueLevel($node, $type) {
+        if ($node->num === null) {
+            return 1;
         }
-        $this->opArray[] = new OpLines\BreakOp($node->getLine(), $op1);
+
+        if (!$node->num instanceof \PHPParser_Node_Scalar_LNumber || $node->num->value < 1) {
+            throw new CompileException("'$type' operator accepts only positive numbers", $node->getLine());
+        }
+
+        return $node->num->value;
+    }
+
+    protected function compile_Stmt_Break($node) {
+        $this->opArray[] = new OpLines\BreakOp(
+            $node->getLine(),
+            $this->opArray->getBreakContinueInfoAtLevel($this->getBreakContinueLevel($node, "break"))
+        );
     }
 
     protected function compile_Stmt_Continue($node) {
-        $op1 = null;
-        if ($node->num) {
-            $op1 = Zval::ptrFactory();
-            $this->compileChild($node, 'num', $op1);
-        }
-        $this->opArray[] = new OpLines\ContinueOp($node->getLine(), $op1);
+        $this->opArray[] = new OpLines\ContinueOp(
+            $node->getLine(),
+            $this->opArray->getBreakContinueInfoAtLevel($this->getBreakContinueLevel($node, "continue"))
+        );
     }
 
     protected function compile_Stmt_For($node) {
         $this->compileChild($node, 'init');
 
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
+        $this->opArray->beginLoop();
         $startJumpPos = $this->opArray->getNextOffset();
         $condPtr = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $condPtr);
         $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node->getLine(), $condPtr);
         $this->compileChild($node, 'stmts');
-        $stackPushOp->op1 = $this->opArray->getNextOffset();
+        $continueJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'loop');
-        $this->opArray[] = new OpLines\Jump($node->getLine(), $startJumpPos);
-        $stackPushOp->op2 = $endJumpOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
+        $this->opArray[] = new OpLines\Jump($node, $startJumpPos);
+        $endJumpOp->op2 = $this->opArray->getNextOffset();
+        $this->opArray->endLoop($continueJumpPos);
     }
 
     protected function compile_Stmt_Foreach($node) {
         $iteratePtr = Zval::ptrFactory();
 
         $this->compileChild($node, 'expr', $iteratePtr);
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
+
+        $this->opArray->beginLoop();
 
         $key = null;
         if ($node->keyVar) {
@@ -443,7 +452,6 @@ class Compiler {
         $this->compileChild($node, 'valueVar', $value);
 
         $iterator = Zval::iteratorFactory();
-
 
         if ($node->byRef) {
             $this->opArray[] = $iterateOp = new OpLines\IterateByRef($node->getLine(), $iteratePtr, null, $iterator);
@@ -459,10 +467,11 @@ class Compiler {
 
         $this->compileChild($node, 'stmts');
 
-        $stackPushOp->op1 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\IterateNext($node->getLine(), $iterator, $iterateValuesJumpPos);
-        $iterateOp->op2 = $stackPushOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
+        $continueJumpPos = $this->opArray->getNextOffset();
+        $this->opArray[] = new OpLines\IterateNext($node, $iterator, $iterateValuesJumpPos);
+
+        $iterateOp->op2 = $this->opArray->getNextOffset();
+        $this->opArray->endLoop($continueJumpPos);
     }
 
     protected function compile_Stmt_Function(\PHPParser_Node_Stmt_Function $node) {
@@ -529,7 +538,7 @@ class Compiler {
         $condPtr = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $condPtr);
 
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
+        $this->opArray->beginLoop();
 
         foreach ($node->cases as $case) {
             if ($case->cond) {
@@ -546,39 +555,34 @@ class Compiler {
             }
         }
 
-        $stackPushOp->op1 = $stackPushOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
+        $this->opArray->endLoop($this->opArray->getNextOffset());
     }
 
     protected function compile_Stmt_While($node) {
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
-        $stackPushOp->op1 = $startJumpPos = $this->opArray->getNextOffset();
+        $this->opArray->beginLoop();
+        $startJumpPos = $this->opArray->getNextOffset();
 
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $op1);
 
-        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node->getLine(), $op1);
-
+        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node, $op1);
         $this->compileChild($node, 'stmts');
+        $this->opArray[] = new OpLines\Jump($node, $startJumpPos);
 
-        // jump back to cond
-        $this->opArray[] = new OpLines\Jump($node->getLine(), $startJumpPos);
-
-        $stackPushOp->op2 = $endJumpOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
+        $endJumpOp->op2 = $this->opArray->getNextOffset();
+        $this->opArray->endLoop($startJumpPos);
     }
 
     protected function compile_Stmt_Do($node) {
         $op1 = Zval::ptrFactory();
 
-        $this->opArray[] = $stackPushOp = new OpLines\StatementStackPush($node->getLine());
+        $this->opArray->beginLoop();
         $startJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'stmts');
-        $stackPushOp->op1 = $this->opArray->getNextOffset();
+        $continueJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'cond', $op1);
-        $this->opArray[] = new OpLines\JumpIf($node->getLine(), $op1, $startJumpPos);
-        $stackPushOp->op2 = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\StatementStackPop($node->getLine());
+        $this->opArray[] = new OpLines\JumpIf($node, $op1, $startJumpPos);
+        $this->opArray->endLoop($continueJumpPos);
     }
 
     protected function compile_Stmt_InlineHtml($node) {

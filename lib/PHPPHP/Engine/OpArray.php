@@ -3,22 +3,28 @@
 namespace PHPPHP\Engine;
 
 class OpArray implements \ArrayAccess, \IteratorAggregate {
-    protected $compiledVariables = array();
-    protected $executor;
     /** @var OpLine[] */
     protected $opLines = array();
     protected $numOps = 0;
 
+    protected $compiledVariables = array();
+    protected $executor;
+
+    /** @var BreakContinueInfo[] */
+    protected $breakContinueInfo = array();
+    protected $currentBCPos = -1;
+    protected $numBC = 0;
+
     protected $fileName = '';
-    
+
     public function __construct($fileName) {
         $this->fileName = $fileName;
     }
-    
+
     public function getFileName() {
         return $this->fileName;
     }
-    
+
     public function addCompiledVariable(Zval\Variable $variable) {
         $this->compiledVariables[] = $variable;
     }
@@ -26,7 +32,7 @@ class OpArray implements \ArrayAccess, \IteratorAggregate {
     public function getCompiledVariables() {
         return $this->compiledVariables;
     }
-    
+
     public function registerExecutor(Executor $executor) {
         if (!$this->executor) {
             $this->executor = $executor;
@@ -34,6 +40,32 @@ class OpArray implements \ArrayAccess, \IteratorAggregate {
                 $variable->setExecutor($executor);
             }
         }
+    }
+
+    public function beginLoop() {
+        $this->breakContinueInfo[$this->numBC++] = new BreakContinueInfo($this->currentBCPos);
+        $this->currentBCPos = $this->numBC - 1;
+    }
+
+    public function endLoop($continueOp) {
+        $currentBC = $this->breakContinueInfo[$this->currentBCPos];
+        $currentBC->continueOp = $continueOp;
+        $currentBC->breakOp = $this->getNextOffset();
+        $this->currentBCPos = $currentBC->parentPos;
+    }
+
+    public function getBreakContinueInfoAtLevel($levels) {
+        $pos = $this->currentBCPos;
+        $lvl = $levels;
+        do {
+            if ($pos === -1) {
+                throw new \Exception("Cannot break/continue $levels level" . ($levels === 1 ? "" : "s"));
+            }
+            $bcInfo = $this->breakContinueInfo[$pos];
+            $pos = $bcInfo->parentPos;
+        } while (--$lvl > 0);
+
+        return $bcInfo;
     }
 
     public function offsetGet($offset) {

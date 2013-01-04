@@ -10,7 +10,6 @@ class Executor {
     const FINISHED_SHUTDOWN = 2;
 
     public $executorGlobals;
-    public $structureStack = array();
 
     protected $errorHandler;
     protected $stack;
@@ -41,7 +40,7 @@ class Executor {
         $this->stack = new \SplStack;
         $this->errorHandler = new ErrorHandler\Internal;
     }
-    
+
     public function shutdown() {
         if ($this->shutdown == self::IN_SHUTDOWN) {
             $this->shutdown = self::FINISHED_SHUTDOWN;
@@ -55,15 +54,15 @@ class Executor {
             }
         }
     }
-    
+
     public function getErrorHandler() {
         return $this->errorHandler;
     }
-    
+
     public function setErrorHandler(ErrorHandler $handler) {
         $this->errorHandler = $handler;
     }
-    
+
     public function raiseError($level, $message, $extra = '') {
         $file = $this->current->opArray->getFileName();
         $line = $this->current->opLine->lineno;
@@ -100,7 +99,7 @@ class Executor {
         $this->compiler->setFileName($context, $this->executorGlobals->cwd);
         return $this->compileCode($ast, $context);
     }
-    
+
     protected function compileCode(array $ast, $file) {
         try {
             return $this->compiler->compile($ast);
@@ -110,7 +109,7 @@ class Executor {
             throw new ErrorOccurredException($message, E_COMPILE_ERROR);
         }
     }
-    
+
     protected function parseCode($code, $file) {
         try {
             return $this->parser->parse($code);
