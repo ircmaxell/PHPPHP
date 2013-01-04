@@ -179,8 +179,7 @@ class Compiler {
         $this->opArray[] = new $class($node->getLine(), $op1, $op2, $returnContext ?: Zval::ptrFactory());
     }
 
-    public function compileBinaryAssignOp($node, $returnContext, $class, $left = 'left', $right = 'right') {
-
+    public function compileBinaryAssignOp($node, $returnContext, $class) {
         $property = null;
         $dim = null;
         $op1 = Zval::ptrFactory();
@@ -475,7 +474,8 @@ class Compiler {
     }
 
     protected function compile_Stmt_Function(\PHPParser_Node_Stmt_Function $node) {
-        $this->compileFunction($node);
+        $funcData = $this->compileFunction($node);
+        $this->opArray[] = new OpLines\FunctionDef($node->getLine(), Zval::factory($node->name), $funcData);
     }
 
     protected function compile_Stmt_Global($node) {
@@ -607,7 +607,8 @@ class Compiler {
     }
 
     protected function compile_Stmt_ClassMethod($node) {
-        $this->compileFunction($node);
+        $funcData = $this->compileFunction($node);
+        $this->currentClass->getMethodStore()->register($node->name, $funcData);
     }
 
     public function compile_Expr_New($node, $returnContext = null) {
@@ -650,14 +651,8 @@ class Compiler {
         $this->opArray[] = new OpLines\ReturnOp($node->getLine());
 
         $funcData = new FunctionData\User($this->opArray, (bool) $node->byRef, $params);
-
-        if ($this->currentClass) {
-            $this->currentClass->getMethodStore()->register($node->name, $funcData);
-        } else {
-            $prevOpArray[] = new OpLines\FunctionDef($node->getLine(), Zval::factory($node->name), $funcData);
-        }
-
         $this->opArray = $prevOpArray;
+        return $funcData;
     }
 
     protected function makeZvalFromNodeStrict(\PHPParser_Node $node) {
