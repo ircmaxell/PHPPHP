@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-04 16:30:50</h2>
+<h2>Time Start: 2013-01-04 16:33:55</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -50,7 +50,7 @@
 <tr><td>PASS</td><td>Testing nested array shortcut</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bison weirdness</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #17115 (lambda functions produce segfault with static vars)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #18872 (class constant used as default parameter)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #18872 (class constant used as default parameter)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #19566 (get_declared_classes() segfaults)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #19943 (memleaks)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #20175 (Static vars can't store ref to new instance)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-04 16:32:42</h2>
+<h2>Time End: 2013-01-04 16:35:50</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  129 ( 47.3%) ( 49.4%)
+Tests failed    :  128 ( 46.9%) ( 49.0%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  132 ( 48.4%) ( 50.6%)
+Tests passed    :  133 ( 48.7%) ( 51.0%)
 ---------------------------------------------------------------------
-Time taken      :  112 seconds
+Time taken      :  115 seconds
 =====================================================================
 
 =====================================================================
@@ -305,7 +305,6 @@ Dynamic access of constants [vendor/php/php-src/tests/lang/042.phpt]
 Dynamic call for static methods [vendor/php/php-src/tests/lang/043.phpt]
 Dynamic call for static methods dynamically named [vendor/php/php-src/tests/lang/044.phpt]
 Bug #17115 (lambda functions produce segfault with static vars) [vendor/php/php-src/tests/lang/bug17115.phpt]
-Bug #18872 (class constant used as default parameter) [vendor/php/php-src/tests/lang/bug18872.phpt]
 Bug #19566 (get_declared_classes() segfaults) [vendor/php/php-src/tests/lang/bug19566.phpt]
 Bug #19943 (memleaks) [vendor/php/php-src/tests/lang/bug19943.phpt]
 Bug #20175 (Static vars can't store ref to new instance) [vendor/php/php-src/tests/lang/bug20175.phpt]
