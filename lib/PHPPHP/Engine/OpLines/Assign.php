@@ -2,16 +2,10 @@
 
 namespace PHPPHP\Engine\OpLines;
 
-class Assign extends \PHPPHP\Engine\OpLine {
+class Assign extends BinaryAssign {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $this->op1->setValue($this->op2->getZval());
-
-        if ($this->result) {
-            $this->result->setValue($this->op2->getZval());
-        }
-
+        $this->setValue($this->op2->getZval());
         $data->nextOp();
     }
-
 }

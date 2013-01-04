@@ -10,6 +10,7 @@ class Ptr extends Zval {
 
     public function __construct(Value $zval) {
         $this->zval = $zval;
+        $zval->addRef();
     }
 
     public function __destruct() {
@@ -50,6 +51,10 @@ class Ptr extends Zval {
             $tmp = $value->getZval();
         } while ($value !== $tmp);
         return $value;
+    }
+
+    public function getImmediateZval() {
+        return $this->zval;
     }
 
     public function makeRef() {

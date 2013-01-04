@@ -41,19 +41,18 @@ class Compiler {
         'Stmt_Return'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
         // assignment operators
-        'Expr_Assign'           => array('BinaryOp', 'PHPPHP\Engine\OpLines\Assign',           'var', 'expr'),
-        'Expr_AssignRef'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignRef',        'var', 'expr'),
-        'Expr_AssignPlus'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignAdd',        'var', 'expr'),
-        'Expr_AssignMinus'      => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignSub',        'var', 'expr'),
-        'Expr_AssignMul'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMul',        'var', 'expr'),
-        'Expr_AssignDiv'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignDiv',        'var', 'expr'),
-        'Expr_AssignMod'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignMod',        'var', 'expr'),
-        'Expr_AssignConcat'     => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignConcat',     'var', 'expr'),
-        'Expr_AssignBitwiseAnd' => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignBitwiseAnd', 'var', 'expr'),
-        'Expr_AssignBitwiseOr'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignBitwiseOr',  'var', 'expr'),
-        'Expr_AssignBitwiseXor' => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignBitwiseXor', 'var', 'expr'),
-        'Expr_AssignShiftLeft'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignShiftLeft',  'var', 'expr'),
-        'Expr_AssignShiftRight' => array('BinaryOp', 'PHPPHP\Engine\OpLines\AssignShiftRight', 'var', 'expr'),
+        'Expr_AssignRef'        => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignRef',        'var', 'expr'),
+        'Expr_AssignPlus'       => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignAdd',        'var', 'expr'),
+        'Expr_AssignMinus'      => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignSub',        'var', 'expr'),
+        'Expr_AssignMul'        => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignMul',        'var', 'expr'),
+        'Expr_AssignDiv'        => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignDiv',        'var', 'expr'),
+        'Expr_AssignMod'        => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignMod',        'var', 'expr'),
+        'Expr_AssignConcat'     => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignConcat',     'var', 'expr'),
+        'Expr_AssignBitwiseAnd' => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignBitwiseAnd', 'var', 'expr'),
+        'Expr_AssignBitwiseOr'  => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignBitwiseOr',  'var', 'expr'),
+        'Expr_AssignBitwiseXor' => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignBitwiseXor', 'var', 'expr'),
+        'Expr_AssignShiftLeft'  => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignShiftLeft',  'var', 'expr'),
+        'Expr_AssignShiftRight' => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignShiftRight', 'var', 'expr'),
 
         // binary operators
         'Expr_ArrayDimFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
@@ -180,6 +179,38 @@ class Compiler {
         $this->opArray[] = new $class($node->getLine(), $op1, $op2, $returnContext ?: Zval::ptrFactory());
     }
 
+    public function compileBinaryAssignOp($node, $returnContext, $class, $left = 'left', $right = 'right') {
+
+        $property = null;
+        $dim = null;
+        $op1 = Zval::ptrFactory();
+        $op2 = Zval::ptrFactory();
+
+        if ($node->var instanceof \PHPParser_Node_Expr_PropertyFetch) {
+            $var = $node->var;
+            $property = Zval::ptrFactory();
+            $this->compileChild($var, 'var', $op1);
+            $this->compileChild($var, 'name', $property);
+        } else if ($node->var instanceof \PHPParser_Node_Expr_ArrayDimFetch) {
+            $var = $node->var;
+            $this->compileChild($var, 'var', $op1);
+            if ($var->dim) {
+                $dim = Zval::ptrFactory();
+                $this->compileChild($var, 'dim', $dim);
+            }
+        } else {
+            $this->compileChild($node, 'var', $op1);
+        }
+
+        $this->compileChild($node, 'expr', $op2);
+
+        $opline = new $class($node, $op1, $op2, $returnContext);
+        $opline->property = $property;
+        $opline->dim = $dim;
+
+        $this->opArray[] = $opline;
+    }
+
     protected function compileUnaryOp($node, $returnContext, $class, $expr = 'expr') {
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, $expr, $op1);
@@ -193,6 +224,14 @@ class Compiler {
             } else {
                 $returnContext->setValue($node->$name);
             }
+        }
+    }
+
+    public function compile_Expr_Assign($node, $returnContext = null) {
+        if ($node->var instanceof \PHPParser_Node_Expr_ArrayDimFetch) {
+            $this->compileBinaryAssignOp($node, $returnContext, 'PHPPHP\Engine\OpLines\AssignDim', 'var', 'expr');
+        } else {
+            $this->compileBinaryAssignOp($node, $returnContext, 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr');
         }
     }
 
@@ -537,6 +576,12 @@ class Compiler {
     }
 
     protected function compile_Stmt_Property($node) {
+        foreach ($node->props as $prop) {
+            $name = $prop->name;
+            $default = Zval::ptrFactory();
+            $this->compileChild($prop, 'default', $default);
+            $this->currentClass->declareProperty($name, $default);
+        }
     }
 
     protected function compile_Stmt_ClassMethod($node) {
