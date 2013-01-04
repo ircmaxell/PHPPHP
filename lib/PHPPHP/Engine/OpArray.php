@@ -21,6 +21,10 @@ class OpArray implements \ArrayAccess, \IteratorAggregate, \Countable {
         $this->fileName = $fileName;
     }
 
+    public function count() {
+        return count($this->opLines);
+    }
+
     public function getFileName() {
         return $this->fileName;
     }
