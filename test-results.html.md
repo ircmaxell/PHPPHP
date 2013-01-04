@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-04 12:05:20</h2>
+<h2>Time Start: 2013-01-04 12:47:20</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -43,7 +43,7 @@
 <tr><td>FAIL</td><td>Dynamic access of constants</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Dynamic call for static methods</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Dynamic call for static methods dynamically named</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Timeout again inside register_shutdown_function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Timeout again inside register_shutdown_function</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Square bracket array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Square bracket associative array shortcut test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing array shortcut and bracket operator</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-04 12:08:01</h2>
+<h2>Time End: 2013-01-04 12:50:07</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  134 ( 49.1%) ( 51.3%)
+Tests failed    :  133 ( 48.7%) ( 51.0%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  127 ( 46.5%) ( 48.7%)
+Tests passed    :  128 ( 46.9%) ( 49.0%)
 ---------------------------------------------------------------------
-Time taken      :  161 seconds
+Time taken      :  167 seconds
 =====================================================================
 
 =====================================================================
@@ -304,7 +304,6 @@ Dynamic access of static members [vendor/php/php-src/tests/lang/041.phpt]
 Dynamic access of constants [vendor/php/php-src/tests/lang/042.phpt]
 Dynamic call for static methods [vendor/php/php-src/tests/lang/043.phpt]
 Dynamic call for static methods dynamically named [vendor/php/php-src/tests/lang/044.phpt]
-Timeout again inside register_shutdown_function [vendor/php/php-src/tests/lang/045.phpt]
 Bug #17115 (lambda functions produce segfault with static vars) [vendor/php/php-src/tests/lang/bug17115.phpt]
 Bug #18872 (class constant used as default parameter) [vendor/php/php-src/tests/lang/bug18872.phpt]
 Bug #19566 (get_declared_classes() segfaults) [vendor/php/php-src/tests/lang/bug19566.phpt]
