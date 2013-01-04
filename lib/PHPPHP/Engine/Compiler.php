@@ -41,7 +41,6 @@ class Compiler {
         'Stmt_Return'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
         // assignment operators
-        'Expr_Assign'           => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\Assign',           'var', 'expr'),
         'Expr_AssignRef'        => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignRef',        'var', 'expr'),
         'Expr_AssignPlus'       => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignAdd',        'var', 'expr'),
         'Expr_AssignMinus'      => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignSub',        'var', 'expr'),
@@ -194,9 +193,11 @@ class Compiler {
             $this->compileChild($var, 'name', $property);
         } else if ($node->var instanceof \PHPParser_Node_Expr_ArrayDimFetch) {
             $var = $node->var;
-            $dim = Zval::ptrFactory();
             $this->compileChild($var, 'var', $op1);
-            $this->compileChild($var, 'dim', $dim);
+            if ($var->dim) {
+                $dim = Zval::ptrFactory();
+                $this->compileChild($var, 'dim', $dim);
+            }
         } else {
             $this->compileChild($node, 'var', $op1);
         }
@@ -223,6 +224,14 @@ class Compiler {
             } else {
                 $returnContext->setValue($node->$name);
             }
+        }
+    }
+
+    public function compile_Expr_Assign($node, $returnContext = null) {
+        if ($node->var instanceof \PHPParser_Node_Expr_ArrayDimFetch) {
+            $this->compileBinaryAssignOp($node, $returnContext, 'PHPPHP\Engine\OpLines\AssignDim', 'var', 'expr');
+        } else {
+            $this->compileBinaryAssignOp($node, $returnContext, 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr');
         }
     }
 
