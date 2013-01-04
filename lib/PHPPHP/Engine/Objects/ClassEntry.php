@@ -12,11 +12,13 @@ use PHPPHP\Engine\Zval;
 class ClassEntry
 {
     private $name;
+    private $properties;
     private $methods;
     private $parent;
 
     public function __construct($name, ClassEntry $parent = null)
     {
+        $this->properties = array();
         $this->methods = new FunctionStore;
         $this->name = $name;
         $this->parent = $parent;
@@ -38,6 +40,10 @@ class ClassEntry
         return $this->name;
     }
 
+    public function declareProperty($name, Zval $defaultValue) {
+        $this->properties[$name] = $defaultValue;
+    }
+
     public function getMethodStore() {
         return $this->methods;
     }
@@ -48,6 +54,11 @@ class ClassEntry
 
     public function instantiate(ExecuteData $data, array $properties, array $args = array())
     {
+        $parent = $this;
+        do {
+            $properties = array_merge($parent->properties, $properties);
+        } while ($parent = $parent->parent);
+
         $instance = new ClassInstance($this, $properties);
         $instance->callConstructor($data, $args);
         return $instance;
