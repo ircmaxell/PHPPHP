@@ -82,9 +82,18 @@ return array(
     ),
     'func_get_arg' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
+            $type = $args[0]->getType();
+            if ($type != 'integer') {
+                $executor->raiseError(E_WARNING, 'func_get_arg() expects parameter 1 to be long, ' . $type . ' given');
+                return;
+            }
+
             $num = $args[0]->toLong();
             $current = $executor->getCurrent();
-            if (!$current->function) {
+            if ($num < 0) {
+                $executor->raiseError(E_WARNING, 'func_get_arg():  The argument number should be >= 0');
+                $return->setValue(false);
+            } elseif (!$current->function) {
                 $executor->raiseError(E_WARNING, 'func_get_arg():  Called from the global scope - no function context');
                 $return->setValue(false);
             } elseif (!isset($current->arguments[$num])) {
