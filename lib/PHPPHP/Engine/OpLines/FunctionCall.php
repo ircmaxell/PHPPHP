@@ -14,8 +14,12 @@ class FunctionCall extends \PHPPHP\Engine\OpLine {
             $args[] = $stack->pop();
         }
         $args = array_reverse($args);
+
+        if (!$this->result) {
+            $this->result = Zval::ptrFactory();
+        }
+        $functionCall->execute($args, $this->result);
         
-        $functionCall->getFunction()->execute($data->executor, $args, $this->result);
         $data->nextOp();
     }
 

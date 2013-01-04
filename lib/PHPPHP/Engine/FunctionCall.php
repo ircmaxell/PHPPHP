@@ -21,6 +21,10 @@ class FunctionCall {
         }
     }
 
+    public function execute(array $args, \PHPPHP\Engine\Zval $result) {
+        $this->function->execute($this->executor, $args, $result, $this->ci);
+    }
+
     public function getFunction() {
         return $this->function;
     }

@@ -10,8 +10,14 @@ class InitFCallByName extends \PHPPHP\Engine\OpLine {
         $ci = $this->op1;
         $funcName = $this->op2->toString();
         if ($ci) {
-            $ci = $ci->getValue();
-            $functionData = $ci->getClassEntry()->getMethodStore()->get($funcName);
+            if ($ci->isObject()) {
+                $ci = $ci->getValue();
+                $functionData = $ci->getClassEntry()->getMethodStore()->get($funcName);
+            } elseif ($ci->isString()) {
+                throw new \LogicException('static method calls not implemented yet');
+            } else {
+                throw new \LogicException('Invalid opcode type: ' . $ci->getType());
+            }
         } else {
             $functionData = $data->executor->getFunctionStore()->get($funcName);
         }
