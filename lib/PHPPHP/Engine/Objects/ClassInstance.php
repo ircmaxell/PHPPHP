@@ -14,11 +14,9 @@ class ClassInstance
 
     public function __construct(ClassEntry $ce, array $properties) {
         $this->ce = $ce;
-        $this->properties = $properties;
-
-        array_map(function($property) {
-            $property->addRef();
-        }, $this->properties);
+        $this->properties = array_map(function($property) {
+            return Zval::ptrFactory($property->getZval());
+        }, $properties);
     }
     
     public function getClassEntry() {
@@ -43,12 +41,17 @@ class ClassInstance
 
     public function getProperty($name) {
         if (!isset($this->properties[$name])) {
-            $value = Zval::ptrFactory();
-            $this->properties[$name] = $value;
-        } else {
-            $value = $this->properties[$name];
+            throw new \RuntimeException(sprintf('Undefined property: %s::%s', $this->ce->getName(), $name));
         }
-        return $value;
+        return $this->properties[$name];
+    }
+
+    public function setProperty($name, Zval $value) {
+        if (isset($this->properties[$name])) {
+            $this->properties[$name]->assignZval($value->getZval());
+        } else {
+            $this->properties[$name] = Zval::ptrFactory($value->getZval());
+        }
     }
 
     public function callMethod(ExecuteData $data, $name, array $args, Ptr $result = null) {

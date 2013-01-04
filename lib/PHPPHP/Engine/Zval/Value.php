@@ -162,7 +162,7 @@ class Value extends Zval {
             return $this->value;
         } else {
             if ($this->isArray()) {
-                $properties = $this;
+                $properties = $this->value;
             } else {
                 $properties = array(
                     'scalar' => Zval::ptrFactory($this->value),
