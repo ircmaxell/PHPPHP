@@ -17,6 +17,7 @@ class PHP {
         $this->executor->setOutput(new Engine\Output\Std($this->executor));
 
         $this->registerExtension(new Engine\CoreExtension);
+        $this->registerExtension(new Ext\Strings\Extension);
     }
 
     public function registerExtension(Engine\Extension $extension) {
@@ -37,7 +38,11 @@ class PHP {
     }
 
     public function execute($code) {
-        $opCodes = $this->executor->compile($code, 'Command line code');
+        try {
+            $opCodes = $this->executor->compile($code, 'Command line code');
+        } catch (Engine\ErrorOccurredException $e) {
+            die();
+        }
         return $this->executeOpLines($opCodes);
     }
 
@@ -46,7 +51,11 @@ class PHP {
             throw new \RuntimeException('Filename must not be empty');
         }
         $this->setCWD(dirname($file));
-        $opCodes = $this->executor->compileFile($file);
+        try {
+            $opCodes = $this->executor->compileFile($file);
+        } catch (Engine\ErrorOccurredException $e) {
+            die();
+        }
         return $this->executeOpLines($opCodes);
     }
 

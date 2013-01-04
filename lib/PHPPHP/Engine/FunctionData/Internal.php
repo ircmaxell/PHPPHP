@@ -9,12 +9,16 @@ class Internal extends Base {
 
     public function __construct($callback, $byRef = false, array $params = array()) {
         $this->callback = $callback;
-        $this->byRef = $byRef;
-        $this->params = $params;
+        $this->byRef    = $byRef;
+        $this->params   = $params;
     }
 
     public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
-        $ret = call_user_func_array($this->callback, array($executor, $args, $return, $ci));
+        if ($this->checkParams($executor, $args, true)) {
+            call_user_func_array($this->callback, array($executor, $args, $return, $ci));
+        } else {
+            $return->setValue(null);
+        }
     }
 
 }

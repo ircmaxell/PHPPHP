@@ -10,7 +10,7 @@ class Buffer extends \PHPPHP\Engine\Output {
     protected $callback = null;
     protected $mode = PHP_OUTPUT_HANDLER_START;
 
-    public function __construct(\PHPPHP\Engine\Executor $executor, \PHPPHP\Engine\FunctionData $callback = null) {
+    public function __construct(\PHPPHP\Engine\Executor $executor, callable $callback = null) {
         parent::__construct($executor);
         $this->callback = $callback;
     }
@@ -59,7 +59,8 @@ class Buffer extends \PHPPHP\Engine\Output {
                 Zval::ptrFactory($data),
                 Zval::ptrFactory($mode),
             );
-            $this->callback->execute($this->executor, $args, $ret);
+            $cb = $this->callback;
+            $cb($this->executor, $args, $ret);
             if ($ret->isBool() || $ret->toBool() == false) {
                 return $data;
             } else {

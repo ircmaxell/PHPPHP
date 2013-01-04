@@ -15,7 +15,7 @@ class FunctionStore {
         if (isset($this->functions[$name])) {
             throw new \RuntimeException("Function $name already defined");
         }
-
+        $func->setName($name);
         $this->functions[$name] = $func;
     }
 

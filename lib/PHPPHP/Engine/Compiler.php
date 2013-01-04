@@ -136,7 +136,7 @@ class Compiler {
         $methodName = 'compile_' . $nodeType;
         if (!method_exists($this, $methodName)) {
             var_dump($node);
-            throw new \Exception($nodeType . ' not supported yet');
+            throw new CompilerException($nodeType . ' not supported yet', $node->line);
         }
 
         call_user_func(array($this, $methodName), $node, $returnContext);
@@ -582,7 +582,7 @@ class Compiler {
         $zval = $this->makeZvalFromNode($node);
 
         if (null === $zval) {
-            throw new \Exception('Cannot evaluate non-constant expression at compile time');
+            throw new CompilerException('Cannot evaluate non-constant expression at compile time', $node->getLine());
         }
 
         return $zval;

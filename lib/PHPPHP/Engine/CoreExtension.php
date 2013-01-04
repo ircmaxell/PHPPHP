@@ -6,6 +6,7 @@ use PHPPHP\Engine\Objects\ClassEntry;
 
 final class CoreExtension extends Extension\Base {
 
+    protected $isInternal = true;
     protected $name = 'Core';
     protected $namespace = __NAMESPACE__;
 
@@ -45,8 +46,6 @@ final class CoreExtension extends Extension\Base {
         $aliases = array(
             'dirname',
             'explode',
-            'implode',
-            'join',
             'php_uname',
             'phpversion',
             'printf',

@@ -9,6 +9,7 @@ class Executor {
     public $executorGlobals;
     public $structureStack = array();
 
+    protected $errorHandler;
     protected $stack;
     protected $current;
     protected $globalScope = array();
@@ -34,6 +35,25 @@ class Executor {
 
         $this->extensions = new \SplObjectStorage;
         $this->stack = new \SplStack;
+        $this->errorHandler = new ErrorHandler\Internal;
+    }
+    
+    public function shutdown() {
+        $this->shutdown = true;
+    }
+    
+    public function getErrorHandler() {
+        return $this->errorHandler;
+    }
+    
+    public function setErrorHandler(ErrorHandler $handler) {
+        $this->errorHandler = $handler;
+    }
+    
+    public function raiseError($level, $message) {
+        $file = $this->current->opArray->getFileName();
+        $line = $this->current->opLine->lineno;
+        $this->errorHandler->handle($this, $level, $message, $file, $line);
     }
 
     public function getStack() {
@@ -56,17 +76,37 @@ class Executor {
         $this->compiler->setFileName($fileName, dirname($fileName));
         if (!isset($this->files[$fileName])) {
             $code = file_get_contents($fileName);
-            $this->files[$fileName] = $this->parser->parse($code);
+            $this->files[$fileName] = $this->parseCode($code, $fileName);
         }
-        
-        $ret = $this->compiler->compile($this->files[$fileName]);
-        return $ret;
+        return $this->compileCode($this->files[$fileName], $fileName);
     }
 
     public function compile($code, $context) {
-        $ast = $this->parser->parse($code);
+        $ast = $this->parseCode($code, $context);
         $this->compiler->setFileName($context, $this->executorGlobals->cwd);
-        return $this->compiler->compile($ast);
+        return $this->compileCode($ast, $context);
+    }
+    
+    protected function compileCode(array $ast, $file) {
+        try {
+            return $this->compiler->compile($ast);
+        } catch (CompilerException $e) {
+            $line = $e->getRawLine();
+            $this->errorHandler->handle($this, E_COMPILE_ERROR, $message, $file, $line);
+            $this->raiseError(E_COMPILE_ERROR, $message);
+            throw new ErrorOccurredException($message, E_COMPILE_ERROR);
+        }
+    }
+    
+    protected function parseCode($code, $file) {
+        try {
+            return $this->parser->parse($code);
+        } catch (\PHPParser_Error $e) {
+            $message = 'syntax error, ' . str_replace('Unexpected', 'unexpected', $e->getMessage());
+            $line = $e->getRawLine();
+            $this->errorHandler->handle($this, E_PARSE, $message, $file, $line);
+            throw new ErrorOccurredException($message, E_PARSE);
+        }
     }
 
     public function execute(OpArray $opArray, array &$symbolTable = array(), FunctionData $function = null, array $args = array(), Zval $result = null, Objects\ClassInstance $ci = null) {
@@ -91,13 +131,18 @@ class Executor {
         }
 
         while (!$this->shutdown && $scope->opLine) {
-            $ret = $scope->opLine->execute($scope);
+            try {
+                $ret = $scope->opLine->execute($scope);
+            } catch (ErrorOccurredException $e) {
+                $ret = false;
+                // Ignored here, since the handler will shutdown for us
+            }
             switch ($ret) {
                 case self::DO_RETURN:
                     $this->current = $this->current->parent;
                     return;
                 case self::DO_SHUTDOWN:
-                    $this->shutdown = true;
+                    $this->shutdown();
                     return;
             }
         }
@@ -107,13 +152,15 @@ class Executor {
         die('Should never reach this point!');
     }
 
-    public function callCallback($callback, Executor $executor, array $args = array(), Zval $return = null) {
+    public function getCallback($callback) {
         if ($callback instanceof Zval) {
             $callback = $callback->getValue();
         }
         if (is_string($callback)) {
-            $this->functionStore->get($callback)->execute($executor, $args, $return);
-            return;
+            $cb = $this->functionStore->get($callback);
+            return function(Executor $executor, array $args = array(), Zval $return = null) use ($cb) {
+                return $cb->execute($executor, $args, $return);
+            };
         } elseif (is_array($callback)) {
             $class = $callback[0];
             $method = $callback[1];
@@ -124,15 +171,18 @@ class Executor {
                 $method = $method->getValue();
             }
             if ($class instanceof Objects\ClassInstance) {
-                $class->callMethod($executor->getCurrent(), (string) $method, $args, $return);
-                return;
+                return function(Executor $executor, array $args = array(), Zval $return = null) use ($class, $method) {
+                    $class->callMethod($executor->getCurrent(), (string) $method, $args, $return);
+                };
             }
             if (is_string($class)) {
                 $class = $this->classStore->get($class);
             }
             if ($class instanceof Objects\ClassEntry) {
-                $class->callMethod($executor->getCurrent(), null, (string) $method, $args, $return);
-                return;
+                // Static method!
+                return function(Executor $executor, array $args = array(), Zval $return = null) use ($class, $method) {
+                    $class->callMethod($executor->getCurrent(), null, (string) $method, $args, $return);
+                };
             }
         }
         throw new \RuntimeException('Invalid Callback Specified');
@@ -152,6 +202,10 @@ class Executor {
 
     public function getClassStore() {
         return $this->classStore;
+    }
+
+    public function getExtensions() {
+        return $this->extensions;
     }
 
     public function registerExtension(Extension $extension) {

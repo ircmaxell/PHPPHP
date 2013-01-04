@@ -6,6 +6,7 @@ use PHPPHP\Engine;
 
 abstract class Base implements \PHPPHP\Engine\Extension {
 
+    protected $isInternal = false;
     protected $name = '';
     protected $namespace = '';
 
@@ -26,6 +27,10 @@ abstract class Base implements \PHPPHP\Engine\Extension {
 
     public function getName() {
         return $this->name;
+    }
+
+    public function isInternal() {
+        return $this->isInternal;
     }
 
     protected function getFunctions() {

@@ -7,6 +7,7 @@ use PHPPHP\Engine\Zval;
 
 class Extension extends \PHPPHP\Engine\Extension\Base {
 
+    protected $isInternal = true;
     protected $name = 'Shim';
     protected $namespace = __NAMESPACE__;
 

@@ -7,6 +7,10 @@ class ExecutorGlobals {
     public $call = null;
 
     public $cwd = '';
+    
+    public $display_errors = true;
+    
+    public $error_reporting = -1;
 
     /**
      * The global symbol table

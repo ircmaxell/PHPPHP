@@ -2,10 +2,6 @@
 
 namespace PHPPHP\Engine;
 
-function PHP_call_user_func(Executor $executor, array $args, Zval $return) {
-    $executor->callCallback($args[0], $executor, $args, $return);
-}
-
 function PHP_debug_backtrace(Executor $executor, array $args, Zval $return) {
     $array = array();
     $current = $executor->getCurrent();
@@ -59,11 +55,13 @@ return array(
     'call_user_func' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
             $cb = array_shift($args);
-            $executor->callCallback($cb, $executor, $args, $return);
+            $cb = $executor->getCallback($cb);
+            $cb($executor, $args, $return);
         },
         false,
         array(
             new ParamData('callback', false, 'callable'),
+            new ParamData('...', false, null, true),
         )
     ),
     'debug_backtrace' => new FunctionData\Internal(
@@ -82,16 +80,15 @@ return array(
             new ParamData('value'),
         )
     ),
-    'error_reporting' => new FunctionData\Internal(
-        function(Executor $executor, array $args, Zval $return) {
-            $return->setValue(0);
-        }
-    ),
     'func_get_arg' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
             $num = $args[0]->toLong();
             $current = $executor->getCurrent();
-            if (!$current->arguments || !isset($current->arguments[$num])) {
+            if (!$current->function) {
+                $executor->raiseError(E_WARNING, 'func_get_arg():  Called from the global scope - no function context');
+                $return->setValue(false);
+            } elseif (!isset($current->arguments[$num])) {
+                $executor->raiseError(E_WARNING, 'func_get_arg():  Argument ' . $num . ' not passed to function');
                 $return->setValue(false);
             } else {
                 $return->setValue($current->arguments[$num]);
@@ -105,9 +102,10 @@ return array(
     'func_get_args' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
             $current = $executor->getCurrent();
-            if (is_array($current->arguments)) {
+            if ($current->function && is_array($current->arguments)) {
                 $return->setValue($current->arguments);
             } else {
+                $executor->raiseError(E_WARNING, 'func_get_args():  Called from the global scope - no function context');
                 $return->setValue(false);
             }
         }
@@ -115,9 +113,10 @@ return array(
     'func_num_args' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
             $current = $executor->getCurrent();
-            if (is_array($current->arguments)) {
+            if ($current->function && is_array($current->arguments)) {
                 $return->setValue(count($current->arguments));
             } else {
+                $executor->raiseError(E_WARNING, 'func_num_args():  Called from the global scope - no function context');
                 $return->setValue(false);
             }
         }
@@ -138,16 +137,27 @@ return array(
             } else {
                 $return->setValue(array());
             }
-        }
-    ),
-    'get_loaded_extensions' => new FunctionData\Internal(
-        function(Executor $executor, array $args, Zval $return) {
-            $return->setValue(array());
         },
         false,
         array(
-            new ParamData('callback', false, 'callable'),
-            new ParamData('parameter', false, null, true),
+            new ParamData('varName'),
+        )
+    ),
+    'get_loaded_extensions' => new FunctionData\Internal(
+        function(Executor $executor, array $args, Zval $return) {
+            $extensions = $executor->getExtensions();
+            $ret = array();
+            $internal = isset($args[0]) ? $args[0]->toBool() : false;
+            foreach ($extensions as $ext) {
+                if (!$internal XOR $ext->isInternal()) {
+                    $ret[] = Zval::ptrFactory($ext->getName());
+                }
+            }
+            $return->setValue($ret);
+        },
+        false,
+        array(
+            new ParamData('zend_extensions', false, null, true),
         )
     )
 );
