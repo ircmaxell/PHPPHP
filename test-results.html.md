@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-04 16:33:55</h2>
+<h2>Time Start: 2013-01-04 17:40:55</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -86,7 +86,7 @@
 <tr><td>FAIL</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Bug #25145 (SEGV on recpt of form input with name like "123[]")</td><td>reason: CGI not available</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25547 (error_handler and array index with function call)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25922 (SEGV in error_handler when context is destroyed)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #26182 (Object properties created redundantly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #26696 (string index in a switch() crashes with multiple matches)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -270,24 +270,24 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Statics in nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Static variables in methods & nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>String conversion with multiple decimal points</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catching an exception thrown from an included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-04 16:35:50</h2>
+<h2>Time End: 2013-01-04 17:42:52</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  128 ( 46.9%) ( 49.0%)
+Tests failed    :  126 ( 46.2%) ( 48.3%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  133 ( 48.7%) ( 51.0%)
+Tests passed    :  135 ( 49.5%) ( 51.7%)
 ---------------------------------------------------------------------
-Time taken      :  115 seconds
+Time taken      :  117 seconds
 =====================================================================
 
 =====================================================================
@@ -336,7 +336,6 @@ Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/t
 Bug #24926 (lambda function (create_function()) cannot be stored in a class property) [vendor/php/php-src/tests/lang/bug24926.phpt]
 Bug #24951 (ob_flush() destroys output handler) [vendor/php/php-src/tests/lang/bug24951.phpt]
 Bug #25547 (error_handler and array index with function call) [vendor/php/php-src/tests/lang/bug25547.phpt]
-Bug #25652 (Calling Global functions dynamically fails from Class scope) [vendor/php/php-src/tests/lang/bug25652.phpt]
 Bug #25922 (SEGV in error_handler when context is destroyed) [vendor/php/php-src/tests/lang/bug25922.phpt]
 Bug #26182 (Object properties created redundantly) [vendor/php/php-src/tests/lang/bug26182.phpt]
 Bug #26866 (segfault when exception raised in __get) [vendor/php/php-src/tests/lang/bug26866.phpt]
@@ -419,7 +418,6 @@ short_open_tag: On, asp_tags: On [vendor/php/php-src/tests/lang/short_tags.003.p
 short_open_tag: Off, asp_tags: Off [vendor/php/php-src/tests/lang/short_tags.004.phpt]
 Statics in nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_001.phpt]
 Static variables in methods & nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_002.phpt]
-Test to catch early assignment of $this [vendor/php/php-src/tests/lang/this_assignment.phpt]
 Catching an exception thrown from an included file [vendor/php/php-src/tests/lang/throw_variation_001.phpt]
 =====================================================================
 </pre>
