@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-03 17:01:18</h2>
+<h2>Time Start: 2013-01-04 11:55:10</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -18,7 +18,7 @@
 <tr><td>PASS</td><td>Testing user-defined function in included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Testing user-defined function falling out of an If into another</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>eval() test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 1</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 2</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Switch test 3</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -167,14 +167,14 @@ It will pass only if the 'contentious code' in PHPValue.decReferences() is enabl
 <tr><td>PASS</td><td>foreach() with references</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_arg with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_get_arg outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_get_arg on non-existent arg</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_get_arg outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_get_arg on non-existent arg</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>A variable, which is referenced by another variable, is passed by value.
 During the call, the original variable is updated. This should not affect func_get_arg().</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_get_arg test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_get_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>func_get_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>func_get_args() outside of a function declaration</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Pass same variable by ref and by value.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with no args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>func_num_args with variable number of args</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,24 +276,23 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-03 17:03:33</h2>
+<h2>Time End: 2013-01-04 11:58:40</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  145 ( 53.1%) ( 55.6%)
+Tests failed    :  140 ( 51.3%) ( 53.6%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  116 ( 42.5%) ( 44.4%)
+Tests passed    :  121 ( 44.3%) ( 46.4%)
 ---------------------------------------------------------------------
-Time taken      :  135 seconds
+Time taken      :  210 seconds
 =====================================================================
 
 =====================================================================
 FAILED TEST SUMMARY
 ---------------------------------------------------------------------
-eval() test [vendor/php/php-src/tests/lang/019.phpt]
 Regression test [vendor/php/php-src/tests/lang/023.phpt]
 Looped regression test (may take a while) [vendor/php/php-src/tests/lang/024.phpt]
 $this in constructor test [vendor/php/php-src/tests/lang/030.phpt]
@@ -402,10 +401,6 @@ Foreach loop tests - Removing the current element from an iterated object. [vend
 Foreach loop tests - removing properties before and after the current property during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.005.phpt]
 Foreach loop tests - substituting the entire iterated entity during the loop. [vendor/php/php-src/tests/lang/foreachLoopObjects.006.phpt]
 foreach() with foreach($o->mthd()->arr) [vendor/php/php-src/tests/lang/foreach_with_object_001.phpt]
-func_get_arg outside of a function declaration [vendor/php/php-src/tests/lang/func_get_arg.003.phpt]
-func_get_arg on non-existent arg [vendor/php/php-src/tests/lang/func_get_arg.004.phpt]
-func_get_arg test [vendor/php/php-src/tests/lang/func_get_arg_variation.phpt]
-func_get_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_get_args.003.phpt]
 func_num_args() outside of a function declaration [vendor/php/php-src/tests/lang/func_num_args.003.phpt]
 Including a file in the current script directory from an included function [vendor/php/php-src/tests/lang/include_variation2.phpt]
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
