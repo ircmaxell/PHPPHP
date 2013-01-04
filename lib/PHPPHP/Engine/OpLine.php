@@ -12,7 +12,10 @@ abstract class OpLine {
         $this->op1       = $op1;
         $this->op2       = $op2;
         $this->result    = $result;
-        $this->lineno = $startLine;
+        if (!is_int($startLine)) {
+            throw new \LogicException('Expecting int');
+        }
+        $this->lineno    = (int) $startLine;
     }
 
     abstract public function execute(\PHPPHP\Engine\ExecuteData $data);

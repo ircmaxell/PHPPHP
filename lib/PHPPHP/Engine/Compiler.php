@@ -110,7 +110,7 @@ class Compiler {
         $this->compileNodes($ast, $returnContext);
         unset($this->opArray);
 
-        $opArray[] = new OpLines\ReturnOp(end($ast));
+        $opArray[] = new OpLines\ReturnOp(end($ast)->getLine());
 
         return $opArray;
     }
@@ -204,7 +204,7 @@ class Compiler {
 
         $this->compileChild($node, 'expr', $op2);
 
-        $opline = new $class($node, $op1, $op2, $returnContext);
+        $opline = new $class($node->getLine(), $op1, $op2, $returnContext);
         $opline->property = $property;
         $opline->dim = $dim;
 
@@ -431,7 +431,7 @@ class Compiler {
         $this->compileChild($node, 'stmts');
         $continueJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'loop');
-        $this->opArray[] = new OpLines\Jump($node, $startJumpPos);
+        $this->opArray[] = new OpLines\Jump($node->getLine(), $startJumpPos);
         $endJumpOp->op2 = $this->opArray->getNextOffset();
         $this->opArray->endLoop($continueJumpPos);
     }
@@ -468,7 +468,7 @@ class Compiler {
         $this->compileChild($node, 'stmts');
 
         $continueJumpPos = $this->opArray->getNextOffset();
-        $this->opArray[] = new OpLines\IterateNext($node, $iterator, $iterateValuesJumpPos);
+        $this->opArray[] = new OpLines\IterateNext($node->getLine(), $iterator, $iterateValuesJumpPos);
 
         $iterateOp->op2 = $this->opArray->getNextOffset();
         $this->opArray->endLoop($continueJumpPos);
@@ -565,9 +565,9 @@ class Compiler {
         $op1 = Zval::ptrFactory();
         $this->compileChild($node, 'cond', $op1);
 
-        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node, $op1);
+        $this->opArray[] = $endJumpOp = new OpLines\JumpIfNot($node->getLine(), $op1);
         $this->compileChild($node, 'stmts');
-        $this->opArray[] = new OpLines\Jump($node, $startJumpPos);
+        $this->opArray[] = new OpLines\Jump($node->getLine(), $startJumpPos);
 
         $endJumpOp->op2 = $this->opArray->getNextOffset();
         $this->opArray->endLoop($startJumpPos);
@@ -581,7 +581,7 @@ class Compiler {
         $this->compileChild($node, 'stmts');
         $continueJumpPos = $this->opArray->getNextOffset();
         $this->compileChild($node, 'cond', $op1);
-        $this->opArray[] = new OpLines\JumpIf($node, $op1, $startJumpPos);
+        $this->opArray[] = new OpLines\JumpIf($node->getLine(), $op1, $startJumpPos);
         $this->opArray->endLoop($continueJumpPos);
     }
 
