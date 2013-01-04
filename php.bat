@@ -1,2 +1,2 @@
 @echo off
-php.exe php.php %*
+php.exe -dmemory_limit=2G php.php %*
