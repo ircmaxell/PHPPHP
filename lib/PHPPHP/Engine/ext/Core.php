@@ -34,7 +34,7 @@ function var_dump_internal(Executor $executor, Zval $arg, $indent = '') {
                 $output .= var_dump_internal($executor, $value, $newIndent);
             }
             $output .= $indent . "}";
-
+            break;
         case 'object':
             $ci = $arg->getValue();
             $props = $ci->getProperties();

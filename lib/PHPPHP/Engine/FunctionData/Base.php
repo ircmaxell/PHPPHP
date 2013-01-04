@@ -56,6 +56,8 @@ abstract class Base implements Engine\FunctionData {
                     } elseif (!$args[$argNo]->isArray() && !($args[$argNo]->isNull() && $param->isOptional)) {
                         $error = "array";
                     }
+                } elseif ($param->type == 'callable') {
+                    //bypass the callable check for now...
                 } else {
                     if (!isset($args[$argNo]) && !$param->isOptional) {
                         $error = "instance of {$param->type}";
