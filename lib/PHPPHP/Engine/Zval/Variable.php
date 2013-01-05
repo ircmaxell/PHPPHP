@@ -6,14 +6,22 @@ use PHPPHP\Engine\Zval;
 
 class Variable extends Zval {
 
+    const SCOPE_LOCAL = 1;
+    const SCOPE_GLOBAL = 2;
+
     protected $name;
     protected $class;
     protected $zval;
     protected $executor;
 
-    public function __construct(Zval $name, Zval $class = null) {
+    public function __construct(Zval $name, Zval $class = null, $scope = null) {
         $this->name = $name;
         $this->class = $class;
+
+        if (null === $scope) {
+            $scope = self::SCOPE_LOCAL;
+        }
+        $this->scope = $scope;
     }
 
     public function __call($method, $args) {
@@ -38,6 +46,13 @@ class Variable extends Zval {
                 throw new \RuntimeException('Class name must be a valid object or a string');
             }
             $this->zval = $ci->fetchStaticVariable($varName);
+        } else if (self::SCOPE_GLOBAL === $this->scope) {
+            $symbolTable = $this->executor->executorGlobals->symbolTable;
+            if (!isset($symbolTable[$varName])) {
+                $this->zval = Zval::ptrFactory();
+            } else {
+                $this->zval = $symbolTable[$varName];
+            }
         } else if ($varName == 'this') {
             $this->zval = Zval::lockedPtrFactory($this->executor->getCurrent()->ci);
         } else {

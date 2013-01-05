@@ -3,6 +3,7 @@
 namespace PHPPHP\Engine;
 
 use PHPPHP\Engine\Objects\ClassEntry;
+use PHPPHP\Engine\Zval\Variable;
 
 class Compiler {
 
@@ -96,6 +97,17 @@ class Compiler {
     protected $currentDir = '';
 
     protected $functionStore;
+
+    protected $autoGlobals = array(
+        'GLOBALS',
+        '_GET',
+        '_POST',
+        '_COOKIE',
+        '_SERVER',
+        '_ENV',
+        '_REQUEST',
+        '_FILES',
+    );
 
     public function __construct(FunctionStore $functionStore) {
         $this->functionStore = $functionStore;
@@ -395,7 +407,11 @@ class Compiler {
     protected function compile_Expr_Variable($node, $returnContext) {
         $name = Zval::ptrFactory();
         $this->compileChild($node, 'name', $name);
-        $variable = Zval::variableFactory($name);
+        $scope = Variable::SCOPE_LOCAL;
+        if (is_string($node->name) && in_array($name->getValue(), $this->autoGlobals)) {
+            $scope = Variable::SCOPE_GLOBAL;
+        }
+        $variable = Zval::variableFactory($name, null, $scope);
         $this->opArray->addCompiledVariable($variable);
         $returnContext->assignZval($variable);
     }

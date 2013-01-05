@@ -24,4 +24,9 @@ class ExecutorGlobals {
 
     public $timeLimitEnd = PHP_INT_MAX;
     
+    public function __construct() {
+        $globalsPtr = Zval::ptrFactory(array());
+        $this->symbolTable =& $globalsPtr->getArray();
+        $this->symbolTable['GLOBALS'] = $globalsPtr;
+    }
 }
