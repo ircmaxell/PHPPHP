@@ -28,8 +28,8 @@ abstract class Zval {
         return new Zval\LockedPtr($value);
     }
 
-    public static function variableFactory(Zval $name) {
-        return new Zval\Variable($name);
+    public static function variableFactory(Zval $name, Zval $class = null) {
+        return new Zval\Variable($name, $class);
     }
 
     public static function iteratorFactory(\Traversible $iterator = null) {

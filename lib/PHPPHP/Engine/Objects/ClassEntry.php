@@ -12,6 +12,11 @@ use PHPPHP\Engine\ConstantStore;
 
 class ClassEntry
 {
+    const ACC_PRIVATE = 1;
+    const ACC_PROTECTED = 2;
+    const ACC_PUBLIC = 4;
+    const ACC_STATIC = 8;
+
     private $name;
     private $properties;
     private $methods;
@@ -21,6 +26,7 @@ class ClassEntry
     public function __construct($name, ClassEntry $parent = null)
     {
         $this->properties = array();
+        $this->staticProperties = array();
         $this->methods = new FunctionStore;
         $this->constants = new ConstantStore;
         $this->name = $name;
@@ -43,8 +49,18 @@ class ClassEntry
         return $this->name;
     }
 
-    public function declareProperty($name, Zval $defaultValue) {
-        $this->properties[$name] = $defaultValue;
+    public function declareProperty($name, Zval $defaultValue, $access) {
+        if ($access & self::ACC_STATIC) {
+            if (isset($this->staticProperties[$name])) {
+                throw new \Exception(sprintf('Cannot redeclare %s::$%s', $this->name, $name));
+            }
+            $this->staticProperties[$name] = $defaultValue;
+        } else {
+            if (isset($this->properties[$name])) {
+                throw new \Exception(sprintf('Cannot redeclare %s::$%s', $this->name, $name));
+            }
+            $this->properties[$name] = $defaultValue;
+        }
     }
 
     public function getMethodStore() {
@@ -95,6 +111,16 @@ class ClassEntry
             $result = Zval::ptrFactory();
         }
         $method->execute($data->executor, $args, $result, $ci);
+    }
+
+    public function fetchStaticVariable($name) {
+        $ci = $this;
+        do {
+            if (isset($ci->staticProperties[$name])) {
+                return $ci->staticProperties[$name];
+            }
+        } while ($ci = $ci->parent);
+        throw new \RuntimeException(sprintf('Access to undeclared static property: %s::$%s', $this->name, $name));
     }
 }
 

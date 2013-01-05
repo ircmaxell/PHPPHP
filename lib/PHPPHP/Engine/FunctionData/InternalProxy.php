@@ -13,7 +13,7 @@ class InternalProxy extends Base {
         $this->params = $params;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return = null, \PHPPHP\Engine\Objects\ClassInstance $ci = null, \PHPPHP\Engine\Objects\ClassEntry $ce = null) {
         $rawArgs = $this->compileArguments($args);
         ob_start();
         $ret = call_user_func_array($this->callback, $rawArgs);

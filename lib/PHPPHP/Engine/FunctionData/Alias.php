@@ -13,8 +13,8 @@ class Alias extends Base {
         $this->params = $func->getParams();
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
-        $this->alias->execute($executor, $args, $return, $ci);
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null, \PHPPHP\Engine\Objects\ClassEntry $ce = null) {
+        $this->alias->execute($executor, $args, $return, $ci, $ce);
     }
 
 }

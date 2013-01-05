@@ -12,6 +12,7 @@ class Extension extends \PHPPHP\Engine\Extension\Base {
     protected $namespace = __NAMESPACE__;
 
     protected function getFunctions() {
+        return [];
         return require __DIR__ . '/Functions.php';
     }
 

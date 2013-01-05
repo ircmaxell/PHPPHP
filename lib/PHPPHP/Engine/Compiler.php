@@ -321,6 +321,26 @@ class Compiler {
         $this->opArray[] = new OpLines\FunctionCall($node->getLine(), null, null, $returnContext ?: Zval::ptrFactory());;
     }
 
+    protected function compile_Expr_StaticCall($node, $returnContext = null) {
+        $classPtr = Zval::ptrFactory();
+        $namePtr = Zval::ptrFactory();
+        $args = array();
+        $this->compileChild($node, 'class', $classPtr);
+        $this->compileChild($node, 'name', $namePtr);
+        foreach ($node->args as $arg) {
+            $ptr = Zval::ptrFactory();
+            $this->compileChild($arg, 'value', $ptr);
+            $args[] = $ptr;
+        }
+        $this->opArray[] = new OpLines\InitStaticMethodCall($node->getLine(), $classPtr, $namePtr);
+
+        foreach ($args as $key => $arg) {
+            $this->opArray[] = new OpLines\Send($node->getLine(), $arg, $key);
+        }
+
+        $this->opArray[] = new OpLines\FunctionCall($node->getLine(), null, null, $returnContext ?: Zval::ptrFactory());;
+    }
+
     protected function compile_Expr_List($node, $returnContext = null) {
         if ($returnContext) {
             $vars = array();
@@ -376,6 +396,16 @@ class Compiler {
         $name = Zval::ptrFactory();
         $this->compileChild($node, 'name', $name);
         $variable = Zval::variableFactory($name);
+        $this->opArray->addCompiledVariable($variable);
+        $returnContext->assignZval($variable);
+    }
+
+    protected function compile_Expr_StaticPropertyFetch($node, $returnContext) {
+        $class = Zval::ptrFactory();
+        $name = Zval::ptrFactory();
+        $this->compileChild($node, 'class', $class);
+        $this->compileChild($node, 'name', $name);
+        $variable = Zval::variableFactory($name, $class);
         $this->opArray->addCompiledVariable($variable);
         $returnContext->assignZval($variable);
     }
@@ -623,8 +653,26 @@ class Compiler {
             $name = $prop->name;
             $default = Zval::ptrFactory();
             $this->compileChild($prop, 'default', $default);
-            $this->currentClass->declareProperty($name, $default);
+            $acc = $this->getPropertyAccess($node);
+            $this->currentClass->declareProperty($name, $default, $acc);
         }
+    }
+
+    protected function getPropertyAccess($node) {
+        $acc = 0;
+        if ($node->isPublic()) {
+            $acc |= ClassEntry::ACC_PUBLIC;
+        }
+        if ($node->isProtected()) {
+            $acc |= ClassEntry::ACC_PROTECTED;
+        }
+        if ($node->isPrivate()) {
+            $acc |= ClassEntry::ACC_PRIVATE;
+        }
+        if ($node->isStatic()) {
+            $acc |= ClassEntry::ACC_STATIC;
+        }
+        return $acc;
     }
 
     public function compile_Stmt_ClassConst($node) {

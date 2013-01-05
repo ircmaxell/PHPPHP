@@ -13,9 +13,9 @@ class Internal extends Base {
         $this->params   = $params;
     }
 
-    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null) {
+    public function execute(Engine\Executor $executor, array $args, Engine\Zval\Ptr $return, \PHPPHP\Engine\Objects\ClassInstance $ci = null, \PHPPHP\Engine\Objects\ClassEntry $ce = null) {
         if ($this->checkParams($executor, $args, true)) {
-            call_user_func_array($this->callback, array($executor, $args, $return, $ci));
+            call_user_func_array($this->callback, array($executor, $args, $return, $ci, $ce));
         } else {
             $return->setValue(null);
         }
