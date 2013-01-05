@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-04 17:40:55</h2>
+<h2>Time Start: 2013-01-05 14:51:37</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -104,7 +104,7 @@
 <tr><td>FAIL</td><td>Bug #30578 (Output buffers flushed before calling __desctruct functions)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Bug #30638 (localeconv returns wrong LC_NUMERIC settings) (ok to fail on MacOS X)</td><td>reason: ok to fail on MacOS X</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #30726 (-.1 like numbers are not being handled correctly)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #30862 (Static array with boolean indexes)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #30862 (Static array with boolean indexes)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #32828 (Throwing exception in output_callback function with ob_start and ob_end_clean leads to segfault)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #32924 (prepend does not add file to included files)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #35176 (include()/require()/*_once() produce wrong error messages about main())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -268,7 +268,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>Static keyword - basic tests</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Multiple declarations of the same static variable</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Statics in nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Static variables in methods & nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Static variables in methods & nested functions & evals.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>String conversion with multiple decimal points</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test to catch early assignment of $this</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Catching an exception thrown from an included file</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-04 17:42:52</h2>
+<h2>Time End: 2013-01-05 14:53:32</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  126 ( 46.2%) ( 48.3%)
+Tests failed    :  124 ( 45.4%) ( 47.5%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  135 ( 49.5%) ( 51.7%)
+Tests passed    :  137 ( 50.2%) ( 52.5%)
 ---------------------------------------------------------------------
-Time taken      :  117 seconds
+Time taken      :  115 seconds
 =====================================================================
 
 =====================================================================
@@ -345,7 +345,6 @@ Bug #28213 (crash in debug_print_backtrace in static methods) [vendor/php/php-sr
 Bug #29566 (foreach/string handling strangeness) [vendor/php/php-src/tests/lang/bug29566.phpt]
 Bug #29893 (segfault when using array as index) [vendor/php/php-src/tests/lang/bug29893.phpt]
 Bug #30578 (Output buffers flushed before calling __desctruct functions) [vendor/php/php-src/tests/lang/bug30578.phpt]
-Bug #30862 (Static array with boolean indexes) [vendor/php/php-src/tests/lang/bug30862.phpt]
 Bug #32828 (Throwing exception in output_callback function with ob_start and ob_end_clean leads to segfault) [vendor/php/php-src/tests/lang/bug32828.phpt]
 Bug #35176 (include()/require()/*_once() produce wrong error messages about main()) [vendor/php/php-src/tests/lang/bug35176.phpt]
 Bug #43958 (class name added into the error message) [vendor/php/php-src/tests/lang/bug43958.phpt]
@@ -417,7 +416,6 @@ short_open_tag: Off [vendor/php/php-src/tests/lang/short_tags.002.phpt]
 short_open_tag: On, asp_tags: On [vendor/php/php-src/tests/lang/short_tags.003.phpt]
 short_open_tag: Off, asp_tags: Off [vendor/php/php-src/tests/lang/short_tags.004.phpt]
 Statics in nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_001.phpt]
-Static variables in methods & nested functions & evals. [vendor/php/php-src/tests/lang/static_variation_002.phpt]
 Catching an exception thrown from an included file [vendor/php/php-src/tests/lang/throw_variation_001.phpt]
 =====================================================================
 </pre>
