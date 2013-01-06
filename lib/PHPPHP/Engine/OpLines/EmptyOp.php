@@ -7,9 +7,15 @@ use PHPPHP\Engine\Zval;
 class EmptyOp extends \PHPPHP\Engine\OpLine {
 
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
-        $varName = $this->op1->getName();
-        $ret = !isset($data->symbolTable[$varName]) || !$data->symbolTable[$varName]->getValue();
-        $this->result->setValue($ret);
+        if ($this->op1->isVariable()) {
+            $varName = $this->op1->getName();
+            if (!isset($data->symbolTable[$varName])) {
+                $this->result->setValue(true);
+                $data->nextOp();
+                return;
+            }
+        }
+        $this->result->setValue(!$this->op1->getValue());
         $data->nextOp();
     }
 

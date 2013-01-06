@@ -27,7 +27,7 @@ class Compiler {
         'Expr_Exit'        => array('UnaryOp', 'PHPPHP\Engine\OpLines\ExitOp', 'expr'),
         'Expr_BooleanNot'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\BooleanNot'),
         'Expr_BitwiseNot'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\BitwiseNot'),
-        'Expr_Empty'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EmptyOp', 'vars'),
+        'Expr_Empty'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\EmptyOp', 'expr'),
         'Expr_Isset'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\IssetOp', 'vars'),
         'Stmt_Unset'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnsetOp', 'vars'),
         'Expr_PostDec'     => array('UnaryOp', 'PHPPHP\Engine\OpLines\PostDec', 'var'),
