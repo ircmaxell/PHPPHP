@@ -56,7 +56,6 @@ class Compiler {
         'Expr_AssignShiftRight' => array('BinaryAssignOp', 'PHPPHP\Engine\OpLines\AssignShiftRight', 'var', 'expr'),
 
         // binary operators
-        'Expr_ArrayDimFetch'    => array('BinaryOp', 'PHPPHP\Engine\OpLines\ArrayDimFetch', 'var', 'dim'),
         'Expr_PropertyFetch'    => array('BinaryOp', 'PHPPHP\Engine\OpLines\ObjectPropertyFetch', 'var', 'name'),
         'Expr_ClassConstFetch'  => array('BinaryOp', 'PHPPHP\Engine\OpLines\ClassConstantFetch', 'class', 'name'),
         'Expr_BooleanAnd'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
@@ -108,6 +107,8 @@ class Compiler {
         '_REQUEST',
         '_FILES',
     );
+
+    protected $fetchWrite = false;
 
     public function __construct(FunctionStore $functionStore) {
         $this->functionStore = $functionStore;
@@ -216,6 +217,9 @@ class Compiler {
         $op1 = Zval::ptrFactory();
         $op2 = Zval::ptrFactory();
 
+        $prevFetchWrite = $this->fetchWrite;
+        $this->fetchWrite = true;
+
         if ($node->var instanceof \PHPParser_Node_Expr_PropertyFetch) {
             $var = $node->var;
             $property = Zval::ptrFactory();
@@ -239,6 +243,8 @@ class Compiler {
         $opline->dim = $dim;
 
         $this->opArray[] = $opline;
+
+        $this->fetchWrite = $prevFetchWrite;
     }
 
     protected function compileUnaryOp($node, $returnContext, $class, $expr = 'expr') {
@@ -263,6 +269,19 @@ class Compiler {
         } else {
             $this->compileBinaryAssignOp($node, $returnContext, 'PHPPHP\Engine\OpLines\Assign', 'var', 'expr');
         }
+    }
+
+    protected function compile_Expr_ArrayDimFetch($node, $returnContext = null) {
+        $varPtr = Zval::ptrFactory();
+        $dimPtr = Zval::ptrFactory();
+
+        $this->compileChild($node, 'var', $varPtr);
+        $this->compileChild($node, 'dim', $dimPtr);
+
+        $opLine = new OpLines\ArrayDimFetch($node->getLine(), $varPtr, $dimPtr, $returnContext ?: Zval::ptrFactory());
+        $opLine->write = $this->fetchWrite;
+
+        $this->opArray[] = $opLine;
     }
 
     protected function compile_Expr_Array($node, $returnContext = null) {
