@@ -37,7 +37,6 @@ class Compiler {
         'Expr_UnaryPlus'   => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryPlus', 'expr'),
         'Expr_UnaryMinus'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\UnaryMinus', 'expr'),
         'Expr_ConstFetch'  => array('UnaryOp', 'PHPPHP\Engine\OpLines\FetchConstant', 'name'),
-        'Stmt_Echo'        => array('UnaryOp', 'PHPPHP\Engine\OpLines\EchoOp', 'exprs'),
         'Expr_Print'       => array('UnaryOp', 'PHPPHP\Engine\OpLines\PrintOp', 'expr'),
         'Stmt_Return'      => array('UnaryOp', 'PHPPHP\Engine\OpLines\ReturnOp'),
 
@@ -260,6 +259,14 @@ class Compiler {
             } else {
                 $returnContext->setValue($node->$name);
             }
+        }
+    }
+
+    public function compile_Stmt_Echo($node, $returnContext = null) {
+        foreach ($node->exprs as $expr) {
+            $exprPtr = Zval::ptrFactory();
+            $this->compileNode($expr, $exprPtr);
+            $this->opArray[] = new OpLines\EchoOp($node->getLine(), $exprPtr, null, $returnContext ?: Zval::ptrFactory());
         }
     }
 
