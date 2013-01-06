@@ -190,4 +190,55 @@ class Value extends Zval {
         throw new \LogicException('Getting array on non-array');
     }
 
+    public function isEqualTo(Zval $other) {
+        $type = $this->getType();
+        $otherType = $other->getType();
+        if ('array' === $type && 'array' === $otherType) {
+            return 0 === $this->compareArrays($this->getValue(), $other->getValue(), function ($a, $b) {
+                return $a->isEqualTo($b);
+            }, false);
+        } else {
+            return $this->getValue() == $other->getValue();
+        }
+    }
+
+    public function isIdenticalTo(Zval $other) {
+        $type = $this->getType();
+        $otherType = $other->getType();
+        if ('array' === $type && 'array' === $otherType) {
+            return 0 === $this->compareArrays($this->getValue(), $other->getValue(), function ($a, $b) {
+                return $a->isIdenticalTo($b);
+            }, true);
+        } else {
+            return $this->getValue() === $other->getValue();
+        }
+    }
+
+    private function compareArrays($a, $b, $callback, $ordered) {
+        $result = count($a) - count($b);
+        if (0 !== $result) {
+            return $result;
+        }
+        if ($ordered) {
+            reset($b);
+        }
+        foreach ($a as $keyA => $valueA) {
+            if ($ordered) {
+                if (key($b) !== $keyA) {
+                    return 1;
+                }
+            } else {
+                if (!isset($b[$keyA])) {
+                    return 1;
+                }
+            }
+            if (!$callback($valueA, $b[$keyA])) {
+                return 1;
+            }
+            if ($ordered) {
+                next($b);
+            }
+        }
+        return 0;
+    }
 }
