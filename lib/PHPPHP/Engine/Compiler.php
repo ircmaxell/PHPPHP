@@ -706,7 +706,28 @@ class Compiler {
     }
 
     public function compile_Expr_New($node, $returnContext = null) {
-        $this->opArray[] = new OpLines\NewOp($node->getLine(), Zval::ptrFactory($node->class->toString()), Zval::ptrFactory($node->args), $returnContext);
+
+        $args = array();
+
+        foreach ($node->args as $arg) {
+            $ptr = Zval::ptrFactory();
+            $this->compileChild($arg, 'value', $ptr);
+            $args[] = $ptr;
+        }
+
+        if (!$returnContext) {
+            $returnContext = Zval::ptrFactory();
+        }
+
+        $this->opArray[] = $newOp = new OpLines\NewOp($node->getLine(), Zval::ptrFactory($node->class->toString()), null, $returnContext);
+
+        foreach ($args as $key => $arg) {
+            $this->opArray[] = new OpLines\Send($node->getLine(), $arg, $key);
+        }
+
+        $this->opArray[] = new OpLines\FunctionCall($node->getLine(), null, $returnContext, Zval::ptrFactory());
+
+        $newOp->noConstructorJumpOffset = $this->opArray->getNextOffset();
     }
 
     protected function compileFunction($node) {

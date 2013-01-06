@@ -2,7 +2,7 @@
 
 namespace PHPPHP\Engine\OpLines;
 
-use PHPPHP\Engine\FunctionCall;
+use PHPPHP\Engine;
 
 class InitFCallByName extends \PHPPHP\Engine\OpLine {
 
@@ -20,7 +20,7 @@ class InitFCallByName extends \PHPPHP\Engine\OpLine {
             $functionData = $data->executor->getFunctionStore()->get($funcName);
         }
         
-        $data->executor->executorGlobals->call = new FunctionCall($data->executor, $functionData, $ci);
+        $data->executor->executorGlobals->call = new Engine\FunctionCall($data->executor, $functionData, $ci);
         
         $data->nextOp();
     }

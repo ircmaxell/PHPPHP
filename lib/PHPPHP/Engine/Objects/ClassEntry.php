@@ -67,6 +67,21 @@ class ClassEntry
         return $this->methods;
     }
 
+    public function getConstructor() {
+        $parent = $this;
+        do {
+            $ms = $parent->getMethodStore();
+            if ($ms->exists('__construct')) {
+                return $ms->get('__construct');
+            } else {
+                $className = $parent->getName();
+                if ($ms->exists($className)) {
+                    return $ms->get($className);
+                }
+           }
+        } while ($parent = $parent->getParent());
+    }
+
     public function defineConstant($name, Zval $value) {
         $this->constants->register($name, $value->getZval());
     }
@@ -79,7 +94,7 @@ class ClassEntry
         return $this->parent;
     }
 
-    public function instantiate(ExecuteData $data, array $properties, array $args = array())
+    public function instantiate(ExecuteData $data, array $properties)
     {
         $parent = $this;
         do {
@@ -87,7 +102,7 @@ class ClassEntry
         } while ($parent = $parent->parent);
 
         $instance = new ClassInstance($this, $properties);
-        $instance->callConstructor($data, $args);
+
         return $instance;
     }
 
