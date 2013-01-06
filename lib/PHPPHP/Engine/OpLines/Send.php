@@ -9,7 +9,7 @@ class Send extends \PHPPHP\Engine\OpLine {
     public function execute(\PHPPHP\Engine\ExecuteData $data) {
         $ptr = null;
         if($data->executor->executorGlobals->call->getFunction()->isArgByRef($this->op2)) {
-            if ($this->op1->isVariable()) {
+            if ($this->op1->isVariable() || $this->op1->isRef() || $this->op1->isObject()) {
                 $op = $this->op1->getPtr();
                 $op->makeRef();
                 $op->addRef();
