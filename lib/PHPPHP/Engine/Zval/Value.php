@@ -209,9 +209,10 @@ class Value extends Zval {
             return 0 === $this->compareArrays($this->getValue(), $other->getValue(), function ($a, $b) {
                 return $a->isIdenticalTo($b);
             }, true);
-        } else {
+        } elseif ($type == $otherType) {
             return $this->getValue() === $other->getValue();
         }
+        return false;
     }
 
     private function compareArrays($a, $b, $callback, $ordered) {

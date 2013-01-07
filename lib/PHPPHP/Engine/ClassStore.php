@@ -28,4 +28,8 @@ class ClassStore {
 
         return $this->classes[$name];
     }
+
+    public function getNames() {
+        return array_keys($this->classes);
+    }
 }

@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-05 14:51:37</h2>
+<h2>Time Start: 2013-01-07 07:45:28</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -51,7 +51,7 @@
 <tr><td>PASS</td><td>Bison weirdness</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #17115 (lambda functions produce segfault with static vars)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #18872 (class constant used as default parameter)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #19566 (get_declared_classes() segfaults)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #19566 (get_declared_classes() segfaults)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #19943 (memleaks)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #20175 (Static vars can't store ref to new instance)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #21094 (set_error_handler not accepting methods)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -80,7 +80,7 @@
 <tr><td>FAIL</td><td>Bug #24640 (var_export and var_dump can't output large float)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #24652 (broken array_flip())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24658 (combo of typehint / reference causes crash)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)")</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)")</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24908 (super-globals can not be used in __destruct())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24926 (lambda function (create_function()) cannot be stored in a class property)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -122,8 +122,8 @@
 <tr><td>PASS</td><td>#-style comments (part 2)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test standard 'compare' object handler</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Test object compare when object handler different</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Binary safety of each() for both keys and values</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>empty() on array elements</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Binary safety of each() for both keys and values</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>empty() on array elements</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Evaluation order during assignments.</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -206,11 +206,11 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Test * operator : various numbers as strings</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test -N operator : 64bit long tests</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test -N operator : various numbers as strings</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Test == operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Test == operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test == operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test == operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test > operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Test >= operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Test >= operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test >= operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test >= operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test > operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -221,12 +221,12 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>Test < operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test <= operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test <= operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Test <= operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Test <= operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test < operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test < operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Test != operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Test != operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test != operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>PASS</td><td>Test == operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>FAIL</td><td>Test == operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test !== operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test !== operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test !== operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-05 14:53:32</h2>
+<h2>Time End: 2013-01-07 07:47:13</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  124 ( 45.4%) ( 47.5%)
+Tests failed    :  125 ( 45.8%) ( 47.9%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  137 ( 50.2%) ( 52.5%)
+Tests passed    :  136 ( 49.8%) ( 52.1%)
 ---------------------------------------------------------------------
-Time taken      :  115 seconds
+Time taken      :  105 seconds
 =====================================================================
 
 =====================================================================
@@ -305,7 +305,6 @@ Dynamic access of constants [vendor/php/php-src/tests/lang/042.phpt]
 Dynamic call for static methods [vendor/php/php-src/tests/lang/043.phpt]
 Dynamic call for static methods dynamically named [vendor/php/php-src/tests/lang/044.phpt]
 Bug #17115 (lambda functions produce segfault with static vars) [vendor/php/php-src/tests/lang/bug17115.phpt]
-Bug #19566 (get_declared_classes() segfaults) [vendor/php/php-src/tests/lang/bug19566.phpt]
 Bug #19943 (memleaks) [vendor/php/php-src/tests/lang/bug19943.phpt]
 Bug #20175 (Static vars can't store ref to new instance) [vendor/php/php-src/tests/lang/bug20175.phpt]
 Bug #21094 (set_error_handler not accepting methods) [vendor/php/php-src/tests/lang/bug21094.phpt]
@@ -331,7 +330,6 @@ Bug #24499 (bogus handling of a public property as a private one) [vendor/php/ph
 Bug #24573 (debug_backtrace() crashes if $this is set to null) [vendor/php/php-src/tests/lang/bug24573.phpt]
 Bug #24640 (var_export and var_dump can't output large float) [vendor/php/php-src/tests/lang/bug24640.phpt]
 Bug #24658 (combo of typehint / reference causes crash) [vendor/php/php-src/tests/lang/bug24658.phpt]
-Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)") [vendor/php/php-src/tests/lang/bug24783.phpt]
 Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/tests/lang/bug24908.phpt]
 Bug #24926 (lambda function (create_function()) cannot be stored in a class property) [vendor/php/php-src/tests/lang/bug24926.phpt]
 Bug #24951 (ob_flush() destroys output handler) [vendor/php/php-src/tests/lang/bug24951.phpt]
@@ -354,8 +352,6 @@ Bug #55754 (Only variables should be passed by reference for ZEND_SEND_PREFER_RE
 Bug #7515 (weird & invisible referencing of objects) [vendor/php/php-src/tests/lang/bug7515.phpt]
 Catchable fatal error [2] [vendor/php/php-src/tests/lang/catchable_error_002.phpt]
 Test object compare when object handler different [vendor/php/php-src/tests/lang/compare_objects_basic2.phpt]
-Binary safety of each() for both keys and values [vendor/php/php-src/tests/lang/each_binary_safety.phpt]
-empty() on array elements [vendor/php/php-src/tests/lang/empty_variation.phpt]
 Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_001.phpt]
 Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_002.phpt]
 Evaluation order during assignments. [vendor/php/php-src/tests/lang/engine_assignExecutionOrder_003.phpt]
@@ -394,6 +390,11 @@ Including a file in the current script directory from an included function [vend
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
 Test / operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/divide_variationStr.phpt]
 Test * operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/multiply_variationStr.phpt]
+Test == operator : different types [vendor/php/php-src/tests/lang/operators/operator_equals_basic.phpt]
+Test >= operator : different types [vendor/php/php-src/tests/lang/operators/operator_gt_or_equal_basic.phpt]
+Test <= operator : max int 64bit range [vendor/php/php-src/tests/lang/operators/operator_lt_or_equal_variation_64bit.phpt]
+Test != operator : different types [vendor/php/php-src/tests/lang/operators/operator_notequals_basic.phpt]
+Test == operator : max int 64bit range [vendor/php/php-src/tests/lang/operators/operator_notequals_variation_64bit.phpt]
 passing of function parameters by reference [vendor/php/php-src/tests/lang/passByReference_001.phpt]
 Attempt to pass a constant by reference [vendor/php/php-src/tests/lang/passByReference_002.phpt]
 Implicit initialisation when passing by reference [vendor/php/php-src/tests/lang/passByReference_003.phpt]

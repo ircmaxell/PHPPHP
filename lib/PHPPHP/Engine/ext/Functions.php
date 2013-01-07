@@ -152,6 +152,15 @@ return array(
             new ParamData('varName'),
         )
     ),
+    'get_declared_classes' => new FunctionData\Internal(
+        function(Executor $executor, array $args, Zval $return) {
+            $names = array();
+            foreach ($executor->getClassStore()->getNames() as $name) {
+                $names[] = Zval::ptrFactory($name);
+            }
+            $return->setValue($names);
+        }
+    ),
     'get_loaded_extensions' => new FunctionData\Internal(
         function(Executor $executor, array $args, Zval $return) {
             $extensions = $executor->getExtensions();
