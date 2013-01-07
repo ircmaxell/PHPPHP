@@ -235,6 +235,8 @@ class Compiler {
             $this->compileChild($node, 'var', $op1);
         }
 
+        $this->fetchWrite = $prevFetchWrite;
+
         $this->compileChild($node, 'expr', $op2);
 
         $opline = new $class($node->getLine(), $op1, $op2, $returnContext);
@@ -242,8 +244,6 @@ class Compiler {
         $opline->dim = $dim;
 
         $this->opArray[] = $opline;
-
-        $this->fetchWrite = $prevFetchWrite;
     }
 
     protected function compileUnaryOp($node, $returnContext, $class, $expr = 'expr') {
