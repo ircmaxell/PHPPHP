@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-07 07:45:28</h2>
+<h2>Time Start: 2013-01-08 08:21:11</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -206,11 +206,11 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>FAIL</td><td>Test * operator : various numbers as strings</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test -N operator : 64bit long tests</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test -N operator : various numbers as strings</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test == operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test == operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test == operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test == operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test > operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test >= operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test >= operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test >= operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test >= operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test > operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -221,12 +221,12 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>Test < operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test <= operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test <= operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test <= operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test <= operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test < operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test < operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test != operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test != operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test != operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Test == operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Test == operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test !== operator : different types</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Test !== operator : max int 32bit range</td><td>reason: this test is for 32bit platform only</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Test !== operator : max int 64bit range</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-07 07:47:13</h2>
+<h2>Time End: 2013-01-08 08:22:49</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  125 ( 45.8%) ( 47.9%)
+Tests failed    :  120 ( 44.0%) ( 46.0%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  136 ( 49.8%) ( 52.1%)
+Tests passed    :  141 ( 51.6%) ( 54.0%)
 ---------------------------------------------------------------------
-Time taken      :  105 seconds
+Time taken      :   98 seconds
 =====================================================================
 
 =====================================================================
@@ -390,11 +390,6 @@ Including a file in the current script directory from an included function [vend
 Including a file in the current script directory from eval'd code [vendor/php/php-src/tests/lang/include_variation3.phpt]
 Test / operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/divide_variationStr.phpt]
 Test * operator : various numbers as strings [vendor/php/php-src/tests/lang/operators/multiply_variationStr.phpt]
-Test == operator : different types [vendor/php/php-src/tests/lang/operators/operator_equals_basic.phpt]
-Test >= operator : different types [vendor/php/php-src/tests/lang/operators/operator_gt_or_equal_basic.phpt]
-Test <= operator : max int 64bit range [vendor/php/php-src/tests/lang/operators/operator_lt_or_equal_variation_64bit.phpt]
-Test != operator : different types [vendor/php/php-src/tests/lang/operators/operator_notequals_basic.phpt]
-Test == operator : max int 64bit range [vendor/php/php-src/tests/lang/operators/operator_notequals_variation_64bit.phpt]
 passing of function parameters by reference [vendor/php/php-src/tests/lang/passByReference_001.phpt]
 Attempt to pass a constant by reference [vendor/php/php-src/tests/lang/passByReference_002.phpt]
 Implicit initialisation when passing by reference [vendor/php/php-src/tests/lang/passByReference_003.phpt]
