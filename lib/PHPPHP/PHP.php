@@ -60,12 +60,18 @@ class PHP {
     }
 
     public function executeOpLines(Engine\OpArray $opCodes) {
-        $retval = $this->executor->execute($opCodes);
-        if ($retval) {
-            return $retval->getValue();
+        try {
+            $retval = $this->executor->execute($opCodes);
+            if ($retval) {
+                return $retval->getValue();
+            }
+            $this->executor->shutdown();
+            $this->executor->getOutput()->finish();
+        } catch (Engine\ErrorOccurredException $e) {
+            // Ignore, since the error should be in the OB
         }
-        $this->executor->shutdown();
-        $this->executor->getOutput()->finish();
+        $this->executor->getOutput()->finish(true);
+        // Force outputting of any remaining buffers
         return null;
     }
 

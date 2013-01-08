@@ -63,10 +63,10 @@ class Executor {
         $this->errorHandler = $handler;
     }
 
-    public function raiseError($level, $message, $extra = '') {
+    public function raiseError($level, $message, $extra = '', $adFunc = true) {
         $file = $this->current->opArray->getFileName();
         $line = $this->current->opLine->lineno;
-        $this->errorHandler->handle($this, $level, $message, $file, $line, $extra);
+        $this->errorHandler->handle($this, $level, $message, $file, $line, $extra, $adFunc);
     }
 
     public function getStack() {
@@ -144,16 +144,11 @@ class Executor {
         }
 
         while ($this->shutdown == $shutdownScope && $scope->opLine) {
-            try {
-                $ret = $scope->opLine->execute($scope);
-            } catch (ErrorOccurredException $e) {
-                $ret = false;
-                // Ignored here, since the handler will shutdown for us
-            }
+            $ret = $scope->opLine->execute($scope);
             if ($this->shutdown == $shutdownScope && $this->executorGlobals->timeLimit && $this->executorGlobals->timeLimitEnd < time()) {
                 $limit = $this->executorGlobals->timeLimit;
                 $message = sprintf('Maximum execution time of %d second%s exceeded', $limit, $limit == 1 ? '' : 's');
-                $this->errorHandler->handle($this, E_ERROR, $message, $opArray->getFileName(), $scope->opLine->lineno);
+                $this->errorHandler->handle($this, E_ERROR, $message, $opArray->getFileName(), $scope->opLine->lineno, '', false);
                 return;
             }
             switch ($ret) {

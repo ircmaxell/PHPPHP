@@ -84,20 +84,20 @@ return array(
         function(Executor $executor, array $args, Zval $return) {
             $type = $args[0]->getType();
             if ($type != 'integer') {
-                $executor->raiseError(E_WARNING, 'func_get_arg() expects parameter 1 to be long, ' . $type . ' given');
+                $executor->raiseError(E_WARNING, 'func_get_arg() expects parameter 1 to be long, ' . $type . ' given', '', false);
                 return;
             }
 
             $num = $args[0]->toLong();
             $current = $executor->getCurrent();
             if ($num < 0) {
-                $executor->raiseError(E_WARNING, 'func_get_arg():  The argument number should be >= 0');
+                $executor->raiseError(E_WARNING, ' The argument number should be >= 0');
                 $return->setValue(false);
             } elseif (!$current->function) {
-                $executor->raiseError(E_WARNING, 'func_get_arg():  Called from the global scope - no function context');
+                $executor->raiseError(E_WARNING, ' Called from the global scope - no function context');
                 $return->setValue(false);
             } elseif (!isset($current->arguments[$num])) {
-                $executor->raiseError(E_WARNING, 'func_get_arg():  Argument ' . $num . ' not passed to function');
+                $executor->raiseError(E_WARNING, ' Argument ' . $num . ' not passed to function');
                 $return->setValue(false);
             } else {
                 $return->setValue($current->arguments[$num]);
@@ -114,7 +114,7 @@ return array(
             if ($current->function && is_array($current->arguments)) {
                 $return->setValue($current->arguments);
             } else {
-                $executor->raiseError(E_WARNING, 'func_get_args():  Called from the global scope - no function context');
+                $executor->raiseError(E_WARNING, ' Called from the global scope - no function context');
                 $return->setValue(false);
             }
         }
@@ -125,7 +125,7 @@ return array(
             if ($current->function && is_array($current->arguments)) {
                 $return->setValue(count($current->arguments));
             } else {
-                $executor->raiseError(E_WARNING, 'func_num_args():  Called from the global scope - no function context');
+                $executor->raiseError(E_WARNING, ' Called from the global scope - no function context');
                 $return->setValue(-1);
             }
         }

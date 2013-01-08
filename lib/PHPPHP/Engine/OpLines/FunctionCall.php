@@ -19,6 +19,8 @@ class FunctionCall extends \PHPPHP\Engine\OpLine {
             $this->result = Zval::ptrFactory();
         }
         $functionCall->execute($args, $this->result);
+
+        $data->executor->executorGlobals->call = null;
         
         $data->nextOp();
     }

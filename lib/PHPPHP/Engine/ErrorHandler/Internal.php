@@ -4,12 +4,13 @@ namespace PHPPHP\Engine\ErrorHandler;
 
 class Internal implements \PHPPHP\Engine\ErrorHandler {
     
-    public function handle(\PHPPHP\Engine\Executor $executor, $level, $message, $file, $line, $extra = '') {
+    public function handle(\PHPPHP\Engine\Executor $executor, $level, $message, $file, $line, $extra = '', $addFunc = true) {
         if ($executor->executorGlobals->error_reporting & $level) {
             $prefix = static::getErrorLevelName($level);
-            $output = sprintf("%s: %s in %s on line %d%s", $prefix, $message, $file, $line, $extra);
+            $func = $addFunc && $executor->executorGlobals->call ? $executor->executorGlobals->call->getName() . '(): ' : '';
+            $output = sprintf("%s: %s%s in %s on line %d%s", $prefix, $func, $message, $file, $line, $extra);
             if ($executor->executorGlobals->display_errors) {
-                $executor->getOutput()->write("\n$output\n");
+                $executor->getOutput()->write("\n$output\n", true);
             }
             if ($level & (E_PARSE | E_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR)) {
                 $executor->shutdown();

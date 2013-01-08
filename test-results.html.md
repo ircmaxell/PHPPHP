@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-01-08 08:21:11</h2>
+<h2>Time Start: 2013-01-08 12:29:18</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -83,7 +83,7 @@
 <tr><td>PASS</td><td>Bug #24783 ($key not binary safe in "foreach($arr as $key => $val)")</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24908 (super-globals can not be used in __destruct())</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #24926 (lambda function (create_function()) cannot be stored in a class property)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td>FAIL</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td>PASS</td><td>Bug #24951 (ob_flush() destroys output handler)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>SKIP</td><td>Bug #25145 (SEGV on recpt of form input with name like "123[]")</td><td>reason: CGI not available</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>FAIL</td><td>Bug #25547 (error_handler and array index with function call)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Bug #25652 (Calling Global functions dynamically fails from Class scope)</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,18 +276,18 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-01-08 08:22:49</h2>
+<h2>Time End: 2013-01-08 12:31:19</h2>
 <hr/>
 <pre>
 
 Number of tests :  273               261
 Tests skipped   :   12 (  4.4%) --------
 Tests warned    :    0 (  0.0%) (  0.0%)
-Tests failed    :  120 ( 44.0%) ( 46.0%)
+Tests failed    :  119 ( 43.6%) ( 45.6%)
 Expected fail   :    0 (  0.0%) (  0.0%)
-Tests passed    :  141 ( 51.6%) ( 54.0%)
+Tests passed    :  142 ( 52.0%) ( 54.4%)
 ---------------------------------------------------------------------
-Time taken      :   98 seconds
+Time taken      :  121 seconds
 =====================================================================
 
 =====================================================================
@@ -332,7 +332,6 @@ Bug #24640 (var_export and var_dump can't output large float) [vendor/php/php-sr
 Bug #24658 (combo of typehint / reference causes crash) [vendor/php/php-src/tests/lang/bug24658.phpt]
 Bug #24908 (super-globals can not be used in __destruct()) [vendor/php/php-src/tests/lang/bug24908.phpt]
 Bug #24926 (lambda function (create_function()) cannot be stored in a class property) [vendor/php/php-src/tests/lang/bug24926.phpt]
-Bug #24951 (ob_flush() destroys output handler) [vendor/php/php-src/tests/lang/bug24951.phpt]
 Bug #25547 (error_handler and array index with function call) [vendor/php/php-src/tests/lang/bug25547.phpt]
 Bug #25922 (SEGV in error_handler when context is destroyed) [vendor/php/php-src/tests/lang/bug25922.phpt]
 Bug #26182 (Object properties created redundantly) [vendor/php/php-src/tests/lang/bug26182.phpt]

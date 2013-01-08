@@ -69,6 +69,7 @@ final class CoreExtension extends Extension\Base {
         $funcs += require_once __DIR__ . '/ext/Core.php';
         $funcs += require_once __DIR__ . '/ext/Array.php';
         $funcs += require_once __DIR__ . '/ext/Types.php';
+        $funcs += require_once __DIR__ . '/ext/OutputBuffer.php';
         return $funcs + $this->registerCoreFunctions();
     }
 

@@ -84,7 +84,7 @@ abstract class Base implements Engine\FunctionData {
                         $extra = ' and defined in ' . $this->getFileName() . ' on line ' . $param->lineno;
                     }
                     $message = "Argument " . ($argNo + 1) . " passed to {$this->name}() must be an $error, $type given, called";
-                    $executor->raiseError(E_RECOVERABLE_ERROR, $message, $extra);
+                    $executor->raiseError(E_RECOVERABLE_ERROR, $message, $extra, false);
                 }
             }
             if (!$param->isOptional) {
@@ -106,7 +106,7 @@ abstract class Base implements Engine\FunctionData {
             $message .= $hasOptional ? "at least" : "exactly";
             $message .= " $required " . ($required == 1 ? "parameter" : "parameters");
             $message .= ", $has given";
-            $executor->raiseError(E_WARNING, $message);
+            $executor->raiseError(E_WARNING, $message, '', false);
             return false;
         } elseif ($checkTooMany && !$varargs && $has > $argNo) {
             $message = $this->name;
@@ -114,7 +114,7 @@ abstract class Base implements Engine\FunctionData {
             $message .= $hasOptional ? "at most" : "exactly";
             $message .= " $argNo " . ($argNo == 1 ? "parameter" : "parameters");
             $message .= ", $has given";
-            $executor->raiseError(E_WARNING, $message);
+            $executor->raiseError(E_WARNING, $message, '', false);
             return false;
         }
         return true;
