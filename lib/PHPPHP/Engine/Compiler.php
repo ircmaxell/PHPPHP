@@ -61,6 +61,7 @@ class Compiler {
         'Expr_BooleanOr'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
         'Expr_LogicalAnd'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
         'Expr_LogicalOr'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
+        'Expr_LogicalXor'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanXor'),
         'Expr_Smaller'          => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller'),
         'Expr_SmallerOrEqual'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\SmallerOrEqual'),
         'Expr_Greater'          => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller', 'right', 'left'),
