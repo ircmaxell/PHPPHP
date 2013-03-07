@@ -61,6 +61,7 @@ class Compiler {
         'Expr_BooleanOr'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
         'Expr_LogicalAnd'       => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanAnd'),
         'Expr_LogicalOr'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanOr'),
+        'Expr_LogicalXor'        => array('BinaryOp', 'PHPPHP\Engine\OpLines\BooleanXor'),
         'Expr_Smaller'          => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller'),
         'Expr_SmallerOrEqual'   => array('BinaryOp', 'PHPPHP\Engine\OpLines\SmallerOrEqual'),
         'Expr_Greater'          => array('BinaryOp', 'PHPPHP\Engine\OpLines\Smaller', 'right', 'left'),
@@ -641,20 +642,53 @@ class Compiler {
         $this->compileChild($node, 'cond', $condPtr);
 
         $this->opArray->beginLoop();
-
+        $caseNextJumpOp = NULL;
+        $defaultCaseOffset = NULL;
         foreach ($node->cases as $case) {
             if ($case->cond) {
                 $comparePtr = Zval::ptrFactory();
                 $this->compileChild($case, 'cond', $comparePtr);
                 $conditionPtr = Zval::ptrFactory();
+                if (isset($caseEndJumpOp)) {
+                    $caseEndJumpOp->op2 = $this->opArray->getNextOffset();
+                }
                 $this->opArray[] = new OpLines\Equal($node->getLine(), $condPtr, $comparePtr, $conditionPtr);
                 $this->opArray[] = $caseEndJumpOp = new OpLines\JumpIfNot($node->getLine(), $conditionPtr);
+                if ($caseNextJumpOp) {
+                    $caseNextJumpOp->op1 = $this->opArray->getNextOffset();
+                }
                 $this->compileChild($case, 'stmts');
-                $caseEndJumpOp->op2 = $this->opArray->getNextOffset();
+                $this->opArray[] = $caseNextJumpOp = new OpLines\Jump($node->getLine());
             } else {
+                if (count($node->cases) > 1) {
+                    $this->opArray[] = $defaultJumpOp = new OpLines\Jump($node->getLine());
+                }
+                if (isset($caseEndJumpOp)) {
+                    $caseEndJumpOp->op2 = $this->opArray->getNextOffset();
+                }
+                $defaultCaseOffset = $this->opArray->getNextOffset();
+                if ($caseNextJumpOp) {
+                    $caseNextJumpOp->op1 = $this->opArray->getNextOffset();
+                }
                 // Default case
                 $this->compileChild($case, 'stmts');
+                $this->opArray[] = $caseNextJumpOp = new OpLines\Jump($node->getLine());
+                if(isset($defaultJumpOp)){
+                $defaultJumpOp->op1 = $this->opArray->getNextOffset();
+                }
             }
+        }
+
+        if (isset($caseEndJumpOp)) {
+            if ($defaultCaseOffset !== NULL) {
+                $caseEndJumpOp->op2 = $defaultCaseOffset;
+            } else {
+                $caseEndJumpOp->op2 = $this->opArray->getNextOffset();
+            }
+        }
+
+        if ($caseNextJumpOp) {
+            $caseNextJumpOp->op1 = $this->opArray->getNextOffset();
         }
 
         $this->opArray->endLoop($this->opArray->getNextOffset());
