@@ -89,8 +89,21 @@ final class CoreExtension extends Extension\Base {
     }
 
     protected function getClasses() {
-        return array(
+        $classes = array(
             new ClassEntry('stdClass'),
         );
+        $tmp = require_once __DIR__ . '/ext/Closure.php';
+        foreach ($tmp as $class => $props) {
+            $ce = new ClassEntry($class);
+            $ms = $ce->getMethodStore();
+            foreach ($props['methods'] as $name => $fe) {
+                $ms->register($name, $fe);
+            }
+            foreach ($props['properties'] as $name => $props) {
+                $ce->declareProperty($name, $props['default'], $props['access']);
+            }
+            $classes[] = $ce;
+        }
+        return $classes;
     }
 }

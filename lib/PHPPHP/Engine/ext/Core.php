@@ -3,6 +3,9 @@
 namespace PHPPHP\Engine;
 
 function var_dump_internal(Executor $executor, Zval $arg, $indent = '') {
+    if ($arg->getValue() instanceof FunctionData) {
+        return '';
+    }
     $output = $indent;
     switch ($arg->getType()) {
         case 'NULL':

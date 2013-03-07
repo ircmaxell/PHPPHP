@@ -154,6 +154,9 @@ class Value extends Zval {
     }
 
     public function toString() {
+        if ($this->value instanceof \PHPPHP\Engine\Objects\ClassInstance) {
+            debug_print_backtrace(false);
+        }
         return (string) $this->value;
     }
 

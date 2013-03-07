@@ -9,14 +9,10 @@ use PHPPHP\Engine\FunctionStore;
 use PHPPHP\Engine\Zval\Ptr;
 use PHPPHP\Engine\Zval;
 use PHPPHP\Engine\ConstantStore;
+use PHPPHP\Engine\Scope;
 
 class ClassEntry
 {
-    const ACC_PRIVATE = 1;
-    const ACC_PROTECTED = 2;
-    const ACC_PUBLIC = 4;
-    const ACC_STATIC = 8;
-
     private $name;
     private $properties;
     private $methods;
@@ -50,7 +46,7 @@ class ClassEntry
     }
 
     public function declareProperty($name, Zval $defaultValue, $access) {
-        if ($access & self::ACC_STATIC) {
+        if (Scope::isStatic($access)) {
             if (isset($this->staticProperties[$name])) {
                 throw new \Exception(sprintf('Cannot redeclare %s::$%s', $this->name, $name));
             }

@@ -18,5 +18,9 @@ abstract class OpLine {
         $this->lineno    = (int) $startLine;
     }
 
+    public function getName() {
+        return substr(get_class($this), strlen(__NAMESPACE__) + strlen('\OpLines\\'));
+    }
+
     abstract public function execute(\PHPPHP\Engine\ExecuteData $data);
 }
