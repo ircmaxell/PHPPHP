@@ -1,4 +1,4 @@
-<h2>Time Start: 2013-03-07 14:14:50</h2>
+<h2>Time Start: 2013-03-07 14:32:42</h2>
 <table>
 <tr><td>PASS</td><td>Simple If condition test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>Simple While Loop Test</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -276,7 +276,7 @@ During the call, the original variable is updated. This should not affect func_g
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td>PASS</td><td>ZE2 type hinting</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table>
-<h2>Time End: 2013-03-07 14:16:57</h2>
+<h2>Time End: 2013-03-07 14:34:43</h2>
 <hr/>
 <pre>
 
@@ -287,7 +287,7 @@ Tests failed    :  119 ( 43.6%) ( 45.6%)
 Expected fail   :    0 (  0.0%) (  0.0%)
 Tests passed    :  142 ( 52.0%) ( 54.4%)
 ---------------------------------------------------------------------
-Time taken      :  127 seconds
+Time taken      :  121 seconds
 =====================================================================
 
 =====================================================================
