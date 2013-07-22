@@ -21,9 +21,7 @@ To get the dependencies you need to use [composer](http://getcomposer.org):
     curl -s https://getcomposer.org/installer | php
     php composer.phar install
 
-If you want to run the tests, install with the `--dev` flag. Grab a cup of coffee while it runs, as it will fetch the entire PHP source code in the process which can take a while (~10 minutes).
-
-    php composer.phar install --dev
+Grab a cup of coffee while it runs, as it will fetch the entire PHP source code in the process which can take a while (~10 minutes).
 
 Usage
 =====
