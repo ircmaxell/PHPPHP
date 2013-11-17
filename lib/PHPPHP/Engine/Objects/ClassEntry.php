@@ -102,7 +102,8 @@ class ClassEntry
         return $instance;
     }
 
-    public function findMethod($name) {
+    public function findMethod($name)
+    {
         $parent = $this;
         do {
             $exists = $parent->methods->exists($name);
@@ -113,6 +114,16 @@ class ClassEntry
         }
 
         return $parent->methods->get($name);
+    }
+
+    public function hasMethod($name)
+    {
+        try {
+            return (bool) $this->findMethod($name);
+        } catch (\RuntimeException $e) {
+            // TODO use more specific exception to avoid catching everything
+            return false;
+        }
     }
 
     public function callMethod(ExecuteData $data, ClassInstance $ci = null, $name = '', array $args = array(), Ptr $result = null)
