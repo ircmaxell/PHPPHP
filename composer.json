@@ -4,21 +4,21 @@
             "type": "package",
             "package": {
                 "name": "php/php-src",
-                "version": "dev-master",
+                "version": "5.3.20",
                 "source": {
                     "type": "git",
                     "url": "https://github.com/php/php-src",
-                    "reference": "master"
+                    "reference": "php-5.3.20"
                 }
             }
         }
     ],
     "require": {
         "php": ">=5.3.0",
-        "nikic/php-parser": "dev-master"
+        "nikic/php-parser": "v0.9.4"
     },
     "require-dev": {
-        "php/php-src": "dev-master"
+        "php/php-src": "5.3.20"
     },
     "autoload": {
         "psr-0": {"PHPPHP": "lib/"}
